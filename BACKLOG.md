@@ -24,16 +24,29 @@
 
 (ninguna por ahora — se va a llenar a medida que se migre cada vista)
 
+## Decisiones pendientes / dudas para el usuario (actualizado)
+
+- `/configs` devolvió 404 en el ambiente de dev recién montado, mientras que
+  `/sales`, `/items`, `/customers`, `/reports`, `/employees` respondieron 200. Revisar
+  cuál es la ruta real del módulo de configuración antes de llegar a la Fase 4
+  (Configuración) - puede ser simplemente otro nombre de ruta/controlador.
+
 ## Deuda técnica visual / casos raros detectados
 
 - El output compilado `public/css/tailwind-build.css` se versiona en git porque el
   pipeline Gulp existente no lo procesa (evita que un deploy se quede sin estilos si
   nadie corre `tailwindcss` manualmente). Si más adelante se agrega un build step de
   CI/CD, considerar mover esto a `.gitignore` y compilarlo en el pipeline en su lugar.
-- No hay PHP/Docker disponible en el entorno de Claude para levantar la app y verificar
-  visualmente cada vista tras los cambios - el testing real (visual, en browser) lo debe
-  hacer el usuario. Claude solo puede verificar sintaxis/diffs mínimos y que el build de
-  Tailwind compila sin errores.
+- ~~No hay PHP/Docker disponible...~~ RESUELTO: se montó un ambiente LAMP nativo (sin
+  Docker, a pedido del usuario) - ver entrada "Setup ambiente de desarrollo local" en
+  PROGRESS.md. La app corre en `http://localhost:8090` (login admin/pointofsale). Esto
+  permite verificar con curl/HTTP que cada vista carga sin error 500, aunque la
+  verificación VISUAL real en navegador sigue siendo necesaria y la debe hacer el usuario
+  (Claude no tiene navegador).
+- Cada vez que se corre `npm run build` (gulp) localmente, inyecta bloques de assets
+  legacy directo en `app/Views/partial/header.php` y `app/Views/login.php` (comportamiento
+  normal del proyecto). Hay que tener cuidado de NO commitear ese ruido al hacer commit de
+  una vista - revisar el diff de esos dos archivos antes de cada `git add`.
 
 ## Ideas multi-marca / futuro
 
