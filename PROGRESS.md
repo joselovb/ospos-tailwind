@@ -331,3 +331,23 @@
   - Verificado: `--palette-primary-600` en el CSS servido en producción ahora es
     `#b23a66` (antes `#2563a8`), y `https://ospos-dev.josevaldivia.com/login` y `/` siguen
     en 200 después del cambio.
+
+## 2026-06-20 - Fix: logo del header respeta $config['company_logo']
+- Archivos: `app/Views/partial/header.php`, `public/css/tailwind-build.css`
+- Estado: completo
+- Notas:
+  - El usuario preguntó cómo encajaría el logo real de la empresa en el header. Al
+    revisar, encontré que `login.php` (Fase 1.6) sí respeta `$config['company_logo']`
+    (logo subido en Configuración) con fallback al ícono genérico de OSPOS, pero
+    `header.php` (Fase 0.2) siempre mostraba el ícono genérico sin chequear esa config -
+    inconsistencia entre las dos vistas. Se corrigió `header.php` para usar el mismo
+    patrón condicional que login: si hay `company_logo` configurado, se muestra como
+    `<img>` recortado dentro del mismo badge circular con gradiente; si no, cae al SVG de
+    OSPOS de siempre.
+  - De paso se resolvió la duda anotada en BACKLOG sobre `/configs` 404: el controlador
+    real se llama `Config` (singular, `app/Controllers/Config.php`), la ruta correcta es
+    `/config`. Confirmado con curl que responde 200 logueado - ahí está el campo para
+    subir el logo de Her Appointments cuando el usuario quiera probarlo.
+  - No se tocó ningún controller/model - el campo `$config['company_logo']` ya lo pasa el
+    controller de `home`/layout a todas las vistas, solo se agregó el `<?php if ?>` en el
+    markup del header, igual que ya existía en login.php y en los recibos/facturas.

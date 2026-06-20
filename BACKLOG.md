@@ -26,10 +26,10 @@
 
 ## Decisiones pendientes / dudas para el usuario (actualizado)
 
-- `/configs` devolvió 404 en el ambiente de dev recién montado, mientras que
-  `/sales`, `/items`, `/customers`, `/reports`, `/employees` respondieron 200. Revisar
-  cuál es la ruta real del módulo de configuración antes de llegar a la Fase 4
-  (Configuración) - puede ser simplemente otro nombre de ruta/controlador.
+- ~~`/configs` devolvió 404...~~ RESUELTO: el controlador se llama `Config` (singular,
+  `app/Controllers/Config.php`), la ruta real es `/config`, no `/configs`. Confirmado con
+  curl que responde 200 logueado. Ahí está la opción para subir el logo real de la
+  empresa (`company_logo`, usado en recibos/facturas y ahora en header+login).
 - El footer de `login.php` (logo + nombre del software) nunca mostró el bloque de
   licencia completo (copyright/versión/commit) que sí tiene `partial/footer.php` en el
   resto de la app - es comportamiento preexistente de upstream, no algo introducido en
