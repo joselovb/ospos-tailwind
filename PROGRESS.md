@@ -423,3 +423,30 @@
     software).
   - JS/ids intactos (mismo cuidado de siempre). Verificado con curl que `/login` responde
     200 y todos los ids del script de migración siguen presentes.
+
+## 2026-06-20 - Login v4: ocultar heading redundante + memoria de convenciones
+- Archivos: `app/Views/login.php`, `public/css/tailwind-build.css`
+- Estado: completo
+- Notas:
+  - El usuario pidió quitar el texto "Welcome to OSPOS" del login. El `<h3
+    id="form-heading">` lo escribe dinámicamente el JS existente en varios estados
+    (welcome, migration_required, etc. vía `.text()`) - no se podía borrar del DOM sin
+    tocar esa lógica. Se ocultó con `class="hidden"` en vez de borrar el elemento: el JS
+    sigue llamando `.text()` sin error ni cambio de comportamiento, solo que ya no se ve
+    nada. La información de cada estado (migración requerida, error, éxito) ya está
+    cubierta por los recuadros de alerta (`#migration-warning/success/error`) que tienen
+    su propio texto explicativo, así que no se perdió ninguna comunicación funcional al
+    ocultar este heading genérico.
+  - Se guardó en memoria persistente (`visual_hierarchy_and_animation_conventions.md`) la
+    convención completa para que se replique igual en TODAS las pantallas siguientes, no
+    solo login:
+    - Jerarquía: nombre del negocio siempre `font-display` grande/bold/color de marca;
+      mención a OSPOS siempre `software_short` (no `software_title`) en `text-xs
+      uppercase tracking-wider text-muted`, nunca con el mismo peso que la marca.
+    - Animación: patrón `fade-up` (contenedor principal) + `fade-in` con delay ~120ms
+      (paneles secundarios), definidos en un `<style>` scoped por vista, aplicados con
+      `animate-[nombre_duración_easing_both]` de Tailwind v4 - sin Alpine, CSS puro.
+    - Filosofía: ante la duda, quitar/simplificar antes que agregar decoración que no
+      aporte información nueva.
+  - Verificado: `/login` sigue en 200, `#form-heading` presente en el HTML con
+    `class="hidden"`.

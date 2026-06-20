@@ -86,7 +86,7 @@ $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
 
                 <?= form_open('login', ['id' => 'login-form', 'class' => 'flex flex-col gap-1']) ?>
 
-                <h3 id="form-heading" class="text-center text-xl font-semibold text-text-default">
+                <h3 id="form-heading" class="hidden">
                     <?php if (!$is_latest || $is_new_install): ?>
                         <?= lang('Login.migration_required') ?>
                     <?php else: ?>
