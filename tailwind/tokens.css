@@ -1,0 +1,41 @@
+@import "tailwindcss";
+@import "./theme-default.css"; /* única línea que cambiaría por negocio */
+
+/*
+ * Capa 2 - Tokens semánticos. Las Views usan SIEMPRE estas clases
+ * (bg-brand-primary, text-state-danger, etc.), nunca colores literales.
+ * Este archivo NO cambia entre negocios - solo lo que importa arriba cambia.
+ */
+@theme {
+  --color-brand-primary: var(--palette-primary-600);
+  --color-brand-primary-hover: var(--palette-primary-700);
+  --color-brand-primary-active: var(--palette-primary-900);
+  --color-brand-primary-soft: var(--palette-primary-100);
+  --color-brand-primary-border: var(--palette-primary-200);
+  --color-brand-primary-ring: var(--palette-primary-400);
+
+  --color-brand-accent: var(--palette-accent-500);
+  --color-brand-accent-hover: var(--palette-accent-600);
+  --color-brand-accent-soft: var(--palette-accent-100);
+  --color-brand-accent-border: var(--palette-accent-200);
+
+  --color-surface: #ffffff;
+  --color-surface-muted: var(--palette-bg);
+
+  --color-text-default: var(--palette-text-900);
+  --color-text-muted: var(--palette-text-500);
+  --color-text-on-brand: #ffffff;
+
+  --color-state-success: var(--palette-success-600);
+  --color-state-success-soft: var(--palette-success-100);
+  --color-state-danger: var(--palette-danger-600);
+  --color-state-danger-soft: var(--palette-danger-100);
+  --color-state-warning: var(--palette-warning-600);
+  --color-state-warning-soft: var(--palette-warning-100);
+}
+
+body.tw {
+  font-family: var(--font-sans);
+  background-color: var(--color-surface-muted);
+  color: var(--color-text-default);
+}

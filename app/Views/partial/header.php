@@ -40,6 +40,10 @@ $request = Services::request();
         <!-- endinject -->
     <?php endif; ?>
 
+    <!-- Tailwind refactor visual - convive con Bootstrap durante la transicion -->
+    <link rel="stylesheet" href="<?= base_url('css/tailwind-build.css') ?>">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <?= view('partial/header_js') ?>
     <?= view('partial/lang_lines') ?>
 
