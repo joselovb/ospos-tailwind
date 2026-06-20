@@ -245,3 +245,54 @@
     confirmados presentes en el CSS de salida), y `https://ospos-dev.josevaldivia.com/`
     sigue respondiendo 200 después del cambio (no afecta ninguna vista renderizada
     todavía, solo agrega CSS no usado aún).
+
+## 2026-06-20 - Vista: Fase 1.6 - Login
+- Archivos: `app/Views/login.php`
+- Estado: completo
+- Notas:
+  - Rediseño real: la vieja card de un solo bloque (logo a la izquierda con borde
+    divisorio, formulario a la derecha, todo apretado) se reemplazó por una card partida
+    en dos paneles (`md:grid md:grid-cols-2`): panel de marca con gradiente
+    (`from-brand-primary to-brand-primary-active`) y el logo oficial de OSPOS en una
+    insignia circular blanca con sombra (mismo patrón que el avatar del header), y panel de
+    formulario con jerarquía clara (título, campos, botón). En mobile el panel de marca
+    pasa arriba y el form abajo, ambos a ancho completo.
+  - Inputs: se reemplazó el patrón `.form-floating` de Bootstrap (label flotante animada)
+    por el patrón más simple label-arriba-input con los componentes `.label-base`/
+    `.input-base` ya creados en Fase 0.4 - decisión de diseño: la animación de label
+    flotante depende de CSS específico de Bootstrap5 que no íbamos a reimplementar para
+    una sola vista, y usar el mismo patrón de label+input que el resto de los formularios
+    del sistema (a medida que se migren) da más consistencia que un caso especial solo en
+    login. La variante `input_groups` (ícono dentro del input) también se rehizo sin
+    `.input-group` de Bootstrap, con un ícono SVG inline posicionado absoluto - mismos
+    nombres/ids que antes.
+  - JS intacto, NO se tocó ni una línea: el script de `APP_STATE` y el manejo de
+    `showMigrationRequired/Progress/Success/Error/showLoginForm` siguen funcionando
+    exactamente igual porque se preservaron todos los ids que usa
+    (`#login-form`, `#form-heading`, `#migration-warning`, `#migration-success`,
+    `#migration-progress`, `#migration-status`, `#migration-error`,
+    `#migration-error-message`, `#login-fields`, `#submit-button`) y, más importante, la
+    clase **`d-none`** se mantuvo literal en todos los elementos que el JS
+    muestra/oculta vía `addClass('d-none')`/`removeClass('d-none')` - solo se le quitaron
+    las clases visuales de Bootstrap (`alert alert-warning`, etc.) y se reemplazaron por
+    los componentes propios (`alert-warning`, `alert-success`, `alert-danger`), pero
+    `d-none` en sí sigue ahí porque Bootstrap5 (todavía cargado) es quien define esa regla
+    `display:none`.
+  - La barra de progreso de la migración (que antes era `.progress`/`.progress-bar` de
+    Bootstrap con animación de rayas) se rehizo con un gradiente + `animate-pulse` de
+    Tailwind - visualmente distinto pero cumple la misma función (indicar "está
+    trabajando"), ya que esos elementos no son manipulados por el JS (solo se muestra/
+    oculta el contenedor padre).
+  - Se dejó de enlazar `public/css/login.css` desde esta vista (sus selectores
+    `.box-logo`/`.box-login`/`.container-login` ya no existen en el nuevo markup, hubiera
+    quedado código muerto). El archivo NO se borró del repo, solo se desvinculó de esta
+    vista - anotado en BACKLOG por si hace falta limpiarlo más adelante.
+  - Detalle pendiente de decisión (anotado en BACKLOG): el footer de login (logo + nombre
+    del software) nunca mostró el bloque completo de licencia
+    (copyright/versión/commit) que sí tiene `partial/footer.php` en el resto de la app -
+    esto es comportamiento preexistente de upstream, no algo que cambiamos nosotros, pero
+    vale la pena confirmarlo con el usuario porque la regla dura #7 pide ese texto visible
+    "en cada página".
+  - Verificado con curl (GET /login, login real con CSRF, POST /login -> 303 -> /home 200)
+    que el flujo de autenticación sigue funcionando end-to-end, y que todos los ids que
+    necesita el JS están presentes en el HTML resultante.
