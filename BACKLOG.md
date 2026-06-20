@@ -46,6 +46,23 @@
 
 ## Deuda técnica visual / casos raros detectados
 
+- **Sales/POS - tabla del carrito en mobile**: por ahora queda como tabla real con scroll
+  horizontal (`overflow-x-auto`), no como cards apiladas, porque cada línea tiene un
+  `<form>` independiente con handlers JS atados a la posición exacta en el DOM
+  (`$(this).parents('tr').prevAll('form:first').submit()`) y no había forma de probar en
+  un navegador real que una reestructuración a cards no rompiera esos handlers. Si en
+  algún momento se puede probar con un navegador de verdad (Playwright, o el usuario
+  mismo testeando en vivo), vale la pena revisar si se puede migrar a cards en mobile.
+- **Sales/POS - selects con bootstrap-select**: los dropdowns de modo/mesa/ubicación de
+  stock/tipo de pago usan el plugin `bootstrap-select` (clase `selectpicker`), que pinta
+  su propio dropdown con CSS de Bootstrap 3 por fuera del control de Tailwind. No se
+  tocó para no arriesgar romper su inicialización JS. Pendiente decidir si en algún
+  punto se reemplaza por un `<select>` nativo + estilos Tailwind (cambio de mayor
+  alcance, afecta varias vistas que usan el mismo patrón, no solo sales).
+- **Sales/POS - sin datos de prueba**: la DB de dev está vacía, así que no se pudo
+  verificar visualmente el carrito con items reales, ni las secciones de pago/checkout
+  que solo aparecen cuando `count($cart) > 0`. Recomendado: cargar un item de prueba y
+  revisar ese flujo completo en el navegador.
 - El output compilado `public/css/tailwind-build.css` se versiona en git porque el
   pipeline Gulp existente no lo procesa (evita que un deploy se quede sin estilos si
   nadie corre `tailwindcss` manualmente). Si más adelante se agrega un build step de

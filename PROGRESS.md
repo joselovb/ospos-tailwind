@@ -450,3 +450,73 @@
       aporte información nueva.
   - Verificado: `/login` sigue en 200, `#form-heading` presente en el HTML con
     `class="hidden"`.
+
+## 2026-06-20 - Fase 1.5: Sales/POS (app/Views/sales/register.php)
+- Archivos: `app/Views/sales/register.php`, `tailwind/components.css`
+  (agregada `.input-compact`), `public/css/tailwind-build.css`
+- Estado: completo
+- Notas:
+  - Esta es la vista más compleja del refactor hasta ahora (911 líneas, un `<form>` por
+    cada línea del carrito, decenas de selectores jQuery atados a ids/names/clases
+    específicas, atajos de teclado, autocomplete de items/clientes/giftcards). Se trabajó
+    con cuidado especial para no tocar NINGÚN id, name, atributo `data-*`, ni la lógica del
+    `<script>` al final del archivo - todos los cambios son de clases CSS, iconos y
+    estructura de wrapping `<div>`.
+  - **El problema más grande que se resolvió**: `public/css/register.css` (legacy, cargado
+    globalmente en el `<head>`) define `#register_wrapper { float: left; width: 70%; }` y
+    `#overall_sale { float: left; width: 29%; }` - un layout de 2 columnas fijo, sin
+    ningún media query, que es la razón por la que esta pantalla nunca fue usable en
+    mobile. Como son selectores por ID (mayor especificidad que cualquier clase de
+    Tailwind), no se podían pisar agregando solo clases - se neutralizó con un `<style>`
+    scoped dentro de la vista (mismo patrón que login/header) que pone `float: none; width:
+    100%;` en esos dos ids, y el layout real ahora lo controla un flex de Tailwind: columna
+    única en mobile, `lg:flex-row` con 2/3 + 1/3 en desktop.
+  - **Decisión de scope deliberada sobre la tabla del carrito**: la tabla de items
+    (`#register`/`#cart_contents`) tiene un `<form>` independiente por línea
+    (`cart_$line`) con múltiples inputs (`item_number`, `name`, `price`, `quantity`,
+    `discount`, `discount_toggle`, `discounted_total`, `description`, `serialnumber`) cuyo
+    `onChange`/`onClick`/`keypress` dependen de la posición exacta en el DOM
+    (`$(this).parents('tr').prevAll('form:first').submit()`). Reestructurar esto a "cards"
+    apiladas en mobile (como se hizo conceptualmente con otras tablas densas) habría
+    significado tocar esa estructura form>tr>tr y arriesgar romper esos handlers, sin
+    poder probarlo en un navegador real. Se optó por la alternativa más segura: mantener la
+    tabla real (con scroll horizontal en mobile vía `overflow-x-auto` en el wrapper
+    `card-base`), restylar el header de la tabla con los tokens de marca, agregar hover de
+    fila, y usar la nueva clase `.input-compact` (variante chica de `.input-base`) para que
+    los inputs no se vean como Bootstrap plano. Documentado en BACKLOG como posible mejora
+    futura (cards reales en mobile) una vez se pueda probar en navegador de verdad.
+  - Componente nuevo: `.input-compact` en `components.css` - variante de `input-base` con
+    padding/tamaño reducido para celdas densas de tabla (este mismo input gigante no cabía
+    en una tabla). Reemplaza el `form-control input-sm` de Bootstrap en las ~15 ocurrencias
+    de inputs dentro del carrito, panel de pagos, comentarios, etc.
+  - Reemplazo de iconos: todos los `glyphicon-*` (trash, refresh, print, tag, user,
+    share-alt, ok, credit-card, remove, align-justify, list-alt) por SVG inline lineales,
+    siguiendo la regla de diseño. Los íconos de módulo (`images/menubar/*.svg`, dinámicos
+    por instalación) NO se tocaron, igual que en el header.
+  - Botones que antes eran `<div class="btn btn-sm btn-success">` (no son `<button>` real,
+    el JS hace `.click()` sobre el div) se mantuvieron como `<div>` - solo se les agregó
+    `cursor-pointer` y las clases de componente (`.btn-accent`, `.btn-secondary`,
+    `.btn-danger`) ya que cambiar el tag a `<button>` real habría sido un cambio de
+    estructura innecesario para esta pasada.
+  - Los `<select>` con plugin bootstrap-select (`selectpicker`, mode/dinner_table/
+    stock_location/payment_type) NO se restylearon visualmente - ese plugin genera su
+    propio dropdown con CSS de Bootstrap 3 y tocar sus clases (`selectpicker`,
+    `show-menu-arrow`, `data-style`, `data-width`) podría romper su inicialización JS.
+    Quedan con apariencia Bootstrap hasta una futura decisión de reemplazar el plugin
+    entero por un select nativo + Tailwind (cambio de mayor alcance, anotado en BACKLOG).
+  - El formulario de grid Bootstrap (`container-fluid`/`row`/`col-xs-*`) de la sección de
+    comentarios/checkboxes al final se reemplazó por flex de Tailwind.
+  - **Limitación de testing importante**: la base de datos de desarrollo está vacía (sin
+    items cargados), así que el carrito nunca tiene líneas y las secciones condicionales
+    `if (count($cart) > 0)` (tabla de pagos, botones de completar venta, panel de
+    comentarios) nunca se renderizaron en las pruebas con curl - no se pudieron verificar
+    visualmente. La lógica de esas condiciones no se tocó (mismas condiciones PHP exactas,
+    solo cambian clases/iconos por dentro), pero recomiendo que el usuario cargue al menos
+    un item de prueba y revise esa parte del flujo en su navegador.
+  - Verificado: `php -l` sin errores, conteo de `<div>`/`</div>` balanceado (30/30) en todo
+    el archivo, login real + `/sales` responde 200, todos los ids visibles en el HTML
+    (mode_form, add_item_form, item, register_wrapper, register, cart_contents,
+    overall_sale, select_customer_form, sale_totals, new_item_button,
+    show_suspended_sales_button, sales_takings_button, show_keyboard_help, customer_label,
+    etc.) presentes, sin clases `glyphicon`/`btn btn-*`/`panel panel-*` de Bootstrap
+    sobrantes en el HTML resultante.

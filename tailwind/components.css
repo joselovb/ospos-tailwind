@@ -31,6 +31,11 @@
     @apply w-full appearance-none rounded-xl border border-brand-primary-border bg-surface bg-no-repeat px-4 py-2.5 pr-10 text-text-default transition focus:outline-none focus:ring-2 focus:ring-brand-primary-ring;
   }
 
+  /* Variante compacta de input-base para celdas densas (tablas, carrito) */
+  .input-compact {
+    @apply w-full rounded-lg border border-brand-primary-border bg-surface px-2 py-1.5 text-sm text-text-default transition focus:outline-none focus:ring-2 focus:ring-brand-primary-ring;
+  }
+
   .label-base {
     @apply mb-1.5 block text-sm font-medium text-text-default;
   }
