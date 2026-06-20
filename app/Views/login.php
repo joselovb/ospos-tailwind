@@ -70,19 +70,19 @@ $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
 
             <!-- Panel de formulario -->
             <section class="flex flex-col justify-center gap-1 px-6 py-10 sm:px-10 md:col-span-5">
-                <div class="mx-auto w-full max-w-[200px] rounded-2xl border border-brand-primary-border bg-surface p-4 shadow-sm">
+                <div class="mx-auto w-full max-w-[240px] rounded-2xl border border-brand-primary-border bg-surface p-5 shadow-sm">
                     <?php if ($has_logo): ?>
-                        <img class="mx-auto h-12 w-auto object-contain sm:h-14" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="<?= esc(lang('Common.logo') . '&nbsp;' . $config['company']) ?>">
+                        <img class="mx-auto h-20 w-auto object-contain sm:h-24" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="<?= esc(lang('Common.logo') . '&nbsp;' . $config['company']) ?>">
                     <?php else: ?>
-                        <svg class="mx-auto h-12 w-12 text-brand-primary sm:h-14 sm:w-14" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="mx-auto h-16 w-16 text-brand-primary sm:h-20 sm:w-20" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
                             <title><?= lang('Common.software_title') . '&nbsp;' . lang('Common.logo') ?></title>
                             <circle cx="154.28999" cy="154.28999" r="154.28999" fill="currentColor" />
                             <path fill="#fff" d="M154.88998 145.66999c-.03-1.26-.03-3.29.19-4.29 4.6-11.1 15.57-18.82 28.3-18.82h.41v58.3c0 .12-.03.78-.04.9-.54 16.46-14.01 29.7-30.59 29.7v27.08c21 0 39.17-11.27 49.29-28.07l.07-.11c2.9.45 5.86.75 8.9.75 31.95 0 57.81-26 57.81-57.81 0-30.87-24.37-56.46-55.1-57.81h-30.74c-17.18 0-32.61 7.64-43.22 19.63-10.59-11.92-25.86-19.59-43.02-19.59-31.86 0-57.77 25.91-57.77 57.77 0 31.86 25.91 57.77 57.77 57.77 31.86 0 57.77-25.91 57.77-57.77v-3.68c-.01.01-.02-3.31-.03-3.95zm-57.75 38.33c-16.92 0-30.69-13.77-30.69-30.69s13.77-30.69 30.69-30.69 30.69 13.77 30.69 30.69-13.77 30.69-30.69 30.69zm142.96-19.87c-4.33 11.64-15.57 19.9-28.7 19.9h-.54v-61.47h.54c13.13 0 24.37 8.26 28.7 19.9 1.35 3.25 2.03 6.91 2.03 10.83s-.67 7.59-2.03 10.84z" />
                         </svg>
                     <?php endif; ?>
                 </div>
-                <p class="mt-4 text-center font-display text-2xl font-semibold text-brand-primary-active"><?= esc($config['company']) ?></p>
-                <p class="mb-2 text-center text-sm text-text-muted"><?= lang('Common.software_title') ?></p>
+                <p class="mt-5 text-center font-display text-3xl font-bold leading-tight text-brand-primary-active"><?= esc($config['company']) ?></p>
+                <p class="mb-3 text-center text-xs font-medium uppercase tracking-wider text-text-muted"><?= lang('Common.software_short') ?></p>
 
                 <?= form_open('login', ['id' => 'login-form', 'class' => 'flex flex-col gap-1']) ?>
 
@@ -191,23 +191,17 @@ $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
                             </svg>
                         <?php endif; ?>
                     </div>
-                    <p class="text-center font-display text-2xl font-semibold text-text-on-brand"><?= esc($config['company']) ?></p>
-                    <p class="text-center text-sm text-text-on-brand/80"><?= lang('Common.software_title') ?></p>
+                    <p class="text-center font-display text-3xl font-bold leading-tight text-text-on-brand"><?= esc($config['company']) ?></p>
+                    <p class="text-center text-xs font-medium uppercase tracking-wider text-text-on-brand/80"><?= lang('Common.software_short') ?></p>
                 </div>
             </div>
         </div>
     </main>
 
     <footer class="flex shrink-0 justify-center pb-6 text-center">
-        <div class="flex items-center gap-2 rounded-full bg-surface px-4 py-2 text-sm text-text-muted shadow">
-            <span class="text-brand-primary">
-                <svg height="1.25em" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
-                    <title><?= lang('Common.software_title') . '&nbsp;' . lang('Common.logo') ?></title>
-                    <circle cx="154.28999" cy="154.28999" r="154.28999" fill="currentColor" />
-                    <path fill="#fff" d="M154.88998 145.66999c-.03-1.26-.03-3.29.19-4.29 4.6-11.1 15.57-18.82 28.3-18.82h.41v58.3c0 .12-.03.78-.04.9-.54 16.46-14.01 29.7-30.59 29.7v27.08c21 0 39.17-11.27 49.29-28.07l.07-.11c2.9.45 5.86.75 8.9.75 31.95 0 57.81-26 57.81-57.81 0-30.87-24.37-56.46-55.1-57.81h-30.74c-17.18 0-32.61 7.64-43.22 19.63-10.59-11.92-25.86-19.59-43.02-19.59-31.86 0-57.77 25.91-57.77 57.77 0 31.86 25.91 57.77 57.77 57.77 31.86 0 57.77-25.91 57.77-57.77v-3.68c-.01.01-.02-3.31-.03-3.95zm-57.75 38.33c-16.92 0-30.69-13.77-30.69-30.69s13.77-30.69 30.69-30.69 30.69 13.77 30.69 30.69-13.77 30.69-30.69 30.69zm142.96-19.87c-4.33 11.64-15.57 19.9-28.7 19.9h-.54v-61.47h.54c13.13 0 24.37 8.26 28.7 19.9 1.35 3.25 2.03 6.91 2.03 10.83s-.67 7.59-2.03 10.84z" />
-                </svg>
-            </span>
-            <span><?= lang('Common.software_title') ?></span>
+        <div class="flex items-center gap-1.5 text-xs text-text-muted">
+            <span><?= lang('Common.powered_by') ?></span>
+            <span class="font-semibold text-brand-primary"><?= lang('Common.software_short') ?></span>
         </div>
     </footer>
 

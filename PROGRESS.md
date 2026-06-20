@@ -391,3 +391,35 @@
   - LIMITACIÓN: no hay navegador headless en este entorno para que Claude verifique
     visualmente el resultado - el usuario tiene que confirmar cómo se ve en su propio
     navegador.
+
+## 2026-06-20 - Login v3: jerarquía marca-negocio vs atribución OSPOS
+- Archivos: `app/Views/login.php`, `public/css/tailwind-build.css`
+- Estado: completo
+- Notas:
+  - El usuario subió su logo (Her Studio Perú) y notó que "OSPOS"/"Open Source Point of
+    Sale" se veía más resaltado que el nombre del propio negocio - pidió invertir esa
+    jerarquía y usar la tipografía para reforzar la distinción (negocio = grande/display,
+    sistema = chico/discreto).
+  - Cambios concretos:
+    - Logo: de `h-12`/`h-14` a `h-20`/`h-24` en el recuadro del form, y de `h-28`/`h-32` a
+      mantenerse grande en el medallón del panel decorativo (ya era el elemento más
+      grande ahí, no se tocó).
+    - Nombre de la empresa: de `text-2xl font-semibold` a `text-3xl font-bold` en ambos
+      paneles (form y decorativo) - mismo `font-display` (Playfair Display) que ya tenía,
+      pero con más peso y tamaño para que gane la jerarquía visual.
+    - Atribución de OSPOS: en vez de `lang('Common.software_title')` ("Open Source Point
+      of Sale", frase larga) en tamaño `text-sm` debajo del nombre de la empresa, ahora es
+      `lang('Common.software_short')` ("OSPOS") en `text-xs uppercase tracking-wider
+      text-muted` - mucho más chico, discreto, tipo etiqueta secundaria en vez de subtítulo
+      con el mismo peso que el nombre del negocio.
+    - Footer de la página: antes era una píldora con ícono + "Open Source Point of Sale"
+      con la misma jerarquía visual (shadow, fondo, mismo tamaño de texto) que el resto de
+      la marca. Se redujo a una línea de texto chica (`text-xs`) tipo
+      "Powered by **OSPOS**" sin ícono ni fondo - atribución mínima, no compite con la
+      marca del negocio.
+  - Esto es exactamente la "distinción de tipografías para dar visibilidad" que pidió el
+    usuario: `font-display` + tamaño/peso grande para lo que debe destacar (negocio),
+    `font-sans` + tamaño chico/muted/uppercase para lo que es secundario (atribución del
+    software).
+  - JS/ids intactos (mismo cuidado de siempre). Verificado con curl que `/login` responde
+    200 y todos los ids del script de migración siguen presentes.
