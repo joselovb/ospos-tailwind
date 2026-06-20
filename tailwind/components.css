@@ -52,17 +52,18 @@
     @apply rounded-2xl bg-gradient-to-br from-surface to-brand-primary-soft border border-brand-primary-border shadow-lg;
   }
 
-  /* Alertas */
+  /* Alertas - mismo radio que input-base/btn-* (rounded-xl) para que no
+   * choquen visualmente cuando aparecen junto a un form (ej. login) */
   .alert-danger {
-    @apply rounded-lg bg-state-danger-soft px-3 py-2 text-center text-sm text-state-danger;
+    @apply rounded-xl bg-state-danger-soft px-3 py-2 text-center text-sm text-state-danger;
   }
 
   .alert-success {
-    @apply rounded-lg bg-state-success-soft px-3 py-2 text-center text-sm text-state-success;
+    @apply rounded-xl bg-state-success-soft px-3 py-2 text-center text-sm text-state-success;
   }
 
   .alert-warning {
-    @apply rounded-lg bg-state-warning-soft px-3 py-2 text-center text-sm text-state-warning;
+    @apply rounded-xl bg-state-warning-soft px-3 py-2 text-center text-sm text-state-warning;
   }
 
   /* Badges de estado (para tablas: activo/inactivo, stock bajo, etc.) */

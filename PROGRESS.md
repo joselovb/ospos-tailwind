@@ -296,3 +296,38 @@
   - Verificado con curl (GET /login, login real con CSRF, POST /login -> 303 -> /home 200)
     que el flujo de autenticación sigue funcionando end-to-end, y que todos los ids que
     necesita el JS están presentes en el HTML resultante.
+
+## 2026-06-20 - Corrección: paleta real "Her Appointments" + ajuste de bordes
+- Archivos: `tailwind/theme-default.css`, `tailwind/components.css`,
+  `app/Views/partial/header.php`, `app/Views/login.php`,
+  `public/css/tailwind-build.css`
+- Estado: completo
+- Notas:
+  - El usuario corrigió dos cosas después de ver el login/header en vivo: (1) la paleta
+    azul/dorado que yo había elegido como "default" en la Fase 0 NO era la real - el
+    negocio real es "Her Appointments" con paleta rosa/dorado/marfil, y (2) algunos
+    elementos se veían inconsistentes entre redondeado y duro (puntualmente, el rojo de la
+    alerta de error en login "no cuadraba").
+  - Se reemplazaron los valores hex de `tailwind/theme-default.css` (Capa 1) por los
+    reales de Her Appointments que pasó el usuario (rose-900..100, gold-600..100,
+    ivory-50, ink-900/500, sage-600..100, wine-600/100), mapeados 1 a 1 a las variables ya
+    existentes (`--palette-primary-*` = rose, `--palette-accent-*` = gold, `--palette-bg`
+    = ivory-50, `--palette-text-*` = ink, `--palette-success-*` = sage,
+    `--palette-danger-*` = wine). El color de "warning" no estaba en la paleta del
+    cliente - se agregó un ámbar coherente con el resto (#a16207/#f5e6c8), documentado
+    como decisión propia en la memoria del proyecto.
+  - `--font-display` pasó de ser un placeholder ("Inter" duplicado) a "Playfair Display"
+    real - se agregó la carga de Google Fonts (`Playfair Display` + `Inter`) en el
+    `<head>` de `header.php` y `login.php` (las únicas dos plantillas con `<head>` propio).
+  - Ajuste de consistencia: `.alert-danger/success/warning` en `components.css` pasaron de
+    `rounded-lg` a `rounded-xl` para que el radio combine con `input-base`/`btn-*` (mismo
+    radio en elementos que aparecen juntos en un form, como en login).
+  - Como esta paleta es la real del cliente (no un ejemplo), se guardó en memoria
+    persistente (`brand_palette_her_appointments.md`) para no perderla en futuras
+    sesiones, y se documentó el concepto de arquitectura de 3 capas como patrón reusable
+    para proyectos futuros (`theming_architecture_3_layers.md`) - el usuario pidió
+    explícitamente que esta separación se mantenga como plantilla general, no solo para
+    este proyecto.
+  - Verificado: `--palette-primary-600` en el CSS servido en producción ahora es
+    `#b23a66` (antes `#2563a8`), y `https://ospos-dev.josevaldivia.com/login` y `/` siguen
+    en 200 después del cambio.

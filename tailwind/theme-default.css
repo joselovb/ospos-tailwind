@@ -2,40 +2,44 @@
  * Paleta cruda - "ingredientes" de la marca.
  * Este es el ÚNICO archivo que cambia para reusar el theme en otro negocio:
  * duplicar este archivo (ej. theme-otronegocio.css), cambiar los valores hex,
- * y cambiar el import en tokens.css. Cero cambios en las vistas.
+ * y cambiar el import en tokens.css. Cero cambios en las vistas ni en
+ * components.css - todo lo que consume estos valores lo hace a traves de
+ * los tokens semanticos (capa 2), nunca directo.
  *
- * Paleta default OSPOS-Tailwind: azul/índigo como primario (cercano al azul
- * corporativo original de OSPOS) + dorado como acento premium.
+ * Paleta activa: "Her Appointments" (rosa/dorado/marfil).
  */
 @theme {
-  --palette-primary-900: #1e3a5f;
-  --palette-primary-700: #1d4e89;
-  --palette-primary-600: #2563a8;
-  --palette-primary-500: #3b82c4;
-  --palette-primary-400: #6ba8d8;
-  --palette-primary-200: #c3ddf0;
-  --palette-primary-100: #e8f1fa;
+  --palette-primary-900: #7a2e45;
+  --palette-primary-700: #93304f;
+  --palette-primary-600: #b23a66;
+  --palette-primary-500: #c25a7d;
+  --palette-primary-400: #d88ba3;
+  --palette-primary-200: #f0c7d3;
+  --palette-primary-100: #fbe9ee;
 
-  --palette-accent-600: #b8860b;
-  --palette-accent-500: #d4a017;
-  --palette-accent-200: #f0dca0;
-  --palette-accent-100: #faf0d8;
+  --palette-accent-600: #ab8531;
+  --palette-accent-500: #c9a24b;
+  --palette-accent-200: #e6d4a3;
+  --palette-accent-100: #f3e8ce;
 
-  --palette-bg: #f7f9fc;
+  --palette-bg: #fdf8f4;
 
-  --palette-text-900: #1a2332;
-  --palette-text-500: #64748b;
+  --palette-text-900: #2b1b20;
+  --palette-text-500: #7d6b70;
 
-  --palette-success-600: #15803d;
-  --palette-success-500: #22a35a;
-  --palette-success-100: #dcfce7;
+  --palette-success-600: #557a5b;
+  --palette-success-500: #6b8f71;
+  --palette-success-100: #e3ede4;
 
-  --palette-danger-600: #b91c1c;
-  --palette-danger-100: #fee2e2;
+  --palette-danger-600: #9b2c2c;
+  --palette-danger-100: #f6e3e3;
 
-  --palette-warning-600: #b45309;
-  --palette-warning-100: #fef3c7;
+  /* No definido en la paleta original de Her Appointments - tono ambar
+   * coherente con el resto (calido, en la misma familia que el dorado)
+   * agregado para cubrir el estado "warning" que usan los componentes. */
+  --palette-warning-600: #a16207;
+  --palette-warning-100: #f5e6c8;
 
-  --font-display: "Inter", system-ui, sans-serif;
+  --font-display: "Playfair Display", serif;
   --font-sans: "Inter", system-ui, sans-serif;
 }
