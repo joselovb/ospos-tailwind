@@ -351,3 +351,43 @@
   - No se tocó ningún controller/model - el campo `$config['company_logo']` ya lo pasa el
     controller de `home`/layout a todas las vistas, solo se agregó el `<?php if ?>` en el
     markup del header, igual que ya existía en login.php y en los recibos/facturas.
+
+## 2026-06-20 - Rediseño login v2: referencia visual "Her Appointments"
+- Archivos: `app/Views/login.php`, `public/css/tailwind-build.css`
+- Estado: completo
+- Notas:
+  - El usuario compartió una imagen de referencia (`uploads/her appointments login.png`,
+    fuera del repo) del diseño original de Her Appointments y pidió acercarse más a eso.
+    Cambios respecto a la v1 de Fase 1.6:
+    - El panel de marca pasó de la izquierda a la **derecha** y ahora es más ancho que el
+      formulario (grid de 12 columnas, form `col-span-5`, panel decorativo
+      `col-span-7` en desktop) en vez del 50/50 con marca a la izquierda.
+    - El logo ya NO es un círculo flotante sobre fondo de color - ahora es un **recuadro
+      rectangular** (`rounded-2xl border bg-surface p-4`) arriba del formulario, con el
+      nombre de la empresa en `font-display` debajo y el tagline (`Common.software_title`)
+      más abajo en gris muted - igual que el mock.
+    - El panel decorativo (antes plano con el ícono chico) ahora tiene un marco interior
+      punteado (`border-dashed`) como en la referencia, y dentro un medallón circular
+      blanco translúcido con el logo en grande + nombre + tagline en blanco - reusa el
+      mismo logo/fallback SVG que el resto de la app (OSPOS no tiene un campo de "foto del
+      local" como el mock sugiere, así que no se inventó esa función).
+    - El fondo general de la página pasó de gradiente sutil a `bg-surface-muted` plano
+      (el gradiente ahora vive solo dentro del panel decorativo, como en la referencia).
+  - **Animación de entrada** agregada (pedido explícito: "full animaciones al cargar"): un
+    `@keyframes fade-up` (la card entera sube + aparece) y `@keyframes fade-in` (el panel
+    decorativo aparece con un pequeño delay de 120ms) definidos en un `<style>` scoped
+    dentro de `login.php` (mismo patrón que ya usa `header.php` con su bloque `<style>`),
+    aplicados vía sintaxis arbitraria de Tailwind (`animate-[fade-up_0.6s_ease-out_both]`).
+    Es CSS puro, no requiere Alpine ni JS adicional.
+  - No se inventó copy nueva en español hardcodeado (el mock tenía textos como "Tu logo
+    aquí 240x80px" o "Foto o ilustración del salón, Vertical 1200x1800px") porque esos
+    eran anotaciones de mockup/Figma para el diseñador, no textos reales de producto - se
+    tradujo la idea visual (recuadro de logo, panel con marco punteado) sin agregar
+    strings nuevos fuera de los `lang()` ya existentes.
+  - JS, ids y `d-none` intactos - mismo cuidado que en la v1, no se tocó el script.
+  - Verificado: todos los ids que usa el JS (`#login-form`, `#form-heading`,
+    `#migration-warning/success/progress/error/status`, `#login-fields`,
+    `#submit-button`) presentes en el HTML servido, `/login` responde 200.
+  - LIMITACIÓN: no hay navegador headless en este entorno para que Claude verifique
+    visualmente el resultado - el usuario tiene que confirmar cómo se ve en su propio
+    navegador.

@@ -13,6 +13,7 @@
 use Config\Services;
 
 $request = Services::request();
+$has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
 ?>
 
 <!doctype html>
@@ -38,31 +39,51 @@ $request = Services::request();
     <link rel="stylesheet" href="resources/bootswatch5/<?= "$theme" ?>/bootstrap.min.css">
     <link rel="stylesheet" href="<?= base_url('css/tailwind-build.css') ?>">
     <meta name="theme-color" content="#2c3e50">
+    <style>
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 
-<body class="tw min-h-screen flex flex-col bg-gradient-to-br from-surface-muted to-brand-primary-soft">
+<body class="tw min-h-screen flex flex-col bg-surface-muted">
     <main class="flex flex-1 items-center justify-center p-4 sm:p-6">
-        <div class="card-elevated w-full max-w-3xl overflow-hidden md:grid md:grid-cols-2">
+        <div class="card-elevated w-full max-w-4xl overflow-hidden animate-[fade-up_0.6s_ease-out_both] md:grid md:grid-cols-12">
 
-            <!-- Panel de marca -->
-            <div class="flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-brand-primary to-brand-primary-active px-6 py-10 text-text-on-brand sm:px-10">
-                <div class="flex h-24 w-24 items-center justify-center rounded-full bg-surface shadow-lg sm:h-28 sm:w-28">
-                    <?php if (isset($config['company_logo']) && !empty($config['company_logo'])): ?>
-                        <img class="h-16 w-16 object-contain sm:h-20 sm:w-20" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="<?= esc(lang('Common.logo') . '&nbsp;' . $config['company']) ?>">
+            <!-- Panel de formulario -->
+            <section class="flex flex-col justify-center gap-1 px-6 py-10 sm:px-10 md:col-span-5">
+                <div class="mx-auto w-full max-w-[200px] rounded-2xl border border-brand-primary-border bg-surface p-4 shadow-sm">
+                    <?php if ($has_logo): ?>
+                        <img class="mx-auto h-12 w-auto object-contain sm:h-14" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="<?= esc(lang('Common.logo') . '&nbsp;' . $config['company']) ?>">
                     <?php else: ?>
-                        <svg class="h-14 w-14 text-brand-primary sm:h-16 sm:w-16" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="mx-auto h-12 w-12 text-brand-primary sm:h-14 sm:w-14" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
                             <title><?= lang('Common.software_title') . '&nbsp;' . lang('Common.logo') ?></title>
                             <circle cx="154.28999" cy="154.28999" r="154.28999" fill="currentColor" />
                             <path fill="#fff" d="M154.88998 145.66999c-.03-1.26-.03-3.29.19-4.29 4.6-11.1 15.57-18.82 28.3-18.82h.41v58.3c0 .12-.03.78-.04.9-.54 16.46-14.01 29.7-30.59 29.7v27.08c21 0 39.17-11.27 49.29-28.07l.07-.11c2.9.45 5.86.75 8.9.75 31.95 0 57.81-26 57.81-57.81 0-30.87-24.37-56.46-55.1-57.81h-30.74c-17.18 0-32.61 7.64-43.22 19.63-10.59-11.92-25.86-19.59-43.02-19.59-31.86 0-57.77 25.91-57.77 57.77 0 31.86 25.91 57.77 57.77 57.77 31.86 0 57.77-25.91 57.77-57.77v-3.68c-.01.01-.02-3.31-.03-3.95zm-57.75 38.33c-16.92 0-30.69-13.77-30.69-30.69s13.77-30.69 30.69-30.69 30.69 13.77 30.69 30.69-13.77 30.69-30.69 30.69zm142.96-19.87c-4.33 11.64-15.57 19.9-28.7 19.9h-.54v-61.47h.54c13.13 0 24.37 8.26 28.7 19.9 1.35 3.25 2.03 6.91 2.03 10.83s-.67 7.59-2.03 10.84z" />
                         </svg>
                     <?php endif; ?>
                 </div>
-                <p class="text-center font-display text-lg font-semibold"><?= esc($config['company']) ?></p>
-                <p class="text-center text-sm text-text-on-brand/80"><?= lang('Common.software_title') ?></p>
-            </div>
+                <p class="mt-4 text-center font-display text-2xl font-semibold text-brand-primary-active"><?= esc($config['company']) ?></p>
+                <p class="mb-2 text-center text-sm text-text-muted"><?= lang('Common.software_title') ?></p>
 
-            <!-- Panel de formulario -->
-            <section class="flex flex-col justify-center gap-1 px-6 py-10 sm:px-10">
                 <?= form_open('login', ['id' => 'login-form', 'class' => 'flex flex-col gap-1']) ?>
 
                 <h3 id="form-heading" class="text-center text-xl font-semibold text-text-default">
@@ -155,6 +176,25 @@ $request = Services::request();
                 </button>
                 <?= form_close() ?>
             </section>
+
+            <!-- Panel decorativo -->
+            <div class="relative hidden items-center justify-center overflow-hidden bg-gradient-to-br from-brand-primary via-brand-primary-hover to-brand-accent p-10 md:col-span-7 md:flex md:[animation-delay:120ms] md:animate-[fade-in_0.8s_ease-out_both]">
+                <div class="absolute inset-6 rounded-3xl border border-dashed border-text-on-brand/25"></div>
+                <div class="relative z-10 flex flex-col items-center gap-4">
+                    <div class="flex h-40 w-40 items-center justify-center rounded-full bg-surface/90 shadow-xl backdrop-blur sm:h-48 sm:w-48">
+                        <?php if ($has_logo): ?>
+                            <img class="h-28 w-28 object-contain sm:h-32 sm:w-32" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="<?= esc(lang('Common.logo') . '&nbsp;' . $config['company']) ?>">
+                        <?php else: ?>
+                            <svg class="h-24 w-24 text-brand-primary sm:h-28 sm:w-28" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="154.28999" cy="154.28999" r="154.28999" fill="currentColor" />
+                                <path fill="#fff" d="M154.88998 145.66999c-.03-1.26-.03-3.29.19-4.29 4.6-11.1 15.57-18.82 28.3-18.82h.41v58.3c0 .12-.03.78-.04.9-.54 16.46-14.01 29.7-30.59 29.7v27.08c21 0 39.17-11.27 49.29-28.07l.07-.11c2.9.45 5.86.75 8.9.75 31.95 0 57.81-26 57.81-57.81 0-30.87-24.37-56.46-55.1-57.81h-30.74c-17.18 0-32.61 7.64-43.22 19.63-10.59-11.92-25.86-19.59-43.02-19.59-31.86 0-57.77 25.91-57.77 57.77 0 31.86 25.91 57.77 57.77 57.77 31.86 0 57.77-25.91 57.77-57.77v-3.68c-.01.01-.02-3.31-.03-3.95zm-57.75 38.33c-16.92 0-30.69-13.77-30.69-30.69s13.77-30.69 30.69-30.69 30.69 13.77 30.69 30.69-13.77 30.69-30.69 30.69zm142.96-19.87c-4.33 11.64-15.57 19.9-28.7 19.9h-.54v-61.47h.54c13.13 0 24.37 8.26 28.7 19.9 1.35 3.25 2.03 6.91 2.03 10.83s-.67 7.59-2.03 10.84z" />
+                            </svg>
+                        <?php endif; ?>
+                    </div>
+                    <p class="text-center font-display text-2xl font-semibold text-text-on-brand"><?= esc($config['company']) ?></p>
+                    <p class="text-center text-sm text-text-on-brand/80"><?= lang('Common.software_title') ?></p>
+                </div>
+            </div>
         </div>
     </main>
 
