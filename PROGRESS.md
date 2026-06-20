@@ -211,3 +211,37 @@
     bloques inyectados (dejando los markers vacíos como en el HEAD original) para no
     commitear ruido, y se volvió a correr el build después del commit para que el server
     de dev local siga sirviendo los assets de Bootstrap 3 sin problemas.
+
+## 2026-06-20 - Vista: Fase 0.4 - Componentes genéricos (capa de componentes Tailwind)
+- Archivos: `tailwind/components.css` (nuevo), `tailwind/input.css` (agregado el import),
+  `public/css/tailwind-build.css` (recompilado)
+- Estado: completo
+- Notas:
+  - OSPOS no tiene un archivo central de "botones"/"inputs" - son clases de Bootstrap
+    repetidas inline en cada vista. En vez de eso, se creó una capa `@layer components` en
+    Tailwind con clases cortas y reutilizables, armadas únicamente con los tokens
+    semánticos (nunca colores literales), siguiendo al pie de la letra los "Patrones de
+    componentes a replicar" de CLAUDE.md: `.btn-primary` / `.btn-secondary` / `.btn-danger`
+    / `.btn-accent` (con gradiente), `.input-base` / `.select-base` / `.label-base` /
+    `.help-text`, `.card-base` / `.card-elevated` / `.card-highlight`, `.alert-danger` /
+    `.alert-success` / `.alert-warning`, `.badge-success` / `.badge-danger` /
+    `.badge-warning` / `.badge-neutral`, `.modal-overlay` / `.modal-panel` /
+    `.modal-content` (para modales propios futuros - NO se tocaron los modales existentes
+    de `bootstrap3-dialog`/`.modal-dlg`), `.pagination-link` / `.pagination-link-active` /
+    `.pagination-link-disabled`, y un set de "empty state" (`.empty-state`,
+    `.empty-state-icon`, `.empty-state-title`, `.empty-state-description`) ya que la regla
+    de diseño pide estados vacíos diseñados en vez de tablas vacías sin contexto.
+  - Detalle técnico de Tailwind v4: dentro de `@layer components`, no se puede hacer
+    `@apply` de OTRA clase custom definida en la misma capa (ej. `.select-base { @apply
+    input-base ... }` tira `Error: Cannot apply unknown utility class`). Hubo que escribir
+    las utilidades completas en cada clase en vez de encadenar referencias entre ellas
+    (afectó a `.select-base` y `.modal-content`).
+  - Esto no toca ninguna vista todavía - es solo la "caja de herramientas" para que Fase 1
+    en adelante (sales, login, items, etc.) sea más rápida y consistente: en vez de repetir
+    `bg-gradient-to-br from-brand-primary to-brand-primary-hover text-text-on-brand py-3
+    rounded-xl...` en cada botón, se usa `class="btn-primary"`.
+  - Verificado: el build de Tailwind compila sin errores y genera las reglas CSS
+    correspondientes (`.btn-primary`, `.alert-danger`, `.empty-state`, `.pagination-link`
+    confirmados presentes en el CSS de salida), y `https://ospos-dev.josevaldivia.com/`
+    sigue respondiendo 200 después del cambio (no afecta ninguna vista renderizada
+    todavía, solo agrega CSS no usado aún).

@@ -1,0 +1,129 @@
+/*
+ * Capa de componentes reutilizables. Clases cortas para los patrones
+ * de "Patrones de componentes a replicar" en CLAUDE.md, armadas SOLO
+ * con tokens semanticos (nunca colores literales). Cuando se migra una
+ * vista, usar estas clases en vez de repetir las utilidades largas.
+ */
+@layer components {
+  /* Botones */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-brand-primary to-brand-primary-hover px-4 py-2.5 font-medium text-text-on-brand shadow-md transition-all hover:shadow-lg hover:to-brand-primary-active active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-brand-primary-border bg-surface px-4 py-2.5 font-medium text-text-default shadow-sm transition-all hover:bg-brand-primary-soft hover:border-brand-primary active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-state-danger to-state-danger px-4 py-2.5 font-medium text-text-on-brand shadow-md transition-all hover:shadow-lg active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-brand-accent to-brand-accent-hover px-4 py-2.5 font-medium text-text-on-brand shadow-md transition-all hover:shadow-lg active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  /* Inputs */
+  .input-base {
+    @apply w-full rounded-xl border border-brand-primary-border bg-surface px-4 py-2.5 text-text-default placeholder:text-text-muted transition focus:outline-none focus:ring-2 focus:ring-brand-primary-ring;
+  }
+
+  .select-base {
+    @apply w-full appearance-none rounded-xl border border-brand-primary-border bg-surface bg-no-repeat px-4 py-2.5 pr-10 text-text-default transition focus:outline-none focus:ring-2 focus:ring-brand-primary-ring;
+  }
+
+  .label-base {
+    @apply mb-1.5 block text-sm font-medium text-text-default;
+  }
+
+  .help-text {
+    @apply mt-1 text-xs text-text-muted;
+  }
+
+  /* Cards / paneles */
+  .card-base {
+    @apply rounded-2xl border border-brand-primary-border bg-surface shadow-lg;
+  }
+
+  .card-elevated {
+    @apply rounded-3xl bg-surface shadow-xl;
+  }
+
+  .card-highlight {
+    @apply rounded-2xl bg-gradient-to-br from-surface to-brand-primary-soft border border-brand-primary-border shadow-lg;
+  }
+
+  /* Alertas */
+  .alert-danger {
+    @apply rounded-lg bg-state-danger-soft px-3 py-2 text-center text-sm text-state-danger;
+  }
+
+  .alert-success {
+    @apply rounded-lg bg-state-success-soft px-3 py-2 text-center text-sm text-state-success;
+  }
+
+  .alert-warning {
+    @apply rounded-lg bg-state-warning-soft px-3 py-2 text-center text-sm text-state-warning;
+  }
+
+  /* Badges de estado (para tablas: activo/inactivo, stock bajo, etc.) */
+  .badge-success {
+    @apply inline-flex items-center rounded-full bg-state-success-soft px-2.5 py-0.5 text-xs font-medium text-state-success;
+  }
+
+  .badge-danger {
+    @apply inline-flex items-center rounded-full bg-state-danger-soft px-2.5 py-0.5 text-xs font-medium text-state-danger;
+  }
+
+  .badge-warning {
+    @apply inline-flex items-center rounded-full bg-state-warning-soft px-2.5 py-0.5 text-xs font-medium text-state-warning;
+  }
+
+  .badge-neutral {
+    @apply inline-flex items-center rounded-full bg-surface-muted px-2.5 py-0.5 text-xs font-medium text-text-muted;
+  }
+
+  /* Modal base (para futuros modales propios via Alpine - los modales
+   * de bootstrap3-dialog/.modal-dlg existentes NO se tocan, esto es
+   * para cuando se construyan modales nuevos en la migracion) */
+  .modal-overlay {
+    @apply fixed inset-0 z-40 bg-text-default/40;
+  }
+
+  .modal-panel {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+  }
+
+  .modal-content {
+    @apply w-full max-w-lg rounded-3xl bg-surface shadow-xl p-6;
+  }
+
+  /* Paginacion */
+  .pagination-link {
+    @apply inline-flex h-9 min-w-9 items-center justify-center rounded-lg px-3 text-sm font-medium text-text-muted transition-colors hover:bg-brand-primary-soft hover:text-brand-primary;
+  }
+
+  .pagination-link-active {
+    @apply inline-flex h-9 min-w-9 items-center justify-center rounded-lg bg-brand-primary-soft px-3 text-sm font-medium text-brand-primary;
+  }
+
+  .pagination-link-disabled {
+    @apply inline-flex h-9 min-w-9 items-center justify-center rounded-lg px-3 text-sm font-medium text-text-muted opacity-40 pointer-events-none;
+  }
+
+  /* Empty states */
+  .empty-state {
+    @apply flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-brand-primary-border bg-surface-muted px-6 py-12 text-center;
+  }
+
+  .empty-state-icon {
+    @apply flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary-soft text-brand-primary;
+  }
+
+  .empty-state-title {
+    @apply text-base font-semibold text-text-default;
+  }
+
+  .empty-state-description {
+    @apply max-w-sm text-sm text-text-muted;
+  }
+}
