@@ -679,3 +679,26 @@
     sección de cascade layers) y en memoria persistente, con la regla dura para
     cualquier clase nueva: SIEMPRE `!` en cada utilidad dentro de `@apply`, además del
     prefijo `ui-` - son dos fixes en capas distintas, ninguno sustituye al otro.
+
+## 2026-06-21 - Fix: animación de entrada quitada de Sales/POS (causaba flicker)
+- Archivos: `app/Views/sales/register.php`
+- Estado: completo
+- Notas:
+  - El usuario reportó que la pantalla "se siente inestable, hace mucho flicker" después
+    de probar el toggle de descuento. Causa real: Sales/POS recarga la página COMPLETA en
+    casi cada interacción (agregar item, cambiar cantidad, tocar el toggle, agregar pago -
+    todos son `form.submit()` síncronos, no AJAX), así que la animación `fade-up` que se
+    le había agregado al contenedor principal se reproducía de nuevo en CADA recarga -
+    en vez de sentirse "viva" (la intención original), se sentía como parpadeo constante
+    cada vez que se tocaba cualquier cosa.
+  - Se quitó por completo la animación de `register.php` (la clase
+    `animate-[fade-up_0.5s_ease-out_both]` y el `@keyframes fade-up` del `<style>` scoped).
+    Login SÍ la mantiene (carga una sola vez por sesión, no tiene este problema).
+  - Se documentó en memoria la regla general: la animación de entrada solo aplica a
+    vistas que cargan una vez por visita/sesión (login, dashboards) - vistas con flujo
+    transaccional que recargan la página en casi cada click (sales/register, y
+    probablemente otras pantallas de edición con guardado por POST+reload) NO deben
+    llevarla. Hay que revisar el patrón de recarga de cada vista nueva antes de copiar la
+    animación por costumbre, en vez de aplicarla a ciegas en todo.
+  - Verificado: `php -l` sin errores, 0 referencias a `fade-up` en el HTML servido de
+    `/sales`, página responde 200.

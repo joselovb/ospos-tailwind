@@ -373,6 +373,9 @@
   .table {
     display: table !important;
   }
+  .h-2 {
+    height: calc(var(--spacing) * 2) !important;
+  }
   .h-2\.5 {
     height: calc(var(--spacing) * 2.5) !important;
   }
@@ -481,8 +484,14 @@
   .flex-1 {
     flex: 1 !important;
   }
+  .flex-shrink {
+    flex-shrink: 1 !important;
+  }
   .shrink-0 {
     flex-shrink: 0 !important;
+  }
+  .border-collapse {
+    border-collapse: collapse !important;
   }
   .-translate-y-2 {
     --tw-translate-y: calc(var(--spacing) * -2) !important;
@@ -513,6 +522,9 @@
   }
   .cursor-pointer {
     cursor: pointer !important;
+  }
+  .resize {
+    resize: both !important;
   }
   .flex-col {
     flex-direction: column !important;
@@ -636,6 +648,9 @@
   .border-brand-primary-border {
     border-color: var(--color-brand-primary-border) !important;
   }
+  .border-text-on-brand {
+    border-color: var(--color-text-on-brand) !important;
+  }
   .border-text-on-brand\/25 {
     border-color: color-mix(in srgb, #ffffff 25%, transparent) !important;
     @supports (color: color-mix(in lab, red, red)) {
@@ -752,6 +767,9 @@
   }
   .\!py-2 {
     padding-block: calc(var(--spacing) * 2) !important;
+  }
+  .py-1 {
+    padding-block: var(--spacing) !important;
   }
   .py-1\.5 {
     padding-block: calc(var(--spacing) * 1.5) !important;
@@ -884,6 +902,9 @@
     --tw-numeric-spacing: tabular-nums !important;
     font-variant-numeric: var(--tw-ordinal,) var(--tw-slashed-zero,) var(--tw-numeric-figure,) var(--tw-numeric-spacing,) var(--tw-numeric-fraction,) !important;
   }
+  .underline {
+    text-decoration-line: underline !important;
+  }
   .underline-offset-2 {
     text-underline-offset: 2px !important;
   }
@@ -913,11 +934,19 @@
     --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 8px 10px -6px var(--tw-shadow-color, rgb(0 0 0 / 0.1)) !important;
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow) !important;
   }
+  .outline {
+    outline-style: var(--tw-outline-style) !important;
+    outline-width: 1px !important;
+  }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,) !important;
   }
   .backdrop-blur {
     --tw-backdrop-blur: blur(8px) !important;
+    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,) !important;
+    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,) !important;
+  }
+  .backdrop-filter {
     -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,) !important;
     backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,) !important;
   }
@@ -1924,6 +1953,11 @@ body.tw {
   inherits: false;
   initial-value: 0 0 #0000;
 }
+@property --tw-outline-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
 @property --tw-blur {
   syntax: "*";
   inherits: false;
@@ -2071,6 +2105,7 @@ body.tw {
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
+      --tw-outline-style: solid;
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;

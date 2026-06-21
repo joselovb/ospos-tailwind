@@ -105,18 +105,6 @@ helper('url');
         font-weight: 700;
     }
 
-    @keyframes fade-up {
-        from {
-            opacity: 0;
-            transform: translateY(12px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
     /* Seccionado del panel de venta: divisores claros entre Cliente /
      * Totales / Pago / Acciones, via CSS puro sobre ids existentes -
      * evita reestructurar el arbol de condicionales PHP anidados. */
@@ -140,7 +128,7 @@ helper('url');
 </style>
 
 <div class="flex flex-col gap-4 px-4 py-4 sm:px-0 lg:flex-row lg:items-start lg:gap-6">
-    <div class="flex flex-1 flex-col gap-4 lg:w-2/3 animate-[fade-up_0.5s_ease-out_both]">
+    <div class="flex flex-1 flex-col gap-4 lg:w-2/3">
 
         <!-- Top register controls -->
         <?= form_open("$controller_name/changeMode", ['id' => 'mode_form']) ?>
