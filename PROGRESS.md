@@ -637,3 +637,45 @@
   - Verificado con Playwright: toggle funcional (click real + estado `checked`
     confirmado), botones con colores correctos, divisores de sección visibles en
     desktop (1280px) y mobile (390px), `php -l` sin errores.
+
+## 2026-06-21 - FIX CRÍTICO #2: las clases ui-* tampoco heredaban "important"
+- Archivos: `tailwind/components.css`, `app/Views/sales/register.php`, `CLAUDE.md`,
+  `public/css/tailwind-build.css`
+- Estado: completo
+- Notas:
+  - El usuario reportó: tipografía del botón "New Item" descuadrada dentro del botón, y
+    los placeholders de búsqueda de item/cliente con letra grande poco estética. También
+    pidió achicar la columna "Item #" del carrito para darle más aire al descuento (se
+    consultó si la columna era necesaria - se mantuvo, solo se redujo el ancho, ya que
+    sigue siendo un dato útil).
+  - Investigando con Playwright (`getComputedStyle` en `#new_item_button`, clase
+    `.ui-btn-primary`) se confirmó la continuación EXACTA del bug de cascade layers de la
+    sesión anterior, en una capa distinta: `padding: 0px` (debía ser `6.25px 10px`),
+    `font-weight: 400` (debía ser `500`), `font-size: 15px` (debía ser `8.75px`). El
+    prefijo `ui-` evitaba que Bootstrap pintara SU propio botón encima (el color/gradiente
+    de fondo ya era correcto), pero el padding/tamaño/peso de letra de nuestra propia
+    clase seguían perdiendo contra reglas genéricas no-importantes de Bootstrap/
+    `ospos.css` - el modificador global `important` de `tokens.css` (fix de la sesión
+    anterior) NO cubre las reglas `@apply` dentro de `@layer components`, solo las
+    utilidades usadas directo en el HTML. Era exactamente la "limitación importante" que
+    ya había quedado anotada en la memoria del bug anterior, confirmada en la práctica.
+  - **Fix**: script en Python (regex sobre `tailwind/components.css`) que agrega el
+    modificador `!` a CADA utilidad dentro de TODOS los `@apply` (`@apply inline-flex
+    px-4 text-sm hover:shadow-lg` → `@apply !inline-flex !px-4 !text-sm
+    hover:!shadow-lg`), respetando variantes (el `!` va después del último `:`).
+    Confirmado en el CSS compilado que ahora cada declaración sale con `!important`.
+  - De paso se agregó `text-sm` explícito + `placeholder:text-text-muted/70` (gris más
+    claro que el texto escrito, como pidió el usuario) a `.ui-input`/`.ui-select`/
+    `.ui-input-compact` - antes no tenían tamaño de fuente propio y heredaban el del
+    body de Bootstrap (15px), de ahí que se vieran "grandes" y descuadrados contra el
+    padding pensado para cajas chicas.
+  - Columna "Item #" de la tabla del carrito: de 15% a 8% de ancho, columna "Discount" de
+    15% a 20% (más espacio para el switch nuevo), "Item Name" de 30% a 32% para
+    compensar.
+  - Esto es un fix GLOBAL (afecta el archivo de componentes compartido) - se verificó con
+    Playwright que también mejoró el botón "Go" y los inputs de login, que tenían el
+    mismo problema silencioso sin que el usuario lo hubiera reportado todavía ahí.
+  - Documentado como continuación del bug anterior en CLAUDE.md (nueva regla #3 en la
+    sección de cascade layers) y en memoria persistente, con la regla dura para
+    cualquier clase nueva: SIEMPRE `!` en cada utilidad dentro de `@apply`, además del
+    prefijo `ui-` - son dos fixes en capas distintas, ninguno sustituye al otro.

@@ -254,11 +254,21 @@ siempre, en cada vista:
    clases (son `@apply` dentro de `@layer components`, no utilidades
    directas) - el prefijo es la única protección para ellas, son dos
    fixes complementarios.
-3. Después de cualquier cambio de vista: rebuild completo
+3. **Dentro de cada `@apply` en `components.css`, TODA utilidad lleva el
+   modificador `!` manualmente**: `@apply !inline-flex !px-4 !text-sm
+   hover:!shadow-lg;`, nunca `@apply inline-flex px-4 text-sm
+   hover:shadow-lg;` sin el `!`. Confirmado con Playwright: sin esto,
+   propiedades como `padding`/`font-size`/`font-weight` de las clases
+   `ui-*` seguían perdiendo contra reglas genéricas no-importantes de
+   Bootstrap/`ospos.css` (ej. `* { padding: 0 }`) AUNQUE el nombre de
+   clase ya tuviera el prefijo `ui-` del punto 2 - son fixes en capas
+   distintas (utilidades directas en HTML vs. utilidades dentro de
+   `@apply`), hay que aplicar los dos siempre, uno no sustituye al otro.
+4. Después de cualquier cambio de vista: rebuild completo
    (`npm run build && tailwindcss build`) Y `sudo systemctl restart
    php8.3-fpm` - PHP-FPM puede servir versiones viejas en caché aunque
    el archivo en disco ya esté actualizado.
-4. Verificar cambios visuales con Playwright (headless Chromium, ya
+5. Verificar cambios visuales con Playwright (headless Chromium, ya
    instalado) en vez de solo `curl` - `curl` no ejecuta CSS/JS y no
    detecta ninguno de estos problemas.
 

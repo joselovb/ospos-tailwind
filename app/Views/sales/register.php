@@ -207,11 +207,11 @@ helper('url');
         <thead>
             <tr class="bg-brand-primary-soft text-xs font-semibold uppercase tracking-wide text-brand-primary">
                 <th style="width: 5%;" class="px-2 py-3"><?= lang('Common.delete') ?></th>
-                <th style="width: 15%;" class="px-2 py-3"><?= lang(ucfirst($controller_name) . '.item_number') ?></th>
-                <th style="width: 30%;" class="px-2 py-3"><?= lang(ucfirst($controller_name) . '.item_name') ?></th>
+                <th style="width: 8%;" class="px-2 py-3"><?= lang(ucfirst($controller_name) . '.item_number') ?></th>
+                <th style="width: 32%;" class="px-2 py-3"><?= lang(ucfirst($controller_name) . '.item_name') ?></th>
                 <th style="width: 10%;" class="px-2 py-3"><?= lang(ucfirst($controller_name) . '.price') ?></th>
                 <th style="width: 10%;" class="px-2 py-3"><?= lang(ucfirst($controller_name) . '.quantity') ?></th>
-                <th style="width: 15%;" class="px-2 py-3"><?= lang(ucfirst($controller_name) . '.discount') ?></th>
+                <th style="width: 20%;" class="px-2 py-3"><?= lang(ucfirst($controller_name) . '.discount') ?></th>
                 <th style="width: 10%;" class="px-2 py-3"><?= lang(ucfirst($controller_name) . '.total') ?></th>
                 <th style="width: 5%;" class="px-2 py-3"><?= lang(ucfirst($controller_name) . '.update') ?></th>
             </tr>
