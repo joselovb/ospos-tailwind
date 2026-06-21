@@ -590,3 +590,50 @@
     (`/root/.cache/ms-playwright/`) pero los scripts de prueba usados están en `/tmp/`
     (no versionados) - si se pierden, hay que recrearlos para la próxima verificación
     visual real.
+
+## 2026-06-21 - Sales/POS v2: feedback de usuario tras el fix de cascade layers
+- Archivos: `app/Views/sales/register.php`
+- Estado: completo
+- Notas:
+  - El usuario, ya con el fix de cascade layers aplicado, dio 5 puntos de feedback
+    puntual viendo la pantalla con un item real en el carrito (se cargó un item de
+    prueba "Test" vía el modal para poder ver el carrito con datos, antes solo se había
+    probado vacío):
+    1. **Toggle de descuento (%/$) se veía muy mal** - confirmado con zoom de Playwright:
+       era el plugin `bootstrap-toggle` sin reskinear, una cajita gris de 45x35px con
+       colores default de Bootstrap (verde/gris), apretada contra el input de descuento.
+       Se reemplazó por un switch propio hecho solo con Tailwind (checkbox `sr-only` +
+       `peer-checked`, sin el plugin), con "%"/"$" como etiquetas dentro del track y un
+       thumb blanco deslizante en los colores de marca. Mismo `name="discount_toggle"`,
+       `id`, `data-line` y comportamiento `checked` que antes - el JS existente
+       (`$('[name="discount_toggle"]').change(...)`) no se tocó y sigue funcionando
+       igual, verificado con Playwright haciendo click real y confirmando
+       `checked: true/false` después del click.
+    2. **Botón "New Item" dorado "rompe todo"** - era el único elemento dorado (accent)
+       en esa zona de la pantalla, sin nada más dorado alrededor, lo que lo hacía ver
+       como un error de paleta en vez de un acento intencional. Se cambió a
+       `ui-btn-primary` (rosa de marca, igual que "Daily Sales") para que sea consistente
+       con el resto de acciones de esa columna. El dorado (`ui-btn-accent`) quedó
+       reservado para los botones que de verdad avanzan el cobro ("Add Payment",
+       "Complete Sale", "Finish Invoice"), que es coherente con la regla de "acento para
+       lo premium/CTA principal", no para cualquier botón secundario.
+    3. **Modales incompletos** - el usuario mismo aclaró que esto es para una revisión
+       posterior (los modales de items/customers no están migrados todavía) - no se tocó.
+    4. **Faltan animaciones** - se agregó el mismo patrón `fade-up` ya usado en login al
+       contenedor principal de la vista (entrada sutil al cargar la pantalla),
+       consistente con la convención ya guardada en memoria.
+    5. **El seccionado/UX no mejoró realmente** - el panel de venta (`#overall_sale`) era
+       un solo bloque continuo (Cliente → Totales → Pago → Botones) sin separación
+       visual real más allá de líneas finísimas entre filas de tabla. Se agregaron
+       divisores claros (`border-top` + `padding-top`) entre esos 4 grupos, vía CSS puro
+       sobre los ids ya existentes (`#sale_totals`, `#payment_details`, `#buttons_sale`) -
+       **a propósito no se reestructuró el árbol de divs/condicionales PHP** (es
+       profundamente anidado con múltiples `if` superpuestos para los distintos modos de
+       venta/pago) para no arriesgar romper esa lógica sin poder probar cada combinación
+       de estado en un navegador real.
+  - Para poder ver el carrito con datos reales se cargó un item de prueba llamado "Test"
+    (price 35.00) a través del propio modal de la app - queda en la base de datos de dev,
+    no es parte del refactor, es solo data de prueba para verificar visualmente.
+  - Verificado con Playwright: toggle funcional (click real + estado `checked`
+    confirmado), botones con colores correctos, divisores de sección visibles en
+    desktop (1280px) y mobile (390px), `php -l` sin errores.

@@ -104,10 +104,43 @@ helper('url');
         color: var(--color-brand-primary-active);
         font-weight: 700;
     }
+
+    @keyframes fade-up {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Seccionado del panel de venta: divisores claros entre Cliente /
+     * Totales / Pago / Acciones, via CSS puro sobre ids existentes -
+     * evita reestructurar el arbol de condicionales PHP anidados. */
+    #sale_totals {
+        margin-top: 0.25rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--color-brand-primary-border);
+    }
+
+    #payment_details {
+        margin-top: 0.25rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--color-brand-primary-border);
+    }
+
+    #buttons_sale {
+        margin-top: 0.25rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--color-brand-primary-border);
+    }
 </style>
 
 <div class="flex flex-col gap-4 px-4 py-4 sm:px-0 lg:flex-row lg:items-start lg:gap-6">
-    <div class="flex flex-1 flex-col gap-4 lg:w-2/3">
+    <div class="flex flex-1 flex-col gap-4 lg:w-2/3 animate-[fade-up_0.5s_ease-out_both]">
 
         <!-- Top register controls -->
         <?= form_open("$controller_name/changeMode", ['id' => 'mode_form']) ?>
@@ -159,7 +192,7 @@ helper('url');
                     <?= form_input(['name' => 'item', 'id' => 'item', 'class' => 'ui-input', 'size' => '50', 'tabindex' => ++$tabindex]) ?>
                     <span class="ui-helper-hidden-accessible" role="status"></span>
                 </div>
-                <button id="new_item_button" class="ui-btn-accent modal-dlg" data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "items/view" ?>" title="<?= lang(ucfirst($controller_name) . ".new_item") ?>">
+                <button id="new_item_button" class="ui-btn-primary shrink-0 modal-dlg" data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "items/view" ?>" title="<?= lang(ucfirst($controller_name) . ".new_item") ?>">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
                     <?= lang(ucfirst($controller_name) . ".new_item") ?>
                 </button>
@@ -247,11 +280,15 @@ helper('url');
                             </td>
 
                             <td>
-                                <div class="input-group">
+                                <div class="flex items-center gap-2">
                                     <?= form_input(['name' => 'discount', 'class' => 'ui-input-compact', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
-                                    <span class="input-group-btn">
-                                        <?= form_checkbox(['id' => 'discount_toggle', 'name' => 'discount_toggle', 'value' => 1, 'data-toggle' => "toggle", 'data-size' => 'small', 'data-onstyle' => 'success', 'data-on' => '<b>' . $config['currency_symbol'] . '</b>', 'data-off' => '<b>%</b>', 'data-line' => $line, 'checked' => $item['discount_type'] == 1]) ?>
-                                    </span>
+                                    <label class="relative inline-flex h-7 w-14 shrink-0 cursor-pointer items-center rounded-full border border-brand-primary-border bg-brand-primary-soft" title="<?= lang(ucfirst($controller_name) . '.discount') ?> % / <?= esc($config['currency_symbol']) ?>">
+                                        <?= form_checkbox(['id' => 'discount_toggle', 'name' => 'discount_toggle', 'value' => 1, 'data-line' => $line, 'checked' => $item['discount_type'] == 1, 'class' => 'peer sr-only']) ?>
+                                        <span class="pointer-events-none absolute inset-0 flex items-center justify-between px-2 text-[10px] font-bold text-text-muted">
+                                            <span>%</span><span><?= esc($config['currency_symbol']) ?></span>
+                                        </span>
+                                        <span class="absolute left-0.5 h-6 w-6 rounded-full bg-surface shadow transition-transform peer-checked:translate-x-7"></span>
+                                    </label>
                                 </div>
                             </td>
 
