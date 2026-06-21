@@ -226,6 +226,42 @@ color literal.
 Cambiar de negocio = duplicar `theme-<negocio>.css` con otros hex,
 cambiar el import en `tokens.css`. Cero cambios en las vistas.
 
+### REGLA DURA - Tailwind vs Bootstrap (cascade layers)
+
+Tailwind v4 envuelve TODAS sus utilidades en `@layer theme, base,
+components, utilities;`. Bootstrap 3/5 y el resto del CSS legacy de
+OSPOS (`ospos.css`, `register.css`, etc.) se cargan como hojas de
+estilo NORMALES, sin `@layer`. Por la spec de CSS Cascade Layers, una
+declaración SIN layer le gana SIEMPRE a una declaración CON layer en
+un empate de importancia, sin importar la especificidad del selector.
+Esto ya causó bugs reales (botones con colores de Bootstrap en vez de
+la marca, `<nav>` que no se ocultaba en mobile, padding en 0 por un
+`* { padding: 0 }` de `ospos.css`) - no es teórico, hay que prevenirlo
+siempre, en cada vista:
+
+1. **`tailwind/tokens.css` importa Tailwind con el modificador
+   `important`** (`@import "tailwindcss" important;`, no
+   `@import "tailwindcss";` a secas). Esto hace que toda clase de
+   utilidad usada directo en el HTML (`px-4`, `hidden`, `md:flex`,
+   etc.) salga con `!important` y le gane a cualquier regla no
+   importante de Bootstrap/legacy. NO TOCAR este modificador.
+2. **Toda clase de componente en `tailwind/components.css` lleva el
+   prefijo `ui-`** (`.ui-btn-primary`, `.ui-alert-danger`, `.ui-card`,
+   `.ui-input`, etc.) - nunca un nombre que pueda coincidir con
+   vocabulario de Bootstrap (`btn-primary`, `btn-danger`, `btn-secondary`,
+   `alert-danger`, `alert-success`, `alert-warning`, `modal-content`,
+   `card`, etc.). El modificador `important` del punto 1 NO cubre estas
+   clases (son `@apply` dentro de `@layer components`, no utilidades
+   directas) - el prefijo es la única protección para ellas, son dos
+   fixes complementarios.
+3. Después de cualquier cambio de vista: rebuild completo
+   (`npm run build && tailwindcss build`) Y `sudo systemctl restart
+   php8.3-fpm` - PHP-FPM puede servir versiones viejas en caché aunque
+   el archivo en disco ya esté actualizado.
+4. Verificar cambios visuales con Playwright (headless Chromium, ya
+   instalado) en vez de solo `curl` - `curl` no ejecuta CSS/JS y no
+   detecta ninguno de estos problemas.
+
 ## PATRONES DE COMPONENTES A REPLICAR
 
 (Ejemplos con nombres de color literales solo como referencia de TONO —

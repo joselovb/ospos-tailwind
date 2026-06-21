@@ -75,11 +75,11 @@ $active_module = $request->getUri()->getSegment(1);
                             </svg>
                         <?php endif; ?>
                     </span>
-                    <span class="font-display text-lg font-semibold text-brand-primary-active truncate hidden sm:inline"><?= esc($config['company']) ?></span>
+                    <span class="font-display text-lg font-semibold text-brand-primary-active truncate max-sm:hidden"><?= esc($config['company']) ?></span>
                 </a>
 
                 <!-- Reloj + menu de usuario (desktop) -->
-                <div class="hidden md:flex items-center gap-4 text-sm">
+                <div class="max-md:hidden md:flex items-center gap-4 text-sm">
                     <div id="liveclock" class="text-text-muted tabular-nums"></div>
                     <span class="h-4 w-px bg-brand-primary-border"></span>
                     <div class="flex items-center gap-3">
@@ -102,7 +102,7 @@ $active_module = $request->getUri()->getSegment(1);
         </div>
 
         <!-- Nav de modulos (desktop) -->
-        <nav class="hidden md:block border-t border-brand-primary-border bg-surface-muted">
+        <nav class="max-md:hidden md:block border-t border-brand-primary-border bg-surface-muted">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <ul class="flex gap-1 overflow-x-auto py-1.5">
                     <?php foreach ($allowed_modules as $module): ?>

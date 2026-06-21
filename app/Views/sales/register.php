@@ -47,15 +47,15 @@ use App\Models\Employee;
 
 <?php
 if (isset($error)) {
-    echo '<div class="alert-danger mb-4">' . esc($error) . '</div>';
+    echo '<div class="ui-alert-danger mb-4">' . esc($error) . '</div>';
 }
 
 if (!empty($warning)) {
-    echo '<div class="alert-warning mb-4">' . esc($warning) . '</div>';
+    echo '<div class="ui-alert-warning mb-4">' . esc($warning) . '</div>';
 }
 
 if (isset($success)) {
-    echo '<div class="alert-success mb-4">' . esc($success) . '</div>';
+    echo '<div class="ui-alert-success mb-4">' . esc($success) . '</div>';
 }
 
 helper('url');
@@ -83,7 +83,7 @@ helper('url');
         background-color: var(--color-brand-primary-soft);
     }
 
-    #register .input-compact {
+    #register .ui-input-compact {
         margin: 0;
     }
 
@@ -106,12 +106,12 @@ helper('url');
     }
 </style>
 
-<div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-6">
+<div class="flex flex-col gap-4 px-4 py-4 sm:px-0 lg:flex-row lg:items-start lg:gap-6">
     <div class="flex flex-1 flex-col gap-4 lg:w-2/3">
 
         <!-- Top register controls -->
         <?= form_open("$controller_name/changeMode", ['id' => 'mode_form']) ?>
-            <div class="card-base flex flex-wrap items-center gap-x-5 gap-y-3 p-4">
+            <div class="ui-card flex flex-wrap items-center gap-x-5 gap-y-3 p-4">
                 <div class="flex items-center gap-2">
                     <label class="text-sm font-medium text-text-default"><?= lang(ucfirst($controller_name) . '.mode') ?></label>
                     <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
@@ -130,7 +130,7 @@ helper('url');
                 <?php } ?>
 
                 <div class="ml-auto flex flex-wrap items-center gap-2">
-                    <button class="btn-secondary modal-dlg !px-3 !py-2 text-sm" id="show_suspended_sales_button" data-href="<?= esc("$controller_name/suspended") ?>"
+                    <button class="ui-btn-secondary modal-dlg !px-3 !py-2 text-sm" id="show_suspended_sales_button" data-href="<?= esc("$controller_name/suspended") ?>"
                         title="<?= lang(ucfirst($controller_name) . '.suspended_sales') ?>">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" /></svg>
                         <?= lang(ucfirst($controller_name) . '.suspended_sales') ?>
@@ -143,7 +143,7 @@ helper('url');
                         <?= anchor(
                             "$controller_name/manage",
                             '<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10H5.6c-.56 0-.84 0-1.054-.109a1 1 0 0 1-.437-.437C4 16.24 4 15.96 4 15.4V7.6c0-.56 0-.84.109-1.054a1 1 0 0 1 .437-.437C4.76 6 5.04 6 5.6 6H9m0 11h6m-6 0V6m6 11V6m0 11h3.4c.56 0 .84 0 1.054-.109a1 1 0 0 0 .437-.437C20 16.24 20 15.96 20 15.4V7.6c0-.56 0-.84-.109-1.054a1 1 0 0 0-.437-.437C19.24 6 18.96 6 18.4 6H15" /></svg>' . lang(ucfirst($controller_name) . '.takings'),
-                            array('class' => 'btn-primary !px-3 !py-2 text-sm', 'id' => 'sales_takings_button', 'title' => lang(ucfirst($controller_name) . '.takings'))
+                            array('class' => 'ui-btn-primary !px-3 !py-2 text-sm', 'id' => 'sales_takings_button', 'title' => lang(ucfirst($controller_name) . '.takings'))
                         ) ?>
                     <?php } ?>
                 </div>
@@ -153,13 +153,13 @@ helper('url');
         <?php $tabindex = 0; ?>
 
         <?= form_open("$controller_name/add", ['id' => 'add_item_form']) ?>
-            <div class="card-base flex flex-wrap items-end gap-3 p-4">
+            <div class="ui-card flex flex-wrap items-end gap-3 p-4">
                 <div class="min-w-[220px] flex-1">
-                    <label for="item" class="label-base"><?= lang(ucfirst($controller_name) . '.find_or_scan_item_or_receipt') ?></label>
-                    <?= form_input(['name' => 'item', 'id' => 'item', 'class' => 'input-base', 'size' => '50', 'tabindex' => ++$tabindex]) ?>
+                    <label for="item" class="ui-label"><?= lang(ucfirst($controller_name) . '.find_or_scan_item_or_receipt') ?></label>
+                    <?= form_input(['name' => 'item', 'id' => 'item', 'class' => 'ui-input', 'size' => '50', 'tabindex' => ++$tabindex]) ?>
                     <span class="ui-helper-hidden-accessible" role="status"></span>
                 </div>
-                <button id="new_item_button" class="btn-accent modal-dlg" data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "items/view" ?>" title="<?= lang(ucfirst($controller_name) . ".new_item") ?>">
+                <button id="new_item_button" class="ui-btn-accent modal-dlg" data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "items/view" ?>" title="<?= lang(ucfirst($controller_name) . ".new_item") ?>">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
                     <?= lang(ucfirst($controller_name) . ".new_item") ?>
                 </button>
@@ -169,7 +169,7 @@ helper('url');
 
         <!-- Sale Items List -->
 
-        <div id="register_wrapper" class="card-base overflow-x-auto">
+        <div id="register_wrapper" class="ui-card overflow-x-auto">
         <table class="sales_table_100 w-full text-sm" id="register">
         <thead>
             <tr class="bg-brand-primary-soft text-xs font-semibold uppercase tracking-wide text-brand-primary">
@@ -188,11 +188,11 @@ helper('url');
             <?php if (count($cart) == 0) { ?>
                 <tr>
                     <td colspan="8" class="p-0">
-                        <div class="empty-state border-0 rounded-none">
-                            <span class="empty-state-icon">
+                        <div class="ui-empty-state border-0 rounded-none">
+                            <span class="ui-ui-empty-state-icon">
                                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 1.872-4.79 2.203-7.391.075-.589-.395-1.109-.99-1.109H5.25M7.5 14.25 5.106 5.272M6 18.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm9.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" /></svg>
                             </span>
-                            <p class="empty-state-title"><?= lang(ucfirst($controller_name) . '.no_items_in_cart') ?></p>
+                            <p class="ui-ui-empty-state-title"><?= lang(ucfirst($controller_name) . '.no_items_in_cart') ?></p>
                         </div>
                     </td>
                 </tr>
@@ -210,9 +210,9 @@ helper('url');
                                 ?>
                             </td>
                             <?php if ($item['item_type'] == ITEM_TEMP) { ?>
-                                <td><?= form_input(['name' => 'item_number', 'id' => 'item_number', 'class' => 'input-compact', 'value' => $item['item_number'], 'tabindex' => ++$tabindex]) ?></td>
+                                <td><?= form_input(['name' => 'item_number', 'id' => 'item_number', 'class' => 'ui-input-compact', 'value' => $item['item_number'], 'tabindex' => ++$tabindex]) ?></td>
                                 <td style="text-align: center;">
-                                    <?= form_input(['name' => 'name', 'id' => 'name', 'class' => 'input-compact', 'value' => $item['name'], 'tabindex' => ++$tabindex]) ?>
+                                    <?= form_input(['name' => 'name', 'id' => 'name', 'class' => 'ui-input-compact', 'value' => $item['name'], 'tabindex' => ++$tabindex]) ?>
                                 </td>
                             <?php } else { ?>
                                 <td><?= esc($item['item_number']) ?></td>
@@ -227,7 +227,7 @@ helper('url');
                             <td>
                                 <?php
                                 if ($items_module_allowed && $change_price) {
-                                    echo form_input(['name' => 'price', 'class' => 'input-compact', 'value' => to_currency_no_money($item['price']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
+                                    echo form_input(['name' => 'price', 'class' => 'ui-input-compact', 'value' => to_currency_no_money($item['price']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 } else {
                                     echo to_currency($item['price']);
                                     echo form_hidden('price', to_currency_no_money($item['price']));
@@ -241,14 +241,14 @@ helper('url');
                                     echo to_quantity_decimals($item['quantity']);
                                     echo form_hidden('quantity', $item['quantity']);
                                 } else {
-                                    echo form_input(['name' => 'quantity', 'class' => 'input-compact', 'value' => to_quantity_decimals($item['quantity']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
+                                    echo form_input(['name' => 'quantity', 'class' => 'ui-input-compact', 'value' => to_quantity_decimals($item['quantity']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 }
                                 ?>
                             </td>
 
                             <td>
                                 <div class="input-group">
-                                    <?= form_input(['name' => 'discount', 'class' => 'input-compact', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
+                                    <?= form_input(['name' => 'discount', 'class' => 'ui-input-compact', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
                                     <span class="input-group-btn">
                                         <?= form_checkbox(['id' => 'discount_toggle', 'name' => 'discount_toggle', 'value' => 1, 'data-toggle' => "toggle", 'data-size' => 'small', 'data-onstyle' => 'success', 'data-on' => '<b>' . $config['currency_symbol'] . '</b>', 'data-off' => '<b>%</b>', 'data-line' => $line, 'checked' => $item['discount_type'] == 1]) ?>
                                     </span>
@@ -258,7 +258,7 @@ helper('url');
                             <td>
                                 <?php
                                 if ($item['item_type'] == ITEM_AMOUNT_ENTRY) {    // TODO: === ?
-                                    echo form_input(['name' => 'discounted_total', 'class' => 'input-compact', 'value' => to_currency_no_money($item['discounted_total']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
+                                    echo form_input(['name' => 'discounted_total', 'class' => 'ui-input-compact', 'value' => to_currency_no_money($item['discounted_total']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
                                 } else {
                                     echo to_currency($item['discounted_total']);
                                 }
@@ -275,7 +275,7 @@ helper('url');
                             <?php if ($item['item_type'] == ITEM_TEMP) { ?>
                                 <td><?= form_input(['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]) ?></td>
                                 <td style="text-align: center;" colspan="6">
-                                    <?= form_input(['name' => 'item_description', 'id' => 'item_description', 'class' => 'input-compact', 'value' => $item['description'], 'tabindex' => ++$tabindex]) ?>
+                                    <?= form_input(['name' => 'item_description', 'id' => 'item_description', 'class' => 'ui-input-compact', 'value' => $item['description'], 'tabindex' => ++$tabindex]) ?>
                                 </td>
                                 <td> </td>
                             <?php } else { ?>
@@ -287,7 +287,7 @@ helper('url');
                                 <td colspan="2" style="text-align: left;">
                                     <?php
                                     if ($item['allow_alt_description']) {
-                                        echo form_input(['name' => 'description', 'class' => 'input-compact', 'value' => $item['description'], 'onClick' => 'this.select();']);
+                                        echo form_input(['name' => 'description', 'class' => 'ui-input-compact', 'value' => $item['description'], 'onClick' => 'this.select();']);
                                     } else {
                                         if ($item['description'] != '') {
                                             echo esc($item['description']);
@@ -310,7 +310,7 @@ helper('url');
                                 <td colspan="4" style="text-align: left;">
                                     <?php
                                     if ($item['is_serialized']) {
-                                        echo form_input(['name' => 'serialnumber', 'class' => 'input-compact', 'value' => $item['serialnumber'], 'onClick' => 'this.select();']);
+                                        echo form_input(['name' => 'serialnumber', 'class' => 'ui-input-compact', 'value' => $item['serialnumber'], 'onClick' => 'this.select();']);
                                     } else {
                                         echo form_hidden('serialnumber', '');
                                     }
@@ -330,7 +330,7 @@ helper('url');
 
     <!-- Overall Sale -->
 
-    <div id="overall_sale" class="card-elevated flex flex-col gap-4 p-5 lg:w-1/3">
+    <div id="overall_sale" class="ui-card-elevated flex flex-col gap-4 p-5 lg:w-1/3">
         <?= form_open("$controller_name/selectCustomer", ['id' => 'select_customer_form']) ?>
             <?php if (isset($customer)) { ?>
                 <table class="sales_table_100">
@@ -387,22 +387,22 @@ helper('url');
                 <?= anchor(
                     "$controller_name/removeCustomer",
                     '<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>' . lang('Common.remove') . ' ' . lang('Customers.customer'),
-                    ['class' => 'btn-danger mt-3 w-full', 'id' => 'remove_customer_button', 'title' => lang('Common.remove') . ' ' . lang('Customers.customer')]
+                    ['class' => 'ui-btn-danger mt-3 w-full', 'id' => 'remove_customer_button', 'title' => lang('Common.remove') . ' ' . lang('Customers.customer')]
                 )
                 ?>
             <?php } else { ?>
                 <div id="select_customer">
-                    <label id="customer_label" for="customer" class="label-base">
+                    <label id="customer_label" for="customer" class="ui-label">
                         <?= lang(ucfirst($controller_name) . '.select_customer') . esc(" $customer_required") ?>
                     </label>
-                    <?= form_input(['name' => 'customer', 'id' => 'customer', 'class' => 'input-compact', 'value' => lang(ucfirst($controller_name) . '.start_typing_customer_name')]) ?>
+                    <?= form_input(['name' => 'customer', 'id' => 'customer', 'class' => 'ui-input-compact', 'value' => lang(ucfirst($controller_name) . '.start_typing_customer_name')]) ?>
 
                     <div class="mt-3 flex flex-wrap gap-2">
-                        <button class="btn-secondary modal-dlg !px-3 !py-2 text-sm" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "customers/view" ?>" title="<?= lang(ucfirst($controller_name) . ".new_customer") ?>">
+                        <button class="ui-btn-secondary modal-dlg !px-3 !py-2 text-sm" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "customers/view" ?>" title="<?= lang(ucfirst($controller_name) . ".new_customer") ?>">
                             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>
                             <?= lang(ucfirst($controller_name) . ".new_customer") ?>
                         </button>
-                        <button class="btn-secondary modal-dlg !px-3 !py-2 text-sm" id="show_keyboard_help" data-href="<?= esc("$controller_name/salesKeyboardHelp") ?>" title="<?= lang(ucfirst($controller_name) . '.key_title') ?>">
+                        <button class="ui-btn-secondary modal-dlg !px-3 !py-2 text-sm" id="show_keyboard_help" data-href="<?= esc("$controller_name/salesKeyboardHelp") ?>" title="<?= lang(ucfirst($controller_name) . '.key_title') ?>">
                             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15 12 11.25 15.75 15m-7.5-6L12 5.25 15.75 9" /></svg>
                             <?= lang(ucfirst($controller_name) . '.key_help') ?>
                         </button>
@@ -458,7 +458,7 @@ helper('url');
                             <tr>
                                 <td><span id="amount_tendered_label"><?= lang(ucfirst($controller_name) . '.amount_tendered') ?></span></td>
                                 <td>
-                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'input-compact disabled', 'disabled' => 'disabled', 'value' => '0', 'size' => '5', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
+                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'ui-input-compact disabled', 'disabled' => 'disabled', 'value' => '0', 'size' => '5', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
                                 </td>
                             </tr>
                         </table>
@@ -479,7 +479,7 @@ helper('url');
 
                         if (!$due_payment || ($due_payment && isset($customer))) {    // TODO: $due_payment is not needed because the first clause insures that it will always be true if it gets to this point.  Can be shortened to if (!$due_payment || isset($customer))
                     ?>
-                            <div class="btn-accent mt-3 w-full cursor-pointer" id="finish_sale_button" tabindex="<?= ++$tabindex ?>">
+                            <div class="ui-btn-accent mt-3 w-full cursor-pointer" id="finish_sale_button" tabindex="<?= ++$tabindex ?>">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
                                 <?= lang(ucfirst($controller_name) . '.complete_sale') ?>
                             </div>
@@ -500,14 +500,14 @@ helper('url');
                             <tr>
                                 <td><span id="amount_tendered_label"><?= lang(ucfirst($controller_name) . '.amount_tendered') ?></span></td>
                                 <td>
-                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'input-compact non-giftcard-input', 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
-                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'input-compact giftcard-input', 'disabled' => true, 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex]) ?>
+                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'ui-input-compact non-giftcard-input', 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
+                                    <?= form_input(['name' => 'amount_tendered', 'id' => 'amount_tendered', 'class' => 'ui-input-compact giftcard-input', 'disabled' => true, 'value' => to_currency_no_money($amount_due), 'size' => '5', 'tabindex' => ++$tabindex]) ?>
                                 </td>
                             </tr>
                         </table>
                     <?= form_close() ?>
 
-                    <div class="btn-accent mt-3 w-full cursor-pointer" id="add_payment_button" tabindex="<?= ++$tabindex ?>">
+                    <div class="ui-btn-accent mt-3 w-full cursor-pointer" id="add_payment_button" tabindex="<?= ++$tabindex ?>">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3M3.75 19.5h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
                         <?= lang(ucfirst($controller_name) . '.add_payment') ?>
                     </div>
@@ -538,18 +538,18 @@ helper('url');
 
             <?= form_open("$controller_name/cancel", ['id' => 'buttons_form']) ?>
             <div class="flex flex-wrap items-center gap-2" id="buttons_sale">
-                <div class="btn-secondary cursor-pointer" id="suspend_sale_button">
+                <div class="ui-btn-secondary cursor-pointer" id="suspend_sale_button">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" /></svg>
                     <?= lang(ucfirst($controller_name) . '.suspend_sale') ?>
                 </div>
                 <?php if (!$pos_mode && isset($customer)) { // Only show this part if the payment covers the total ?>
-                    <div class="btn-accent cursor-pointer" id="finish_invoice_quote_button">
+                    <div class="ui-btn-accent cursor-pointer" id="finish_invoice_quote_button">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
                         <?= esc($mode_label) ?>
                     </div>
                 <?php } ?>
 
-                <div class="btn-danger ml-auto cursor-pointer" id="cancel_sale_button">
+                <div class="ui-btn-danger ml-auto cursor-pointer" id="cancel_sale_button">
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
                     <?= lang(ucfirst($controller_name) . '.cancel_sale') ?>
                 </div>
@@ -559,8 +559,8 @@ helper('url');
             <?php if ($payments_cover_total || !$pos_mode) { // Only show this part if the payment cover the total ?>
                 <div class="mt-4 flex flex-col gap-3 border-t border-brand-primary-border pt-4">
                     <div>
-                        <?= form_label(lang('Common.comments'), 'comments', ['class' => 'label-base', 'id' => 'comment_label', 'for' => 'comment']) ?>
-                        <?= form_textarea(['name' => 'comment', 'id' => 'comment', 'class' => 'input-compact', 'value' => $comment, 'rows' => '2']) ?>
+                        <?= form_label(lang('Common.comments'), 'comments', ['class' => 'ui-label', 'id' => 'comment_label', 'for' => 'comment']) ?>
+                        <?= form_textarea(['name' => 'comment', 'id' => 'comment', 'class' => 'ui-input-compact', 'value' => $comment, 'rows' => '2']) ?>
                     </div>
 
                     <div class="flex flex-wrap gap-4 text-sm">
@@ -590,7 +590,7 @@ helper('url');
                             </label>
                             <div class="flex items-center gap-1">
                                 <span class="text-text-muted">#</span>
-                                <?= form_input(['name' => 'sales_invoice_number', 'id' => 'sales_invoice_number', 'class' => 'input-compact', 'value' => $invoice_number]) ?>
+                                <?= form_input(['name' => 'sales_invoice_number', 'id' => 'sales_invoice_number', 'class' => 'ui-input-compact', 'value' => $invoice_number]) ?>
                             </div>
                         </div>
                     <?php } ?>

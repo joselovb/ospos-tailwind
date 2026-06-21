@@ -66,7 +66,7 @@ $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
 
 <body class="tw min-h-screen flex flex-col bg-surface-muted">
     <main class="flex flex-1 items-center justify-center p-4 sm:p-6">
-        <div class="card-elevated w-full max-w-4xl overflow-hidden animate-[fade-up_0.6s_ease-out_both] md:grid md:grid-cols-12">
+        <div class="ui-card-elevated w-full max-w-4xl overflow-hidden animate-[fade-up_0.6s_ease-out_both] md:grid md:grid-cols-12">
 
             <!-- Panel de formulario -->
             <section class="flex flex-col justify-center gap-1 px-6 py-10 sm:px-10 md:col-span-5">
@@ -94,19 +94,19 @@ $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
                     <?php endif; ?>
                 </h3>
 
-                <div id="migration-warning" class="alert-warning mt-3<?= $is_new_install ? '' : ' d-none' ?>">
+                <div id="migration-warning" class="ui-alert-warning mt-3<?= $is_new_install ? '' : ' d-none' ?>">
                     <strong><?= lang('Login.migration_auth_message', [$latest_version]) ?></strong>
                 </div>
 
                 <?php if ($has_errors): ?>
                     <?php foreach ($validation->getErrors() as $error): ?>
-                        <div class="alert-danger mt-3">
+                        <div class="ui-alert-danger mt-3">
                             <?= $error ?>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
 
-                <div id="migration-success" class="alert-success d-none mt-3">
+                <div id="migration-success" class="ui-alert-success d-none mt-3">
                     <strong><?= lang('Login.migration_complete') ?></strong> <?= lang('Login.migration_complete_login') ?>
                 </div>
 
@@ -120,23 +120,23 @@ $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
                     </p>
                 </div>
 
-                <div id="migration-error" class="alert-danger d-none mt-3" role="alert">
+                <div id="migration-error" class="ui-alert-danger d-none mt-3" role="alert">
                     <strong>Error:</strong> <span id="migration-error-message"></span>
                 </div>
 
                 <div id="login-fields" class="w-full<?= $is_new_install ? ' d-none' : '' ?>">
                     <?php if (empty($config['login_form']) || 'floating_labels' == ($config['login_form'])): ?>
                         <div class="mt-3">
-                            <label for="input-username" class="label-base"><?= lang('Login.username') ?></label>
-                            <input class="input-base" id="input-username" name="username" type="text" placeholder="<?= lang('Login.username') ?>" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
+                            <label for="input-username" class="ui-label"><?= lang('Login.username') ?></label>
+                            <input class="ui-input" id="input-username" name="username" type="text" placeholder="<?= lang('Login.username') ?>" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
                         </div>
                         <div class="mt-3">
-                            <label for="input-password" class="label-base"><?= lang('Login.password') ?></label>
-                            <input class="input-base" id="input-password" name="password" type="password" placeholder="<?= lang('Login.password') ?>" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
+                            <label for="input-password" class="ui-label"><?= lang('Login.password') ?></label>
+                            <input class="ui-input" id="input-password" name="password" type="password" placeholder="<?= lang('Login.password') ?>" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
                         </div>
                     <?php elseif ('input_groups' == ($config['login_form'])): ?>
                         <div class="mt-3">
-                            <label for="username" class="label-base"><?= lang('Login.username') ?></label>
+                            <label for="username" class="ui-label"><?= lang('Login.username') ?></label>
                             <div class="relative">
                                 <span id="input-username" class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
                                     <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -144,11 +144,11 @@ $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
                                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
                                     </svg>
                                 </span>
-                                <input class="input-base pl-10" name="username" type="text" placeholder="<?= lang('Login.username'); ?>" aria-label="<?= lang('Login.username') ?>" aria-describedby="input-username" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
+                                <input class="ui-input pl-10" name="username" type="text" placeholder="<?= lang('Login.username'); ?>" aria-label="<?= lang('Login.username') ?>" aria-describedby="input-username" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
                             </div>
                         </div>
                         <div class="mt-3">
-                            <label for="password" class="label-base"><?= lang('Login.password') ?></label>
+                            <label for="password" class="ui-label"><?= lang('Login.password') ?></label>
                             <div class="relative">
                                 <span id="input-password" class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
                                     <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -156,7 +156,7 @@ $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
                                         <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
                                     </svg>
                                 </span>
-                                <input class="input-base pl-10" name="password" type="password" placeholder="<?= lang('Login.password') ?>" aria-label="<?= lang('Login.password') ?>" aria-describedby="input-password" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
+                                <input class="ui-input pl-10" name="password" type="password" placeholder="<?= lang('Login.password') ?>" aria-label="<?= lang('Login.password') ?>" aria-describedby="input-password" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -167,7 +167,7 @@ $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
                     <?php endif; ?>
                 </div>
 
-                <button id="submit-button" class="btn-primary mt-4 w-full" name="login-button" type="submit">
+                <button id="submit-button" class="ui-btn-primary mt-4 w-full" name="login-button" type="submit">
                     <?php if ($is_new_install): ?>
                         <?= lang('Module.migrate') ?>
                     <?php else: ?>
@@ -178,7 +178,7 @@ $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
             </section>
 
             <!-- Panel decorativo -->
-            <div class="relative hidden items-center justify-center overflow-hidden bg-gradient-to-br from-brand-primary via-brand-primary-hover to-brand-accent p-10 md:col-span-7 md:flex md:[animation-delay:120ms] md:animate-[fade-in_0.8s_ease-out_both]">
+            <div class="relative max-md:hidden items-center justify-center overflow-hidden bg-gradient-to-br from-brand-primary via-brand-primary-hover to-brand-accent p-10 md:col-span-7 md:flex md:[animation-delay:120ms] md:animate-[fade-in_0.8s_ease-out_both]">
                 <div class="absolute inset-6 rounded-3xl border border-dashed border-text-on-brand/25"></div>
                 <div class="relative z-10 flex flex-col items-center gap-4">
                     <div class="flex h-40 w-40 items-center justify-center rounded-full bg-surface/90 shadow-xl backdrop-blur sm:h-48 sm:w-48">

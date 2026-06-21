@@ -16,6 +16,17 @@
       (taxes, receivings, attributes, expenses, expenses_categories,
       barcodes, cashups, item_kits, giftcards)
 
+## Nota importante para sesiones futuras
+
+- Se descubrió y arregló un bug estructural (Tailwind perdía contra Bootstrap por CSS
+  Cascade Layers - ver memoria `tailwind_bootstrap_cascade_layers_bug.md` y la nueva
+  sección en CLAUDE.md). El fix (`important` global + prefijo `ui-` en componentes) ya
+  se aplicó a header/login/sales (las 3 vistas hechas hasta ahora) y se verificó con
+  Playwright que quedaron visualmente correctas. Las vistas NUEVAS de acá en adelante ya
+  nacen con el fix aplicado (no hace falta repetirlo), pero hay que seguir el checklist
+  de la memoria en cada una (rebuild + restart php-fpm + verificar con Playwright, no
+  solo curl).
+
 ## Decisiones pendientes / dudas para el usuario
 
 (ninguna por ahora)

@@ -520,3 +520,73 @@
     show_suspended_sales_button, sales_takings_button, show_keyboard_help, customer_label,
     etc.) presentes, sin clases `glyphicon`/`btn btn-*`/`panel panel-*` de Bootstrap
     sobrantes en el HTML resultante.
+
+## 2026-06-21 - FIX CRÍTICO: Tailwind perdía contra Bootstrap (cascade layers)
+- Archivos: `tailwind/tokens.css`, `tailwind/components.css`, `app/Views/login.php`,
+  `app/Views/partial/header.php`, `app/Views/sales/register.php`, `CLAUDE.md`,
+  `public/css/tailwind-build.css`
+- Estado: completo
+- Notas:
+  - El usuario reportó que todo "se ve horrible" después de Sales/POS: header sin nav ni
+    reloj, menú mobile ausente, imposible crear items/clientes, y la alerta roja de login
+    seguía mal a pesar del cambio de paleta de la sesión anterior. Se instaló Playwright +
+    Chromium headless (`npx playwright install chromium --with-deps`) para poder
+    inspeccionar de verdad en un navegador real en vez de solo curl, y se encontraron DOS
+    bugs sistémicos completamente distintos a "el diseño está mal":
+  - **Bug 1 (infraestructura)**: PHP-FPM/OPcache servía versiones viejas de las vistas a
+    pesar de `opcache.validate_timestamps=On`. Síntoma: jQuery nunca llegaba a cargar en
+    el navegador (`$ is not defined`), lo que rompía absolutamente todo el JS de la app
+    (autocomplete, bootstrap3-dialog, dialog_support, table_support) - de ahí "no carga
+    items ni crea clientes". Fix: `sudo systemctl restart php8.3-fpm`. Esto NO era un bug
+    de código, era puramente de este entorno de dev.
+  - **Bug 2 (estructural, CSS)**: Tailwind v4 envuelve todas sus utilidades en
+    `@layer theme, base, components, utilities`. Bootstrap 3/5 y el resto del CSS legacy
+    de OSPOS (`ospos.css`, `register.css`) se cargan SIN `@layer`. Por la spec de CSS
+    Cascade Layers, una regla sin layer le gana SIEMPRE a una con layer en un empate de
+    importancia, sin importar la especificidad. Esto causó:
+    - Clases de componentes propias con el MISMO NOMBRE que clases de Bootstrap
+      (`.btn-primary`, `.btn-danger`, `.alert-danger`, `.alert-success`, `.alert-warning`)
+      perdían contra Bootstrap. Confirmado con Playwright: el botón "Daily Sales"
+      mostraba `background-color: rgb(44,62,80)` (navy de Bootstrap flatly) en vez del
+      gradiente de marca, y la alerta de error de login mostraba el rojo sólido de
+      Bootstrap (`#e74c3c`) en vez del wine-100/600 de la paleta - **el cambio de paleta
+      de la sesión anterior nunca tuvo efecto ahí por esta razón exacta**, no porque el
+      theme estuviera mal configurado.
+    - Utilidades de Tailwind sobre tags HTML5 con reset de Bootstrap (`nav`, `header`,
+      `footer`, `main`, `section`, etc. - Bootstrap tiene una regla genérica
+      `article, aside, ..., nav, section { display: block }`) perdían incluso siendo
+      clases (mayor especificidad) contra ese reset de tag (menor especificidad) - el
+      `<nav>` del header nunca se ocultaba en mobile aunque la clase `max-md:hidden`
+      era correcta y el media query matcheaba.
+    - Confirmado también con una regla aún más genérica de `ospos.css`:
+      `* { padding: 0; ... }` pisando CUALQUIER `px-*`/`py-*` de Tailwind en cualquier
+      elemento (encontrado al ver que el contenido de `/sales` en mobile tocaba el borde
+      de la pantalla sin el padding que sí estaba en el HTML).
+  - **Fix aplicado (estructural, no parche por parche)**:
+    1. `tailwind/tokens.css`: `@import "tailwindcss";` → `@import "tailwindcss"
+       important;` - hace que toda utilidad usada directo en el HTML (`px-4`, `hidden`,
+       `md:flex`, etc.) salga con `!important`, ganándole a cualquier regla no-importante
+       de Bootstrap/legacy sin importar layers.
+    2. `tailwind/components.css`: TODAS las clases de componentes renombradas con
+       prefijo `ui-` (`.btn-primary` → `.ui-btn-primary`, `.alert-danger` →
+       `.ui-alert-danger`, etc. - 23 clases en total) porque el `important` del punto 1
+       NO cubre las reglas `@apply` dentro de `@layer components` (son dos fixes
+       complementarios, no uno sustituye al otro). Se actualizaron todos los usos en
+       `login.php` y `register.php` con `sed`, verificado que no quedó ninguna clase sin
+       prefijo.
+    3. Documentado como **regla dura nueva en CLAUDE.md** (sección Sistema de diseño,
+       con autorización explícita del usuario para editar ese archivo) y como memoria
+       persistente detallada (`tailwind_bootstrap_cascade_layers_bug.md`) con checklist
+       para cada vista futura - este bug iba a repetirse en items/customers/reports si no
+       quedaba como regla explícita desde ahora.
+  - **Verificado end-to-end con Playwright real** (no solo curl): login con paleta
+    correcta (alerta de error en wine-100/600, confirmado por RGB exacto), header con
+    nav/reloj/menú de usuario visibles en desktop, menú hamburguesa funcional en mobile
+    (390px), botones con gradientes de marca correctos (RGB exacto verificado, no el de
+    Bootstrap), y el flujo completo de **crear un cliente nuevo de punta a punta**
+    (formulario → validación → submit → cliente seleccionado en la venta) funcionando
+    sin errores - confirmando que "no crea clientes" está resuelto.
+  - Limitación: Playwright/Chromium quedó instalado en este entorno
+    (`/root/.cache/ms-playwright/`) pero los scripts de prueba usados están en `/tmp/`
+    (no versionados) - si se pierden, hay que recrearlos para la próxima verificación
+    visual real.

@@ -1,4 +1,17 @@
-@import "tailwindcss";
+/*
+ * "important" es obligatorio aca: OSPOS carga Bootstrap 3/5 y varios
+ * CSS propios (ospos.css, register.css, etc.) como hojas de estilo
+ * NORMALES (sin @layer). Tailwind v4 envuelve TODAS sus utilidades en
+ * cascade layers (@layer theme, base, components, utilities). Por
+ * spec de CSS, una declaracion sin layer SIEMPRE le gana a una con
+ * layer en empate de "importance", sin importar la especificidad -
+ * por eso clases como "px-4" o "hidden md:flex" perdian contra reglas
+ * tan genericas como "* { padding: 0 }" de ospos.css. Forzar
+ * "important" en todas las utilidades de Tailwind es la unica forma
+ * de garantizar que el refactor visual le gane de forma consistente a
+ * todo el CSS legacy, sin tener que parchear clase por clase.
+ */
+@import "tailwindcss" important;
 @import "./theme-default.css"; /* única línea que cambiaría por negocio */
 
 /*
