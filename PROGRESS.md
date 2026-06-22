@@ -702,3 +702,54 @@
     animación por costumbre, en vez de aplicarla a ciegas en todo.
   - Verificado: `php -l` sin errores, 0 referencias a `fade-up` en el HTML servido de
     `/sales`, página responde 200.
+
+## 2026-06-22 - Vista: Items/Inventario - manage.php (lista, Fase 2.7)
+- Archivos: `app/Views/items/manage.php`, `tailwind/components.css`,
+  `app/Views/partial/header.php`, `app/Views/login.php` (estos 2 últimos solo por el
+  fix de infraestructura abajo, no por la migración de la vista).
+- Estado: completo
+- Notas:
+  - **Bug de infraestructura descubierto y arreglado primero**: los marcadores
+    `<!-- inject:debug:js -->` / `<!-- inject:prod:js -->` de `header.php` y `login.php`
+    estaban VACÍOS - gulp nunca había corrido en este entorno - así que NINGUNA página
+    cargaba jQuery/bootstrap-table/bootstrap-select/manage_tables.js, etc. Confirmado con
+    Playwright (`pageerror: jQuery is not defined`). Esto NO es parte de la migración
+    visual, es un gap de build pendiente del entorno. Se corrió `npm run build` (gulp) y
+    se reinició `php8.3-fpm` - confirmado con Playwright que jQuery/bootstrap-select/
+    bootstrap-table ya inicializan. Sin este fix no se podía verificar ninguna vista con
+    JS real (ni siquiera las ya migradas), así que probablemente afecta a TODAS las
+    sesiones anteriores que solo verificaron con curl/screenshots estáticos.
+  - Rediseño de `manage.php`: header de página con `<h1>` + botones de acción
+    (CSV Import, New Item) como `ui-btn-secondary`/`ui-btn-primary` con iconos SVG
+    inline (reemplazando glyphicons, que no tienen hook de JS). Toolbar de filtros
+    (`#toolbar`) envuelto en `ui-card`, botones de acción en lote (`#delete`,
+    `#bulk_edit`, `#generate_barcodes`) como `ui-btn-secondary`. Tabla (`#table_holder`)
+    envuelta en `ui-card`. Se mantuvieron EXACTOS todos los IDs/names/estructura de
+    datos que usa `manage_tables.js`/`table_support.init()`.
+  - `#table`/`#toolbar` son manipulados en runtime por el plugin bootstrap-table (mueve
+    el contenido de `#toolbar` dentro de su propio `.fixed-table-toolbar`, y agrega sus
+    propios botones de columnas/export y paginación que NO existen en el .php). No se
+    puede darle clases `ui-*` a ese HTML porque no lo escribimos nosotros - se agregó una
+    sección nueva en `components.css` con selectores descendientes scoped a
+    `#table_holder`/`#toolbar` apuntando a las clases reales que bootstrap-table/
+    bootstrap-select ya ponen (`.fixed-table-toolbar`, `.pagination`, `.dropdown-menu`,
+    `.columns .btn`, `.export .btn`, `table.table thead/tbody`), con `!important` (mismo
+    motivo de cascade layers que el resto del archivo). Documentado en el comment del
+    bloque para que quede claro por qué rompe la regla de prefijo `ui-` (no hay otra
+    forma de tocar DOM que no existe en el HTML servido).
+  - **Bug evitado a tiempo**: el input `#daterangepicker` recibe un `width: 180px` por
+    JS inline (`$('#daterangepicker').css("width", "180")` en
+    `partial/daterangepicker.php`) DESPUÉS de cargar. Un `!important` en una clase
+    Tailwind (`!w-auto`/`!w-full`) le gana a un estilo inline SIN `!important`, así que
+    casi se pisaba el ancho que pone el plugin. Se resolvió no declarando ningún ancho
+    en las clases custom de ese input (solo borde/padding/foco), dejando que el inline
+    style de JS controle el ancho como siempre. Anotado como caso general: antes de
+    forzar `!w-*` en un input que algún plugin JS toca con `.css()`/`.width()`, verificar
+    que no le esté peleando al inline style.
+  - Verificado con Playwright (login real + screenshot desktop 1440px y mobile 390px):
+    toolbar, botones, tabla con datos reales, dropdown de filtros (bootstrap-select) y
+    columnas/export de bootstrap-table ya con la piel de la marca. Modal "New Item" abre
+    correctamente (BootstrapDialog) - el contenido interno (`form.php`) queda pendiente,
+    es la siguiente vista del Fase 2.7.
+  - Mobile: tabla sigue siendo tabla real con scroll horizontal (mismo patrón ya
+    aceptado en Sales/POS), toolbar se reacomoda en columna.

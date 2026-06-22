@@ -147,4 +147,89 @@
   .ui-empty-state-description {
     @apply !max-w-sm !text-sm !text-text-muted;
   }
+
+  /*
+   * Overrides para DOM generado en runtime por plugins jQuery
+   * (bootstrap-table, bootstrap-select) en las vistas "manage" (listas
+   * con #table/#toolbar). Ese HTML no existe en los .php - lo inyecta
+   * el plugin - por lo que no podemos darle clases "ui-*" propias.
+   * Apuntamos a las clases que el plugin SI pone, con !important
+   * (mismo motivo de cascade layers que el resto de este archivo).
+   * No tocar la estructura/IDs que arman estos plugins, solo su piel.
+   */
+  #table_holder .fixed-table-toolbar {
+    @apply !mb-3 !flex !flex-wrap !items-center !gap-2;
+  }
+
+  #table_holder .search input,
+  #toolbar input.form-control {
+    @apply !rounded-xl !border !border-brand-primary-border !bg-surface !px-4 !py-2 !text-sm !text-text-default placeholder:!text-text-muted/70 !shadow-none focus:!outline-none focus:!ring-2 focus:!ring-brand-primary-ring;
+  }
+
+  #table_holder table.table {
+    @apply !text-sm;
+  }
+
+  #table_holder table.table thead th {
+    @apply !border-b !border-brand-primary-border !bg-surface-muted !text-xs !font-semibold !uppercase !tracking-wide !text-text-muted;
+  }
+
+  #table_holder table.table tbody tr {
+    @apply !border-b !border-brand-primary-border/60 !transition-colors;
+  }
+
+  #table_holder table.table.table-striped tbody tr:nth-of-type(odd) {
+    @apply !bg-surface-muted/50;
+  }
+
+  #table_holder table.table tbody tr:hover {
+    @apply !bg-brand-primary-soft/60;
+  }
+
+  #table_holder .pagination > li > a,
+  #table_holder .pagination > li > span {
+    @apply !rounded-lg !border-0 !text-text-muted hover:!bg-brand-primary-soft hover:!text-brand-primary;
+  }
+
+  #table_holder .pagination > .active > a,
+  #table_holder .pagination > .active > span {
+    @apply !bg-brand-primary-soft !text-brand-primary !font-medium;
+  }
+
+  #table_holder .dropdown-menu {
+    @apply !rounded-xl !border !border-brand-primary-border !shadow-lg;
+  }
+
+  /* bootstrap-select (filtros/ubicacion en el toolbar de manage.php) */
+  #toolbar .bootstrap-select > .btn,
+  #toolbar .dropdown-toggle.btn-default {
+    @apply !rounded-xl !border !border-brand-primary-border !bg-surface !text-sm !text-text-default !shadow-none hover:!bg-brand-primary-soft;
+  }
+
+  /* Botones "columns"/"export" que bootstrap-table agrega solo a la
+   * derecha del toolbar (no existen en el .php, los crea el plugin) */
+  #table_holder .columns .btn.btn-default,
+  #table_holder .export .btn.btn-default {
+    @apply !flex !h-10 !w-10 !items-center !justify-center !rounded-xl !border !border-brand-primary-border !bg-surface !p-0 !text-text-muted !shadow-none hover:!bg-brand-primary-soft hover:!text-brand-primary;
+  }
+
+  #table_holder .columns .dropdown-menu,
+  #table_holder .export .dropdown-menu {
+    @apply !p-1;
+  }
+
+  #table_holder .columns .dropdown-menu li,
+  #table_holder .export .dropdown-menu li {
+    @apply !rounded-lg;
+  }
+
+  #table_holder .columns .dropdown-menu li:hover,
+  #table_holder .export .dropdown-menu li:hover {
+    @apply !bg-brand-primary-soft;
+  }
+
+  #table_holder .columns .dropdown-menu label,
+  #table_holder .export .dropdown-menu a {
+    @apply !flex !items-center !gap-2 !px-3 !py-1.5 !text-sm !text-text-default;
+  }
 }
