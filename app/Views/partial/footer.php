@@ -6,8 +6,9 @@ use Config\OSPOS;
             </div>
         </div>
     </main>
+    </div><!-- /flex flex-1 -->
 
-    <footer class="mt-auto border-t border-brand-primary-border bg-surface">
+    <footer class="border-t border-brand-primary-border bg-surface">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-xs text-text-muted">
             <strong>
                 <?= lang('Common.copyrights', [date('Y')]) ?> ·
