@@ -264,4 +264,114 @@
   label.error {
     @apply !mt-1 !block !text-xs !text-state-danger;
   }
+
+  /*
+   * BootstrapDialog modal overrides
+   * El plugin genera HTML con clases Bootstrap (modal-content, modal-header,
+   * modal-footer, btn-primary, btn-danger) sin que podamos tocarlas en el PHP.
+   * Default type = TYPE_PRIMARY → header azul Bootstrap (#337ab7).
+   * Aquí sobreescribimos toda la estética del modal para que use nuestros tokens.
+   * !important obligatorio: estas reglas estan en @layer components (layered)
+   * pero deben ganarle a bootstrap-dialog.css (unlayered) por el mismo motivo
+   * que el resto de este archivo.
+   */
+
+  /* Header — unificar todos los tipos al gradiente de marca */
+  .bootstrap-dialog.type-default .modal-header,
+  .bootstrap-dialog.type-info .modal-header,
+  .bootstrap-dialog.type-primary .modal-header,
+  .bootstrap-dialog.type-success .modal-header,
+  .bootstrap-dialog.type-warning .modal-header,
+  .bootstrap-dialog.type-danger .modal-header {
+    @apply !bg-gradient-to-br !from-brand-primary !to-brand-primary-hover !border-b-0;
+    border-radius: 0 !important;
+    padding: 0.875rem 1.25rem !important;
+  }
+
+  /* Título en el header */
+  .bootstrap-dialog .bootstrap-dialog-title {
+    color: #ffffff !important;
+    font-size: 0.9375rem !important;
+    font-weight: 600 !important;
+    font-family: var(--font-display, inherit) !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  /* Botón × de cierre */
+  .bootstrap-dialog .bootstrap-dialog-close-button {
+    color: rgba(255,255,255,0.75) !important;
+    font-size: 1.125rem !important;
+    line-height: 1 !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+  }
+  .bootstrap-dialog .bootstrap-dialog-close-button:hover {
+    color: #ffffff !important;
+  }
+
+  /* Contenedor del modal */
+  .modal-content {
+    border: 1px solid var(--color-brand-primary-border) !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.14), 0 4px 20px rgba(0,0,0,0.08) !important;
+    overflow: hidden !important;
+    background-color: var(--color-surface) !important;
+  }
+
+  /* Cuerpo del modal */
+  .modal-body {
+    background-color: var(--color-surface) !important;
+    padding: 1.25rem !important;
+    color: var(--color-text-default) !important;
+  }
+
+  /* Pie del modal */
+  .modal-footer {
+    background-color: var(--color-surface) !important;
+    border-top: 1px solid var(--color-brand-primary-border) !important;
+    padding: 0.75rem 1.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Botón Submit (btn-primary) en pie de modal → gradiente marca */
+  .modal-footer .btn.btn-primary {
+    background: linear-gradient(to bottom right, var(--color-brand-primary), var(--color-brand-primary-hover)) !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 0.75rem !important;
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+    transition: opacity 0.15s, box-shadow 0.15s, transform 0.1s !important;
+    text-shadow: none !important;
+  }
+  .modal-footer .btn.btn-primary:hover {
+    opacity: 0.9 !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18) !important;
+    transform: translateY(-1px) !important;
+  }
+  .modal-footer .btn.btn-primary:active {
+    transform: scale(0.97) !important;
+  }
+
+  /* Botón Delete (btn-danger) en pie de modal → outlined danger */
+  .modal-footer .btn.btn-danger {
+    background: transparent !important;
+    border: 1px solid var(--color-state-danger) !important;
+    color: var(--color-state-danger) !important;
+    border-radius: 0.75rem !important;
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition: background 0.15s !important;
+  }
+  .modal-footer .btn.btn-danger:hover {
+    background-color: var(--color-state-danger-soft) !important;
+  }
 }
