@@ -297,16 +297,19 @@
     letter-spacing: -0.01em !important;
   }
 
-  /* Botón × de cierre */
-  .bootstrap-dialog .bootstrap-dialog-close-button {
-    color: rgba(255,255,255,0.75) !important;
-    font-size: 1.125rem !important;
-    line-height: 1 !important;
+  /* Botón × de cierre — apuntar al <button class="close"> dentro del container,
+   * no al container mismo: Bootstrap pone color:#000 opacity:.2 directo en .close */
+  .bootstrap-dialog .bootstrap-dialog-close-button .close {
+    color: rgba(255,255,255,0.8) !important;
     text-shadow: none !important;
     opacity: 1 !important;
+    font-size: 1.25rem !important;
+    font-weight: 400 !important;
   }
-  .bootstrap-dialog .bootstrap-dialog-close-button:hover {
+  .bootstrap-dialog .bootstrap-dialog-close-button .close:hover,
+  .bootstrap-dialog .bootstrap-dialog-close-button .close:focus {
     color: #ffffff !important;
+    opacity: 1 !important;
   }
 
   /* Contenedor del modal */
