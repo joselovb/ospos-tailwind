@@ -878,3 +878,33 @@
     funcionales de estado (no son colores de marca), aceptable por espíritu del CLAUDE.md.
   - Todos los submit buttons convertidos de form_submit() a <button type="submit"> para
     que ui-btn-primary funcione (input type="submit" no soporta inline-flex).
+
+## 2026-06-27 - Vista: Fase 4.11b–4.11k (batch grande, todos los módulos restantes)
+- Archivos:
+  - app/Views/attributes/manage.php, form.php, item.php
+  - app/Views/cashups/manage.php, form.php
+  - app/Views/expenses/manage.php, form.php
+  - app/Views/expenses_categories/manage.php, form.php
+  - app/Views/giftcards/manage.php, form.php
+  - app/Views/item_kits/manage.php, form.php
+  - app/Views/taxes/manage.php, tax_codes.php, tax_categories.php, tax_jurisdictions.php, tax_rates.php, tax_rates_form.php
+  - app/Views/partial/tax_codes.php, tax_categories.php, tax_jurisdictions.php
+  - app/Views/receivings/form.php, receipt.php, receiving.php
+  - public/css/tailwind-build.css (rebuild)
+- Estado: completo
+- Commits: b5c3428b2 (employees/form), 2ace371f7 (suppliers/form), 8dfa49372 (batch Fase 4.11b-k)
+- Notas:
+  - employees/form.php: constraint crítica JS — $('ul#permission_list > li > input.module') requiere
+    que el checkbox sea hijo DIRECTO de <li>. Solución: float-left en el checkbox + ml-7 en el div
+    de contenido + clear-both al final. $(this).parent() desde el checkbox retorna el <li> correcto.
+  - attributes/form.php y item.php: JS show/hide usaba .parents('.form-group') → actualizado a
+    .parents('.sm\\:flex') para matching con los nuevos contenedores flex.
+  - taxes/*.php: Alpine.js 4-tab wrapper en manage.php. Los partials (tax_codes, tax_jurisdictions,
+    tax_categories) tienen filas clonables via JS — actualizado el .attr('class', ...) de las filas
+    clonadas para usar clases Tailwind en vez de Bootstrap (ej: 'ui-label text-sm font-medium', 'ui-input').
+  - receivings/receiving.php: POS-like register. bootstrap-toggle para discount_toggle y selectpicker
+    para modos/payment conservados exactamente. Todos los IDs de form (mode_form, add_item_form,
+    cart_N, select_supplier_form, finish_receiving_form) y JS verbatim preservados.
+  - barcodes/barcode_sheet.php: NO tocado — página standalone con CSS propio de impresión.
+  - cashups/form.php: datetimepicker para open_date/close_date con keyup AJAX para calcular total.
+  - item_kits/form.php: tabla dinámica de ítems con JS append de filas y delete_item_kit_row.
