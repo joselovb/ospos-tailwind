@@ -123,12 +123,17 @@ visual completa de esa pantalla primero.
   sin Node/npm/Vite para el CSS nuevo (el proyecto ya tiene un pipeline
   gulp/npm para los assets legacy de Bootstrap 3 — no tocar ese
   pipeline, el nuevo Tailwind vive en paralelo)
+- **Comando de build CORRECTO** (siempre usar `input.css` como entrada,
+  NO `tokens.css` ni `components.css` directamente):
+  `tailwindcss -i tailwind/input.css -o public/css/tailwind-build.css --minify`
+  `input.css` importa tanto `tokens.css` como `components.css`. Sin él,
+  los componentes `ui-*` no se compilan (bug silencioso, detectado 2026-06-27).
 - Alpine.js (CDN o vendored) para interactividad ligera: menú mobile,
   dropdowns, transiciones, toggles — reemplaza lo que en otros stacks
   sería Framer Motion
-- `input.css` con el `@theme` de "Sistema de diseño", watch corriendo
-  en una ventana tmux separada por el usuario — Claude no necesita
-  correr el build
+- `tailwind/input.css` es el entry point del build. El usuario puede tener
+  watch corriendo en tmux: `tailwindcss -i tailwind/input.css -o public/css/tailwind-build.css --watch`
+  Claude puede hacer el build manual cuando sea necesario con el comando arriba.
 
 ## SISTEMA DE DISEÑO — ARQUITECTURA DE THEMING
 

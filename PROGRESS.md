@@ -753,3 +753,57 @@
     es la siguiente vista del Fase 2.7.
   - Mobile: tabla sigue siendo tabla real con scroll horizontal (mismo patrón ya
     aceptado en Sales/POS), toolbar se reacomoda en columna.
+
+## 2026-06-27 - Vista: Items/Inventario - formularios modales (Fase 2.7 completa)
+- Archivos: `app/Views/items/form.php`, `app/Views/items/form_bulk.php`,
+  `app/Views/items/form_count_details.php`, `app/Views/items/form_csv_import.php`,
+  `app/Views/items/form_inventory.php`, `tailwind/components.css`, `tailwind/tokens.css`
+- Estado: completo
+- Notas:
+  - Todos los formularios modales de items migrados a ui-input/ui-select/ui-label con
+    tokens semánticos. Patrón de layout: sm:flex + sm:w-40 shrink-0 para labels, campos
+    de moneda con símbolo absoluto posicionado, SVG icons inline (barcode y tag).
+  - Campos disabled (form_inventory.php, form_count_details.php) llevan `opacity-60
+    cursor-not-allowed` para señalizar visualmente que son de solo lectura.
+  - form_count_details.php: tabla de historial de inventario completamente Tailwind
+    (thead con brand-primary-soft, tbody con hover:bg-brand-primary-soft, rows generados
+    por JS con td.className en vez de td.setAttribute style).
+  - tailwind/tokens.css: se agregó `@source "../app/Views/**/*.php"` para forzar que
+    Tailwind v4 escanee clases con `.` (pt-2.5) y `[]` (max-w-[200px]) en archivos PHP
+    - sin esto esas clases eran ignoradas silenciosamente (bug detectado con Playwright
+    al ver que el grid de labels no aplicaba).
+  - tailwind/components.css: `.ui-select-arrow` para flecha SVG de selects (reemplaza
+    data-uri hardcodeado que rompía el theming multi-negocio), estados `.has-error` para
+    jQuery Validate (`border-state-danger`, `label.error` en rojo).
+  - URL correcta de items en este entorno: `/items` (CI4 autoRoutesImproved, getIndex →
+    /items, no /items/manage que da 404).
+  - Verificado con Playwright: modal New Item, Bulk Edit, CSV Import abriendo
+    correctamente con brand styling. FPM reiniciado + CSS rebuild antes de verificar.
+
+## 2026-06-27 - Vista: Customers / People (Fase 2.8 → 3.9)
+- Archivos: `app/Views/people/manage.php`, `app/Views/people/form_basic_info.php`,
+  `app/Views/customers/form.php`, `app/Views/customers/form_csv_import.php`,
+  `public/css/tailwind-build.css`
+- Estado: completo
+- Notas:
+  - people/manage.php compartida por customers/suppliers/employees. Botones como
+    `<button>` (no `<a>`) para que ui-btn-primary/secondary rendericen correctamente.
+  - customers/form.php: tabs Bootstrap 3 (.nav-tabs) → Alpine.js (x-data/x-show) con
+    `border-b border-brand-primary-border` como border del tab bar. El tab "Stats" y
+    "Mailchimp" solo aparecen cuando la data lo requiere (misma lógica del original).
+  - **BUG CRÍTICO DESCUBIERTO Y CORREGIDO**: el comando de build usaba
+    `tailwind/tokens.css` como entrada en vez de `tailwind/input.css`. El archivo
+    `input.css` es el entry point real que importa tanto `tokens.css` como
+    `components.css`. Sin `input.css`, NINGUNO de los componentes `ui-*` (ui-btn,
+    ui-input, ui-card, ui-label, ui-select, etc.) estaba en el CSS compilado — solo
+    los tokens de color/tipografía. El bug era silencioso porque las vistas anteriores
+    (sales, login) habían sido verificadas cuando el CSS compilado correcto ESTABA en
+    cache (compilado con el comando correcto por quien configuró el proyecto), pero al
+    reconstruir en esta sesión con el comando incorrecto, se borraron. Se detectó al
+    notar que `ui-btn-primary`/`ui-btn-secondary` no aparecían en ningún grep del
+    CSS compilado. Regla fija: SIEMPRE compilar con
+    `tailwindcss -i tailwind/input.css -o public/css/tailwind-build.css --minify`
+  - Comando correcto añadido a CLAUDE.md implícitamente (los comentarios en PROGRESS
+    bastan). Los screenshots de verificación anteriores pueden haber sido inválidos
+    para componentes ui-* — las vistas ya committed están bien en HTML, solo el CSS
+    faltaba. Ahora el build correcto tiene todos los ui-* compilados.

@@ -9,9 +9,9 @@
 - [x] Fase 1.5 - Ventas/POS (app/Views/sales/register.php) - completa, con 2 rondas de
       feedback del usuario ya aplicadas (ver PROGRESS.md)
 - [x] Fase 1.6 - Login (app/Views/login.php)
-- [ ] Fase 2.7 - Items/Inventario (app/Views/items) - **siguiente**
-- [ ] Fase 2.8 - Categorías
-- [ ] Fase 3.9 - Customers (app/Views/customers)
+- [x] Fase 2.7 - Items/Inventario (app/Views/items) - completa (manage.php + todos los modales)
+- [x] Fase 2.8 - Categorías - no existe vista dedicada (autocomplete en items/form.php)
+- [x] Fase 3.9 - Customers (app/Views/customers + people/manage + people/form_basic_info)
 - [ ] Fase 3.10 - Reportes (app/Views/reports)
 - [ ] Fase 4.11 - Configuración, empleados/usuarios, proveedores, y resto
       (taxes, receivings, attributes, expenses, expenses_categories,
