@@ -780,6 +780,35 @@
   - Verificado con Playwright: modal New Item, Bulk Edit, CSV Import abriendo
     correctamente con brand styling. FPM reiniciado + CSS rebuild antes de verificar.
 
+## 2026-06-27 - Vista: Reports (Fase 3.10)
+- Archivos: `app/Views/reports/listing.php`, `date_input.php`, `specific_input.php`,
+  `specific_customer_input.php`, `inventory_summary_input.php`, `tabular.php`,
+  `tabular_details.php`, `graphical.php`, `public/css/tailwind-build.css`
+- Estado: completo
+- Notas:
+  - listing.php: 3 paneles Bootstrap (panel-primary + list-group) → grid md:grid-cols-3
+    con ui-card overflow-hidden, gradient header (from-brand-primary to-brand-accent),
+    chevron icons en cada link. 4ta card (Inventory Reports) anidada en la 3ra columna
+    con space-y-6. SVG inline lineal para cada categoría de reporte.
+  - Formularios de entrada (date_input, specific_input, specific_customer_input,
+    inventory_summary_input): Bootstrap form-horizontal + form-group → ui-card max-w-lg p-6
+    con space-y-4 + sm:flex layout. ui-input, ui-select + ui-select-arrow, ui-btn-primary.
+    IDs críticos para JS preservados: daterangepicker, input_type, location_id,
+    discount_type_id, specific_input_data, item_count, generate_report.
+    Classes JS: discount_percent, discount_fixed (toggle en specific_input.php).
+    IDs de contenedor: report_sale_type, report_receiving_type, report_discount_type,
+    report_stock_location, report_specific_input_data, report_item_count preservados.
+  - tabular.php y tabular_details.php: page_title como h1.font-display, page_subtitle
+    como p.text-text-muted, toolbar con ui-btn-secondary para toggleCostProfitButton,
+    #table_holder dentro de ui-card p-4, #report_summary con rounded-xl border
+    bg-surface p-6 + mt-6 para separación visual.
+  - graphical.php: ct-chart ct-golden-section #chart1 intactos (Chartist.js), toolbar
+    dentro del card, #chart_report_summary con mt-6 para anular el margin-top: -100px
+    de reports.css (Tailwind !important gana).
+  - Verificado con Playwright: listing (4 cards, 30+ links), date_input (h1 + generate
+    button ui-btn-primary), tabular (h1 de reporte, toggle button ui-btn-secondary,
+    bootstrap-table con tabla + paginación dentro de ui-card, summary card debajo).
+
 ## 2026-06-27 - Vista: Customers / People (Fase 2.8 → 3.9)
 - Archivos: `app/Views/people/manage.php`, `app/Views/people/form_basic_info.php`,
   `app/Views/customers/form.php`, `app/Views/customers/form_csv_import.php`,

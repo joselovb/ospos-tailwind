@@ -12,7 +12,7 @@
 - [x] Fase 2.7 - Items/Inventario (app/Views/items) - completa (manage.php + todos los modales)
 - [x] Fase 2.8 - Categorías - no existe vista dedicada (autocomplete en items/form.php)
 - [x] Fase 3.9 - Customers (app/Views/customers + people/manage + people/form_basic_info)
-- [ ] Fase 3.10 - Reportes (app/Views/reports)
+- [x] Fase 3.10 - Reportes (app/Views/reports)
 - [ ] Fase 4.11 - Configuración, empleados/usuarios, proveedores, y resto
       (taxes, receivings, attributes, expenses, expenses_categories,
       barcodes, cashups, item_kits, giftcards)
