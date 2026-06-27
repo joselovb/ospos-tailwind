@@ -924,3 +924,23 @@
   - Botones footer: btn-primary → gradiente marca; btn-danger → outlined state-danger.
   - modal-content: border-radius 1rem, overflow hidden, sombra, border brand-primary-border.
   - Aplica a TODAS las modales de la app automáticamente (sin tocar .php individuales).
+
+## 2026-06-27 - Fix colores verde: toast notifications + fila seleccionada en tablas
+- Archivos: tailwind/components.css, public/css/tailwind-build.css
+- Estado: completo
+- Notas:
+  - PROBLEMA: al editar un empleado/persona, el toast de éxito aparecía en verde/teal (#18bc9c),
+    el color de Bootswatch Flatly para .alert-success. El resaltado de fila seleccionada también
+    aparecía en ese teal porque tr.selected td tenía rgba(0,0,0,.075) sobre un fondo que podía
+    verse afectado por reglas Bootstrap.
+  - FIX TOAST: CSS overrides en @layer components con !important para .alert.alert-success,
+    .alert.alert-danger, .alert.alert-warning, .alert.alert-info usando tokens semánticos
+    (state-success-soft/state-danger-soft/etc.). También el botón × (close) y las progress bars.
+  - FIX ROW: override #table_holder table.table tbody tr.selected td con bg-brand-primary-soft.
+    También tr.success td → state-success-soft con text-default para no perder legibilidad.
+  - LIMITACIÓN CONOCIDA: highlight_row() en manage_tables.js anima las celdas a #e1ffdd (verde claro)
+    durante 5s tras un save exitoso — esto es inline style vía jQuery.animate(), CSS no puede
+    interceptarlo. No es grave: la animación vuelve al color original automáticamente y es solo
+    decorativa (feedback de "fila actualizada").
+  - cascade: @layer components !important > unlayered !important > unlayered normal (Bootstrap).
+    Los fixes funcionan sin tocar nada del pipeline gulp/JS legacy.

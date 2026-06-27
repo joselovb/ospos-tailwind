@@ -377,4 +377,81 @@
   .modal-footer .btn.btn-danger:hover {
     background-color: var(--color-state-danger-soft) !important;
   }
+
+  /*
+   * Overrides para bootstrap-notify (toasts de éxito/error/info)
+   * El plugin genera .alert.alert-{type} en runtime — HTML no existe en .php.
+   * Bootswatch flatly sobreescribe .alert-success → #18bc9c (teal/verde).
+   * Con !important dentro de @layer components ganamos al CSS unlayered de Bootstrap.
+   */
+  [data-notify="container"].alert-success,
+  .alert.alert-success {
+    background-color: var(--color-state-success-soft) !important;
+    border-color: var(--color-state-success) !important;
+    color: var(--color-state-success) !important;
+  }
+
+  [data-notify="container"].alert-danger,
+  .alert.alert-danger {
+    background-color: var(--color-state-danger-soft) !important;
+    border-color: var(--color-state-danger) !important;
+    color: var(--color-state-danger) !important;
+  }
+
+  [data-notify="container"].alert-warning,
+  .alert.alert-warning {
+    background-color: var(--color-state-warning-soft) !important;
+    border-color: var(--color-state-warning) !important;
+    color: var(--color-state-warning) !important;
+  }
+
+  [data-notify="container"].alert-info,
+  .alert.alert-info {
+    background-color: var(--color-brand-primary-soft) !important;
+    border-color: var(--color-brand-primary-border) !important;
+    color: var(--color-brand-primary) !important;
+  }
+
+  /* Botón × del toast — Bootswatch flatly lo pone blanco al 20% de opacidad en .alert-success */
+  [data-notify="container"] .close {
+    color: inherit !important;
+    text-shadow: none !important;
+    opacity: 0.5 !important;
+  }
+  [data-notify="container"] .close:hover,
+  [data-notify="container"] .close:focus {
+    opacity: 1 !important;
+  }
+
+  /* Barra de progreso dentro del toast */
+  .progress-bar.progress-bar-success {
+    background-color: var(--color-state-success) !important;
+  }
+  .progress-bar.progress-bar-danger {
+    background-color: var(--color-state-danger) !important;
+  }
+  .progress-bar.progress-bar-warning {
+    background-color: var(--color-state-warning) !important;
+  }
+  .progress-bar.progress-bar-info {
+    background-color: var(--color-brand-primary) !important;
+  }
+
+  /*
+   * Override fila seleccionada en bootstrap-table
+   * El plugin agrega .selected al <tr> → rgba(0,0,0,.075) por bootstrap-table.css.
+   * Bootswatch flatly + .success en <tr> → #18bc9c (teal/verde brillante).
+   * Con !important ganamos al CSS unlayered y forzamos el color de marca.
+   */
+  #table_holder table.table tbody tr.selected td,
+  #table_holder table.table tbody tr.selected th {
+    background-color: var(--color-brand-primary-soft) !important;
+  }
+
+  /* Filas con clase .success de Bootstrap (delete/restore highlight) */
+  #table_holder table.table tbody tr.success td,
+  #table_holder table.table tbody tr.success th {
+    background-color: var(--color-state-success-soft) !important;
+    color: var(--color-text-default) !important;
+  }
 }
