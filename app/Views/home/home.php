@@ -47,15 +47,15 @@ $visible_modules = array_filter($allowed_modules, fn($m) => $m->module_id !== 'h
         <div class="pointer-events-none absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-brand-accent opacity-5"></div>
 
         <!-- Logo -->
-        <div class="relative z-10 flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-brand-primary to-brand-primary-hover shadow-lg">
+        <div class="relative z-10 flex h-32 w-32 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-lg border border-brand-primary-border">
             <?php if (isset($config['company_logo']) && !empty($config['company_logo'])): ?>
-                <img class="h-full w-full object-cover"
+                <img class="h-full w-full object-contain p-2"
                      src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>"
                      alt="<?= esc($config['company']) ?>">
             <?php else: ?>
-                <svg viewBox="0 0 308.57998 308.57997" class="h-12 w-12 text-text-on-brand" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <svg viewBox="0 0 308.57998 308.57997" class="h-20 w-20 text-brand-primary" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <circle cx="154.28999" cy="154.28999" r="154.28999" fill="currentColor"/>
-                    <path fill="rgba(255,255,255,0.9)" d="M154.88998 145.66999c-.03-1.26-.03-3.29.19-4.29 4.6-11.1 15.57-18.82 28.3-18.82h.41v58.3c0 .12-.03.78-.04.9-.54 16.46-14.01 29.7-30.59 29.7v27.08c21 0 39.17-11.27 49.29-28.07l.07-.11c2.9.45 5.86.75 8.9.75 31.95 0 57.81-26 57.81-57.81 0-30.87-24.37-56.46-55.1-57.81h-30.74c-17.18 0-32.61 7.64-43.22 19.63-10.59-11.92-25.86-19.59-43.02-19.59-31.86 0-57.77 25.91-57.77 57.77 0 31.86 25.91 57.77 57.77 57.77 31.86 0 57.77-25.91 57.77-57.77v-3.68c-.01.01-.02-3.31-.03-3.95zm-57.75 38.33c-16.92 0-30.69-13.77-30.69-30.69s13.77-30.69 30.69-30.69 30.69 13.77 30.69 30.69-13.77 30.69-30.69 30.69zm142.96-19.87c-4.33 11.64-15.57 19.9-28.7 19.9h-.54v-61.47h.54c13.13 0 24.37 8.26 28.7 19.9 1.35 3.25 2.03 6.91 2.03 10.83s-.67 7.59-2.03 10.84z"/>
+                    <path fill="#ffffff" d="M154.88998 145.66999c-.03-1.26-.03-3.29.19-4.29 4.6-11.1 15.57-18.82 28.3-18.82h.41v58.3c0 .12-.03.78-.04.9-.54 16.46-14.01 29.7-30.59 29.7v27.08c21 0 39.17-11.27 49.29-28.07l.07-.11c2.9.45 5.86.75 8.9.75 31.95 0 57.81-26 57.81-57.81 0-30.87-24.37-56.46-55.1-57.81h-30.74c-17.18 0-32.61 7.64-43.22 19.63-10.59-11.92-25.86-19.59-43.02-19.59-31.86 0-57.77 25.91-57.77 57.77 0 31.86 25.91 57.77 57.77 57.77 31.86 0 57.77-25.91 57.77-57.77v-3.68c-.01.01-.02-3.31-.03-3.95zm-57.75 38.33c-16.92 0-30.69-13.77-30.69-30.69s13.77-30.69 30.69-30.69 30.69 13.77 30.69 30.69-13.77 30.69-30.69 30.69zm142.96-19.87c-4.33 11.64-15.57 19.9-28.7 19.9h-.54v-61.47h.54c13.13 0 24.37 8.26 28.7 19.9 1.35 3.25 2.03 6.91 2.03 10.83s-.67 7.59-2.03 10.84z"/>
                 </svg>
             <?php endif; ?>
         </div>
