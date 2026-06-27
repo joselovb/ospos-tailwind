@@ -15,6 +15,20 @@
 @import "./theme-default.css"; /* única línea que cambiaría por negocio */
 
 /*
+ * Forzar el scan completo de clases en los .php de app/Views. Sin
+ * esto, la detección automática de Tailwind v4 sobre archivos .php
+ * usa una extracción restringida que IGNORA clases con "." (pt-2.5)
+ * o valores arbitrarios "[...]" (max-w-[200px], grid-cols-[160px_1fr])
+ * - probablemente para no confundirlos con sintaxis real de PHP
+ * (concatenacion con ".", acceso a array con "[]"). El resultado es
+ * que esas clases compilaban a NADA, en silencio, sin error - se
+ * detecto al verificar items/form.php con Playwright (el grid de
+ * labels no aparecia) y se confirmo que afecta a TODO el proyecto
+ * desde antes (ej. login.php tenia max-w-[240px] que nunca se aplico).
+ */
+@source "../app/Views/**/*.php";
+
+/*
  * Capa 2 - Tokens semánticos. Las Views usan SIEMPRE estas clases
  * (bg-brand-primary, text-state-danger, etc.), nunca colores literales.
  * Este archivo NO cambia entre negocios - solo lo que importa arriba cambia.

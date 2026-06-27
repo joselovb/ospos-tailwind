@@ -25,57 +25,62 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<div id="required_fields_message" class="ui-help-text mb-3 italic"><?= lang('Common.fields_required_message') ?></div>
+<ul id="error_message_box" class="error_message_box ui-alert-danger mb-3 block list-none empty:hidden"></ul>
 
 <?= form_open("items/save/$item_info->item_id", ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
-    <fieldset id="item_basic_info">
+    <fieldset id="item_basic_info" class="space-y-4">
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.item_number'), 'item_number', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
-                    <?= form_input([
-                        'name'  => 'item_number',
-                        'id'    => 'item_number',
-                        'class' => 'form-control input-sm',
-                        'value' => $item_info->item_number
-                    ]) ?>
-                </div>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.item_number'), 'item_number', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative">
+                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="5" x2="3" y2="19"/><line x1="7" y1="5" x2="7" y2="19"/><line x1="11" y1="5" x2="11" y2="19"/><line x1="16" y1="5" x2="16" y2="19"/><line x1="21" y1="5" x2="21" y2="19"/></svg>
+                </span>
+                <?= form_input([
+                    'name'  => 'item_number',
+                    'id'    => 'item_number',
+                    'class' => 'ui-input pl-10',
+                    'value' => $item_info->item_number
+                ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.name'), 'name', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.name'), 'name', ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div>
                 <?= form_input([
                     'name'  => 'name',
                     'id'    => 'name',
-                    'class' => 'form-control input-sm',
+                    'class' => 'ui-input',
                     'value' => $item_info->name
                 ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.category'), 'category', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
-                    <?php
-                    if ($config['category_dropdown']) {
-                        echo form_dropdown('category', $categories, $selected_category, ['class' => 'form-control']);
-                    } else {
-                        echo form_input([
-                            'name'  => 'category',
-                            'id'    => 'category',
-                            'class' => 'form-control input-sm',
-                            'value' => $item_info->category
-                        ]);
-                    }
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.category'), 'category', ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative">
+                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 11 4H4v7l9.59 9.59a2 2 0 0 0 2.82 0l4.18-4.18a2 2 0 0 0 0-2.82z"/><circle cx="7.5" cy="7.5" r="0.5" fill="currentColor"/></svg>
+                </span>
+                <?php
+                if ($config['category_dropdown']) {
+                    echo form_dropdown('category', $categories, $selected_category, ['class' => 'ui-select pl-10']);
                     ?>
-                </div>
+                    <span class="ui-select-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </span>
+                    <?php
+                } else {
+                    echo form_input([
+                        'name'  => 'category',
+                        'id'    => 'category',
+                        'class' => 'ui-input pl-10',
+                        'value' => $item_info->category
+                    ]);
+                }
+                ?>
             </div>
         </div>
 
@@ -85,10 +90,10 @@
             </script>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.stock_type'), 'stock_type', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <label class="radio-inline">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.stock_type'), 'stock_type', !empty($basic_version) ? ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5'] : ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                <label class="radio-inline flex items-center gap-2 text-sm text-text-default">
                     <?= form_radio([
                         'name'    => 'stock_type',
                         'type'    => 'radio',
@@ -97,7 +102,7 @@
                         'checked' => $item_info->stock_type == HAS_STOCK
                     ]) ?> <?= lang('Items.stock') ?>
                 </label>
-                <label class="radio-inline">
+                <label class="radio-inline flex items-center gap-2 text-sm text-text-default">
                     <?= form_radio([
                         'name'    => 'stock_type',
                         'type'    => 'radio',
@@ -109,10 +114,10 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.type'), 'item_type', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <label class="radio-inline">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.type'), 'item_type', !empty($basic_version) ? ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5'] : ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                <label class="radio-inline flex items-center gap-2 text-sm text-text-default">
                     <?php
                     $radio_button = [
                         'name'    => 'item_type',
@@ -127,7 +132,7 @@
                     }
                     echo form_radio($radio_button) ?> <?= lang('Items.standard') ?>
                 </label>
-                <label class="radio-inline">
+                <label class="radio-inline flex items-center gap-2 text-sm text-text-default">
                     <?php
                     $radio_button = [
                         'name'    => 'item_type',
@@ -143,7 +148,7 @@
                     echo form_radio($radio_button) ?> <?= lang('Items.kit') ?>
                 </label>
                 <?php if ($config['derive_sale_quantity'] == '1') { ?>
-                    <label class="radio-inline">
+                    <label class="radio-inline flex items-center gap-2 text-sm text-text-default">
                         <?= form_radio([
                             'name'    => 'item_type',
                             'type'    => 'radio',
@@ -154,7 +159,7 @@
                     </label>
                 <?php } ?>
                 <?php if ($allow_temp_item == 1) { ?>
-                    <label class="radio-inline">
+                    <label class="radio-inline flex items-center gap-2 text-sm text-text-default">
                         <?= form_radio([
                             'name'    => 'item_type',
                             'type'    => 'radio',
@@ -167,145 +172,136 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown('supplier_id', $suppliers, $selected_supplier, ['class' => 'form-control']) ?>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.supplier'), 'supplier', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative">
+                <?= form_dropdown('supplier_id', $suppliers, $selected_supplier, ['class' => 'ui-select']) ?>
+                <span class="ui-select-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
-                    <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                    <?= form_input([
-                        'name'    => 'cost_price',
-                        'id'      => 'cost_price',
-                        'class'   => 'form-control input-sm',
-                        'onClick' => 'this.select();',
-                        'value'   => to_currency_no_money($item_info->cost_price)
-                    ]) ?>
-                    <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                </div>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative max-w-50">
+                <?php if (!is_right_side_currency_symbol()): ?>
+                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
+                <?php endif; ?>
+                <?= form_input([
+                    'name'    => 'cost_price',
+                    'id'      => 'cost_price',
+                    'class'   => 'ui-input' . (!is_right_side_currency_symbol() ? ' pl-8' : ' pr-8'),
+                    'onClick' => 'this.select();',
+                    'value'   => to_currency_no_money($item_info->cost_price)
+                ]) ?>
+                <?php if (is_right_side_currency_symbol()): ?>
+                    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
+                <?php endif; ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
-                    <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                    <?= form_input([
-                        'name'    => 'unit_price',
-                        'id'      => 'unit_price',
-                        'class'   => 'form-control input-sm',
-                        'onClick' => 'this.select();',
-                        'value'   => to_currency_no_money($item_info->unit_price)
-                    ]) ?>
-                    <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                </div>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative max-w-50">
+                <?php if (!is_right_side_currency_symbol()): ?>
+                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
+                <?php endif; ?>
+                <?= form_input([
+                    'name'    => 'unit_price',
+                    'id'      => 'unit_price',
+                    'class'   => 'ui-input' . (!is_right_side_currency_symbol() ? ' pl-8' : ' pr-8'),
+                    'onClick' => 'this.select();',
+                    'value'   => to_currency_no_money($item_info->unit_price)
+                ]) ?>
+                <?php if (is_right_side_currency_symbol()): ?>
+                    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
+                <?php endif; ?>
             </div>
         </div>
 
         <?php if (!$use_destination_based_tax) { ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-4">
+            <div class="form-group sm:flex sm:items-start sm:gap-4">
+                <?= form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+                <div class="flex flex-wrap gap-2">
                     <?= form_input([
                         'name'  => 'tax_names[]',
                         'id'    => 'tax_name_1',
-                        'class' => 'form-control input-sm',
+                        'class' => 'ui-input max-w-50',
                         'value' => $item_tax_info[0]['name'] ?? $config['default_tax_1_name']
                     ]) ?>
-                </div>
-                <div class="col-xs-4">
-                    <div class="input-group input-group-sm">
+                    <div class="relative max-w-30">
                         <?= form_input([
                             'name'  => 'tax_percents[]',
                             'id'    => 'tax_percent_name_1',
-                            'class' => 'form-control input-sm',
+                            'class' => 'ui-input pr-8',
                             'value' => isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate)
                         ]) ?>
-                        <span class="input-group-addon input-sm"><b>%</b></span>
+                        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted">%</span>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-4">
+            <div class="form-group sm:flex sm:items-start sm:gap-4">
+                <?= form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+                <div class="flex flex-wrap gap-2">
                     <?= form_input([
                         'name'  => 'tax_names[]',
                         'id'    => 'tax_name_2',
-                        'class' => 'form-control input-sm',
+                        'class' => 'ui-input max-w-50',
                         'value' => $item_tax_info[1]['name'] ?? $config['default_tax_2_name']
                     ]) ?>
-                </div>
-                <div class="col-xs-4">
-                    <div class="input-group input-group-sm">
+                    <div class="relative max-w-30">
                         <?= form_input([
                             'name'  => 'tax_percents[]',
-                            'class' => 'form-control input-sm',
+                            'class' => 'ui-input pr-8',
                             'id'    => 'tax_percent_name_2',
                             'value' => isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate)
                         ]) ?>
-                        <span class="input-group-addon input-sm"><b>%</b></span>
+                        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted">%</span>
                     </div>
                 </div>
             </div>
         <?php } ?>
 
         <?php if ($use_destination_based_tax): ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Taxes.tax_category'), 'tax_category', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-8">
-                    <div class="input-group input-group-sm">
-                        <?= form_input([
-                            'name'  => 'tax_category',
-                            'id'    => 'tax_category',
-                            'class' => 'form-control input-sm',
-                            'size'  => '50',
-                            'value' => $tax_category
-                        ]) ?>
-                        <?= form_hidden('tax_category_id', $tax_category_id) ?>
-                    </div>
+            <div class="form-group sm:flex sm:items-start sm:gap-4">
+                <?= form_label(lang('Taxes.tax_category'), 'tax_category', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+                <div>
+                    <?= form_input([
+                        'name'  => 'tax_category',
+                        'id'    => 'tax_category',
+                        'class' => 'ui-input',
+                        'size'  => '50',
+                        'value' => $tax_category
+                    ]) ?>
+                    <?= form_hidden('tax_category_id', $tax_category_id) ?>
                 </div>
             </div>
         <?php endif; ?>
 
         <?php if ($include_hsn): ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.hsn_code'), 'category', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-8">
-                    <div class="input-group">
-                        <?= form_input([
-                            'name'  => 'hsn_code',
-                            'id'    => 'hsn_code',
-                            'class' => 'form-control input-sm',
-                            'value' => $hsn_code
-                        ]) ?>
-                    </div>
+            <div class="form-group sm:flex sm:items-start sm:gap-4">
+                <?= form_label(lang('Items.hsn_code'), 'category', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+                <div>
+                    <?= form_input([
+                        'name'  => 'hsn_code',
+                        'id'    => 'hsn_code',
+                        'class' => 'ui-input',
+                        'value' => $hsn_code
+                    ]) ?>
                 </div>
             </div>
         <?php endif; ?>
 
         <?php foreach ($stock_locations as $key => $location_detail) { ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.quantity') . ' ' . $location_detail['location_name'], "quantity_$key", ['class' => 'required control-label col-xs-3']) ?>
-                <div class="col-xs-4">
+            <div class="form-group sm:flex sm:items-start sm:gap-4">
+                <?= form_label(lang('Items.quantity') . ' ' . $location_detail['location_name'], "quantity_$key", ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+                <div class="max-w-40">
                     <?= form_input([
                         'name'    => "quantity_$key",
                         'id'      => "quantity_$key",
-                        'class'   => 'required quantity form-control',
+                        'class'   => 'required quantity ui-input',
                         'onClick' => 'this.select();',
                         'value'   => isset($item_info->item_id) ? to_quantity_decimals($location_detail['quantity']) : to_quantity_decimals(0)
                     ]) ?>
@@ -313,47 +309,47 @@
             </div>
         <?php } ?>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.receiving_quantity'), 'receiving_quantity', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.receiving_quantity'), 'receiving_quantity', ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="max-w-40">
                 <?= form_input([
                     'name'    => 'receiving_quantity',
                     'id'      => 'receiving_quantity',
-                    'class'   => 'required form-control input-sm',
+                    'class'   => 'required ui-input',
                     'onClick' => 'this.select();',
                     'value'   => isset($item_info->item_id) ? to_quantity_decimals($item_info->receiving_quantity) : to_quantity_decimals(0)
                 ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="max-w-40">
                 <?= form_input([
                     'name'    => 'reorder_level',
                     'id'      => 'reorder_level',
-                    'class'   => 'form-control input-sm',
+                    'class'   => 'ui-input',
                     'onClick' => 'this.select();',
                     'value'   => isset($item_info->item_id) ? to_quantity_decimals($item_info->reorder_level) : to_quantity_decimals(0)
                 ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.description'), 'description', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div>
                 <?= form_textarea([
                     'name'  => 'description',
                     'id'    => 'description',
-                    'class' => 'form-control input-sm',
+                    'class' => 'ui-input',
                     'value' => $item_info->description
                 ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.image'), 'items_image', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.image'), 'items_image', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div>
                 <div class="fileinput <?= $logo_exists ? 'fileinput-exists' : 'fileinput-new' ?>" data-provides="fileinput">
                     <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;"></div>
                     <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100px; max-height: 100px;">
@@ -361,21 +357,21 @@
                             src="<?= $image_path ?>"
                             style="max-height: 100%; max-width: 100%;">
                     </div>
-                    <div>
-                        <span class="btn btn-default btn-sm btn-file">
+                    <div class="mt-2 flex flex-wrap items-center gap-2">
+                        <span class="btn btn-default btn-sm btn-file ui-btn-secondary">
                             <span class="fileinput-new"><?= lang('Items.select_image') ?></span>
                             <span class="fileinput-exists"><?= lang('Items.change_image') ?></span>
                             <input type="file" name="items_image" accept="image/*">
                         </span>
-                        <a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?= lang('Items.remove_image') ?></a>
+                        <a href="#" class="btn btn-default btn-sm fileinput-exists ui-btn-secondary" data-dismiss="fileinput"><?= lang('Items.remove_image') ?></a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-1">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-0']) ?>
+            <div class="flex items-center pt-0.5">
                 <?= form_checkbox([
                     'name'    => 'allow_alt_description',
                     'id'      => 'allow_alt_description',
@@ -385,9 +381,9 @@
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-1">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-0']) ?>
+            <div class="flex items-center pt-0.5">
                 <?= form_checkbox([
                     'name'    => 'is_serialized',
                     'id'      => 'is_serialized',
@@ -398,47 +394,45 @@
         </div>
 
         <?php if ($config['multi_pack_enabled'] == '1') { ?>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.qty_per_pack'), 'qty_per_pack', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-4">
+            <div class="form-group sm:flex sm:items-start sm:gap-4">
+                <?= form_label(lang('Items.qty_per_pack'), 'qty_per_pack', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+                <div class="max-w-40">
                     <?= form_input([
                         'name'  => 'qty_per_pack',
                         'id'    => 'qty_per_pack',
-                        'class' => 'form-control input-sm',
+                        'class' => 'ui-input',
                         'value' => isset($item_info->item_id) ? to_quantity_decimals($item_info->qty_per_pack) : to_quantity_decimals(0)
                     ]) ?>
                 </div>
             </div>
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Items.pack_name'), 'name', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-8">
+            <div class="form-group sm:flex sm:items-start sm:gap-4">
+                <?= form_label(lang('Items.pack_name'), 'name', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+                <div>
                     <?= form_input([
                         'name'  => 'pack_name',
                         'id'    => 'pack_name',
-                        'class' => 'form-control input-sm',
+                        'class' => 'ui-input',
                         'value' => $item_info->pack_name
                     ]) ?>
                 </div>
             </div>
-            <div class="form-group  form-group-sm">
-                <?= form_label(lang('Items.low_sell_item'), 'low_sell_item_name', ['class' => 'control-label col-xs-3']) ?>
-                <div class="col-xs-8">
-                    <div class="input-group input-group-sm">
-                        <?= form_input([
-                            'name'  => 'low_sell_item_name',
-                            'id'    => 'low_sell_item_name',
-                            'class' => 'form-control input-sm',
-                            'value' => $selected_low_sell_item
-                        ]) ?>
-                        <?= form_hidden('low_sell_item_id', $selected_low_sell_item_id) ?>
-                    </div>
+            <div class="form-group sm:flex sm:items-start sm:gap-4">
+                <?= form_label(lang('Items.low_sell_item'), 'low_sell_item_name', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+                <div>
+                    <?= form_input([
+                        'name'  => 'low_sell_item_name',
+                        'id'    => 'low_sell_item_name',
+                        'class' => 'ui-input',
+                        'value' => $selected_low_sell_item
+                    ]) ?>
+                    <?= form_hidden('low_sell_item_id', $selected_low_sell_item_id) ?>
                 </div>
             </div>
         <?php } ?>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.is_deleted'), 'is_deleted', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-1">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.is_deleted'), 'is_deleted', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-0']) ?>
+            <div class="flex items-center pt-0.5">
                 <?= form_checkbox([
                     'name'    => 'is_deleted',
                     'id'      => 'is_deleted',

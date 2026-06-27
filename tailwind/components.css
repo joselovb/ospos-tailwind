@@ -42,8 +42,18 @@
     @apply !w-full !rounded-xl !border !border-brand-primary-border !bg-surface !px-4 !py-2.5 !text-sm !text-text-default placeholder:!text-text-muted/70 !transition focus:!outline-none focus:!ring-2 focus:!ring-brand-primary-ring;
   }
 
+  /* Sin flecha via background-image: un data-uri no puede leer
+   * variables CSS (var(--color-text-muted)) asi que el color quedaria
+   * hardcodeado y rompería el theming multi-negocio (regla dura del
+   * CLAUDE.md). La flecha se agrega en la View como SVG real absoluto
+   * (mismo patron que los iconos de ui-input), que SI hereda color de
+   * texto via currentColor normalmente. Ver .ui-select-arrow abajo. */
   .ui-select {
-    @apply !w-full !appearance-none !rounded-xl !border !border-brand-primary-border !bg-surface !bg-no-repeat !px-4 !py-2.5 !text-sm !pr-10 !text-text-default !transition focus:!outline-none focus:!ring-2 focus:!ring-brand-primary-ring;
+    @apply !w-full !appearance-none !rounded-xl !border !border-brand-primary-border !bg-surface !px-4 !py-2.5 !text-sm !pr-10 !text-text-default !transition focus:!outline-none focus:!ring-2 focus:!ring-brand-primary-ring;
+  }
+
+  .ui-select-arrow {
+    @apply !pointer-events-none !absolute !inset-y-0 !right-0 !flex !items-center !pr-3 !text-text-muted;
   }
 
   /* Variante compacta de ui-input para celdas densas (tablas, carrito) */
@@ -231,5 +241,27 @@
   #table_holder .columns .dropdown-menu label,
   #table_holder .export .dropdown-menu a {
     @apply !flex !items-center !gap-2 !px-3 !py-1.5 !text-sm !text-text-default;
+  }
+
+  /*
+   * jQuery Validate (form_support.error en manage_tables.js) agrega
+   * "has-error" al ".form-group" mas cercano del campo invalido en
+   * TODOS los formularios modales (.modal-dlg) de la app, no solo
+   * Items. No podemos quitarle la clase "form-group" a los wrappers
+   * (es el selector que usa el JS), asi que el estado de error se
+   * resuelve con CSS apuntando a ese combo.
+   */
+  .has-error .ui-input,
+  .has-error .ui-select,
+  .has-error .ui-input-compact {
+    @apply !border-state-danger focus:!ring-state-danger/40;
+  }
+
+  .has-error .ui-label {
+    @apply !text-state-danger;
+  }
+
+  label.error {
+    @apply !mt-1 !block !text-xs !text-state-danger;
   }
 }
