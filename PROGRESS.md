@@ -908,3 +908,19 @@
   - barcodes/barcode_sheet.php: NO tocado — página standalone con CSS propio de impresión.
   - cashups/form.php: datetimepicker para open_date/close_date con keyup AJAX para calcular total.
   - item_kits/form.php: tabla dinámica de ítems con JS append de filas y delete_item_kit_row.
+
+## 2026-06-27 - Modal container (BootstrapDialog) — redesño estético
+- Archivos: tailwind/components.css, public/css/tailwind-build.css
+- Estado: completo
+- Commits: 941828d8e (modal override), c8f0d784e (fix botón × close)
+- Notas:
+  - BootstrapDialog defaultea a TYPE_PRIMARY → header azul Bootstrap #337ab7. No se puede
+    cambiar en PHP (el HTML lo genera el plugin JS en runtime). Fix en components.css apuntando
+    a los selectores exactos del plugin con !important.
+  - Header: gradiente brand-primary → brand-primary-hover para todos los type-* del plugin.
+  - Botón ×: Bootstrap 3 pone color:#000 opacity:.2 directo en .close (el <button>), no
+    hereda del container. Hay que apuntar a .bootstrap-dialog-close-button .close, no al div.
+  - Footer: bg surface, border-top brand-primary-border, flex justify-end.
+  - Botones footer: btn-primary → gradiente marca; btn-danger → outlined state-danger.
+  - modal-content: border-radius 1rem, overflow hidden, sombra, border brand-primary-border.
+  - Aplica a TODAS las modales de la app automáticamente (sin tocar .php individuales).
