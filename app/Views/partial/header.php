@@ -167,7 +167,7 @@ $active_module = $request->getUri()->getSegment(1);
                         <li>
                             <a href="<?= base_url($module->module_id) ?>" title="<?= lang("Module.$module->module_id") ?>"
                                class="menu-icon flex items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors <?= $is_active ? 'bg-brand-primary-soft text-brand-primary' : 'text-text-muted hover:bg-brand-primary-soft hover:text-brand-primary' ?>">
-                                <img src="<?= base_url("images/menubar/$module->module_id.svg") ?>" style="border: none;" alt="" class="h-5 w-5 shrink-0">
+                                <?php $_icon = ROOTPATH . 'public/images/menubar/' . $module->module_id . '.svg'; echo file_exists($_icon) ? preg_replace('/<svg/', '<svg class="h-5 w-5 shrink-0"', file_get_contents($_icon), 1) : ''; ?>
                                 <?= lang('Module.' . $module->module_id) ?>
                             </a>
                         </li>
@@ -194,7 +194,7 @@ $active_module = $request->getUri()->getSegment(1);
                     <li>
                         <a href="<?= base_url($module->module_id) ?>" title="<?= lang("Module.$module->module_id") ?>"
                            class="menu-icon flex items-center gap-3 rounded-lg px-3 py-2.5 text-base font-medium transition-colors <?= $is_active ? 'bg-brand-primary-soft text-brand-primary' : 'text-text-default hover:bg-brand-primary-soft hover:text-brand-primary' ?>">
-                            <img src="<?= base_url("images/menubar/$module->module_id.svg") ?>" style="border: none;" alt="" class="h-6 w-6 shrink-0">
+                            <?php $_icon = ROOTPATH . 'public/images/menubar/' . $module->module_id . '.svg'; echo file_exists($_icon) ? preg_replace('/<svg/', '<svg class="h-6 w-6 shrink-0"', file_get_contents($_icon), 1) : ''; ?>
                             <?= lang('Module.' . $module->module_id) ?>
                         </a>
                     </li>
