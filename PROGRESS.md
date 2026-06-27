@@ -836,3 +836,45 @@
     bastan). Los screenshots de verificación anteriores pueden haber sido inválidos
     para componentes ui-* — las vistas ya committed están bien en HTML, solo el CSS
     faltaba. Ahora el build correcto tiene todos los ui-* compilados.
+
+## 2026-06-27 - Vista: Fase 4.11a — Módulo Configs completo
+- Archivos:
+  - app/Views/configs/manage.php (12 tabs con Alpine.js)
+  - app/Views/configs/info_config.php
+  - app/Views/configs/general_config.php
+  - app/Views/configs/tax_config.php
+  - app/Views/configs/locale_config.php
+  - app/Views/configs/barcode_config.php
+  - app/Views/configs/stock_config.php
+  - app/Views/configs/receipt_config.php
+  - app/Views/configs/invoice_config.php
+  - app/Views/configs/shortcuts_config.php
+  - app/Views/configs/reward_config.php
+  - app/Views/configs/table_config.php
+  - app/Views/configs/system_config.php (5 sub-tabs anidados Alpine)
+  - app/Views/configs/email_config.php
+  - app/Views/configs/message_config.php
+  - app/Views/configs/integrations_config.php
+  - app/Views/configs/license_config.php
+  - app/Views/configs/system_info.php
+  - app/Views/partial/stock_locations.php
+  - app/Views/partial/customer_rewards.php
+  - app/Views/partial/dinner_tables.php
+  - public/css/tailwind-build.css (rebuild)
+- Estado: completo
+- Commit: 042225f70
+- Notas:
+  - manage.php usa Alpine x-data="{ tab: 'info' }" con 12 panes y x-show + style="display:none"
+    en no-primeros para evitar flash antes de Alpine hidrata.
+  - system_config.php usa x-data="{ subtab: 'system' }" anidado dentro del pane 'system'
+    de manage.php — los scopes de Alpine son independientes, funciona correctamente.
+  - JS dinámico de clone en stock_config/reward_config/table_config: actualizadas las cadenas
+    de clase de Bootstrap ('control-label col-xs-2', 'form-control input-sm') a
+    ('ui-label text-sm w-36 shrink-0', 'X valid_chars ui-input') para que las filas
+    clonadas tengan el mismo look que las originales.
+  - Todos los IDs/name/data-* de JS, plugins (bootstrap-toggle, selectpicker, tagsinput,
+    jasny-bootstrap fileinput, ClipboardJS) preservados sin cambios.
+  - system_info.php: colores inline style="color: green/red" mantenidos como indicadores
+    funcionales de estado (no son colores de marca), aceptable por espíritu del CLAUDE.md.
+  - Todos los submit buttons convertidos de form_submit() a <button type="submit"> para
+    que ui-btn-primary funcione (input type="submit" no soporta inline-flex).

@@ -13,9 +13,17 @@
 - [x] Fase 2.8 - Categorías - no existe vista dedicada (autocomplete en items/form.php)
 - [x] Fase 3.9 - Customers (app/Views/customers + people/manage + people/form_basic_info)
 - [x] Fase 3.10 - Reportes (app/Views/reports)
-- [ ] Fase 4.11 - Configuración, empleados/usuarios, proveedores, y resto
-      (taxes, receivings, attributes, expenses, expenses_categories,
-      barcodes, cashups, item_kits, giftcards)
+- [x] Fase 4.11a - Configuración/Configs (app/Views/configs/) - 18 vistas + 3 partials
+- [ ] Fase 4.11b - Empleados/usuarios (app/Views/employees, app/Views/people)
+- [ ] Fase 4.11c - Proveedores (app/Views/suppliers)
+- [ ] Fase 4.11d - Taxes (app/Views/taxes)
+- [ ] Fase 4.11e - Receivings (app/Views/receivings)
+- [ ] Fase 4.11f - Attributes (app/Views/attributes)
+- [ ] Fase 4.11g - Expenses + expenses_categories (app/Views/expenses, app/Views/expenses_categories)
+- [ ] Fase 4.11h - Barcodes (app/Views/barcodes)
+- [ ] Fase 4.11i - Cashups (app/Views/cashups)
+- [ ] Fase 4.11j - Item kits (app/Views/item_kits)
+- [ ] Fase 4.11k - Giftcards (app/Views/giftcards)
 
 ## Para empezar la próxima sesión (handoff)
 
