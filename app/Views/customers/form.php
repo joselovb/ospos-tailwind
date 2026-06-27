@@ -9,443 +9,309 @@
  * @var string $employee
  * @var array $config
  */
+
+$has_stats = !empty($stats);
+$has_mailchimp = !empty($mailchimp_info) && !empty($mailchimp_activity);
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<div id="required_fields_message" class="ui-help-text mb-3 italic"><?= lang('Common.fields_required_message') ?></div>
+<ul id="error_message_box" class="error_message_box ui-alert-danger mb-3 block list-none empty:hidden"></ul>
 
 <?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'customer_form', 'class' => 'form-horizontal']) ?>
 
-    <ul class="nav nav-tabs nav-justified" data-tabs="tabs">
-        <li class="active" role="presentation">
-            <a data-toggle="tab" href="#customer_basic_info"><?= lang('Customers.basic_information') ?></a>
-        </li>
-        <?php if (!empty($stats)) { ?>
-            <li role="presentation">
-                <a data-toggle="tab" href="#customer_stats_info"><?= lang('Customers.stats_info') ?></a>
-            </li>
-        <?php } ?>
-        <?php if (!empty($mailchimp_info) && !empty($mailchimp_activity)) { ?>
-            <li role="presentation">
-                <a data-toggle="tab" href="#customer_mailchimp_info"><?= lang('Customers.mailchimp_info') ?></a>
-            </li>
-        <?php } ?>
-    </ul>
+<div x-data="{ tab: 'basic' }">
 
-    <div class="tab-content">
-        <div class="tab-pane fade in active" id="customer_basic_info">
-            <fieldset>
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Customers.consent'), 'consent', ['class' => 'required control-label col-xs-3']) ?>
-                    <div class="col-xs-1">
-                        <?= form_checkbox('consent', 1, $person_info->consent == '' ? !$config['enforce_privacy'] : (bool)$person_info->consent) ?>
-                    </div>
-                </div>
+    <?php if ($has_stats || $has_mailchimp): ?>
+    <div class="mb-4 flex border-b border-brand-primary-border">
+        <button type="button"
+                @click="tab = 'basic'"
+                :class="tab === 'basic' ? 'border-brand-primary text-brand-primary-active border-b-2 font-semibold' : 'text-text-muted hover:text-text-default'"
+                class="px-4 py-2 text-sm transition-colors -mb-px">
+            <?= lang('Customers.basic_information') ?>
+        </button>
+        <?php if ($has_stats): ?>
+        <button type="button"
+                @click="tab = 'stats'"
+                :class="tab === 'stats' ? 'border-brand-primary text-brand-primary-active border-b-2 font-semibold' : 'text-text-muted hover:text-text-default'"
+                class="px-4 py-2 text-sm transition-colors -mb-px">
+            <?= lang('Customers.stats_info') ?>
+        </button>
+        <?php endif; ?>
+        <?php if ($has_mailchimp): ?>
+        <button type="button"
+                @click="tab = 'mailchimp'"
+                :class="tab === 'mailchimp' ? 'border-brand-primary text-brand-primary-active border-b-2 font-semibold' : 'text-text-muted hover:text-text-default'"
+                class="px-4 py-2 text-sm transition-colors -mb-px">
+            <?= lang('Customers.mailchimp_info') ?>
+        </button>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
 
-                <?= view('people/form_basic_info') ?>
-
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Customers.discount_type'), 'discount_type', ['class' => 'control-label col-xs-3']) ?>
-                    <div class="col-xs-8">
-                        <label class="radio-inline">
-                            <?= form_radio([
-                                'name'    => 'discount_type',
-                                'type'    => 'radio',
-                                'id'      => 'discount_type',
-                                'value'   => 0,
-                                'checked' => $person_info->discount_type == PERCENT
-                            ]) ?> <?= lang('Customers.discount_percent') ?>
-                        </label>
-                        <label class="radio-inline">
-                            <?= form_radio([
-                                'name'    => 'discount_type',
-                                'type'    => 'radio',
-                                'id'      => 'discount_type',
-                                'value'   => 1,
-                                'checked' => $person_info->discount_type == FIXED
-                            ]) ?> <?= lang('Customers.discount_fixed') ?>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Customers.discount'), 'discount', ['class' => 'control-label col-xs-3']) ?>
-                    <div class="col-xs-3">
-                        <div class="input-group input-group-sm">
-                            <?= form_input([
-                                'name'    => 'discount',
-                                'id'      => 'discount',
-                                'class'   => 'form-control input-sm',
-                                'onClick' => 'this.select();',
-                                'value'   => $person_info->discount_type === FIXED ? to_currency_no_money($person_info->discount) : to_decimals($person_info->discount)
-                            ]) ?>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Customers.company_name'), 'customer_company_name', ['class' => 'control-label col-xs-3']) ?>
-                    <div class="col-xs-8">
-                        <?= form_input([
-                            'name'  => 'company_name',
-                            'id'    => 'customer_company_name',
-                            'class' => 'form-control input-sm',
-                            'value' => $person_info->company_name
-                        ]) ?>
-                    </div>
-                </div>
-
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Customers.account_number'), 'account_number', ['class' => 'control-label col-xs-3']) ?>
-                    <div class="col-xs-4">
-                        <?= form_input([
-                            'name'  => 'account_number',
-                            'id'    => 'account_number',
-                            'class' => 'form-control input-sm',
-                            'value' => $person_info->account_number
-                        ]) ?>
-                    </div>
-                </div>
-
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Customers.tax_id'), 'tax_id', ['class' => 'control-label col-xs-3']) ?>
-                    <div class="col-xs-4">
-                        <?= form_input([
-                            'name'  => 'tax_id',
-                            'id'    => 'tax_id',
-                            'class' => 'form-control input-sm',
-                            'value' => $person_info->tax_id
-                        ]) ?>
-                    </div>
-                </div>
-
-                <?php if ($config['customer_reward_enable']): ?>
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.rewards_package'), 'rewards', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-8">
-                            <?= form_dropdown(
-                                'package_id',
-                                $packages,
-                                $selected_package,
-                                'class="form-control input-sm"'
-                            ) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.available_points'), 'available_points', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'available_points',
-                                'id'       => 'available_points',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $person_info->points,
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Customers.taxable'), 'taxable', ['class' => 'control-label col-xs-3']) ?>
-                    <div class="col-xs-1">
-                        <?= form_checkbox('taxable', 1, $person_info->taxable == 1) ?>
-                    </div>
-                </div>
-
-                <?php if ($use_destination_based_tax) { ?>
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.tax_code'), 'sales_tax_code_name', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-8">
-                            <div class="input-group input-group-sm">
-                                <?= form_input([
-                                    'name'  => 'sales_tax_code_name',
-                                    'id'    => 'sales_tax_code_name',
-                                    'class' => 'form-control input-sm',
-                                    'size'  => '50',
-                                    'value' => $sales_tax_code_label
-                                ]) ?>
-                                <?= form_hidden('sales_tax_code_id', $person_info->sales_tax_code_id) ?>
-                            </div>
-                        </div>
-                    </div>
-                <?php } ?>
-
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Customers.date'), 'date', ['class' => 'control-label col-xs-3']) ?>
-                    <div class="col-xs-8">
-                        <div class="input-group">
-                            <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
-                            <?= form_input([
-                                'name'     => 'date',
-                                'id'       => 'datetime',
-                                'class'    => 'form-control input-sm',
-                                'value'    => to_datetime(strtotime($person_info->date)),
-                                'readonly' => 'true'
-                            ]) ?>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group form-group-sm">
-                    <?= form_label(lang('Customers.employee'), 'employee', ['class' => 'control-label col-xs-3']) ?>
-                    <div class="col-xs-8">
-                        <?= form_input([
-                            'name'     => 'employee',
-                            'id'       => 'employee',
-                            'class'    => 'form-control input-sm',
-                            'value'    => $employee,
-                            'readonly' => 'true'
-                        ]) ?>
-                    </div>
-                </div>
-
-                <?= form_hidden('employee_id', $person_info->employee_id) ?>
-            </fieldset>
+    <!-- Tab: Basic Info -->
+    <div x-show="tab === 'basic'" class="space-y-4">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Customers.consent'), 'consent', ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-0']) ?>
+            <div class="flex items-center pt-0.5">
+                <?= form_checkbox('consent', 1, $person_info->consent == '' ? !$config['enforce_privacy'] : (bool)$person_info->consent) ?>
+            </div>
         </div>
 
-        <?php if (!empty($stats)) { ?>
-            <br>
-            <div class="tab-pane" id="customer_stats_info">
-                <fieldset>
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.total'), 'total', ['class' => 'control-label col-xs-5']) ?>
-                        <div class="col-xs-4">
-                            <div class="input-group input-group-sm">
-                                <?php if (!is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                                <?php endif; ?>
-                                <?= form_input([
-                                    'name'     => 'total',
-                                    'id'       => 'total',
-                                    'class'    => 'form-control input-sm',
-                                    'value'    => to_currency_no_money($stats->total),
-                                    'disabled' => ''
-                                ]) ?>
-                                <?php if (is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
+        <?= view('people/form_basic_info') ?>
 
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.max'), 'max', ['class' => 'control-label col-xs-5']) ?>
-                        <div class="col-xs-4">
-                            <div class="input-group input-group-sm">
-                                <?php if (!is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                                <?php endif; ?>
-                                <?= form_input([
-                                    'name'     => 'max',
-                                    'id'       => 'max',
-                                    'class'    => 'form-control input-sm',
-                                    'value'    => to_currency_no_money($stats->max),
-                                    'disabled' => ''
-                                ]) ?>
-                                <?php if (is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Customers.discount_type'), 'discount_type', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2']) ?>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+                <label class="radio-inline flex items-center gap-2 text-sm text-text-default">
+                    <?= form_radio([
+                        'name'    => 'discount_type',
+                        'type'    => 'radio',
+                        'id'      => 'discount_type',
+                        'value'   => 0,
+                        'checked' => $person_info->discount_type == PERCENT
+                    ]) ?> <?= lang('Customers.discount_percent') ?>
+                </label>
+                <label class="radio-inline flex items-center gap-2 text-sm text-text-default">
+                    <?= form_radio([
+                        'name'    => 'discount_type',
+                        'type'    => 'radio',
+                        'id'      => 'discount_type',
+                        'value'   => 1,
+                        'checked' => $person_info->discount_type == FIXED
+                    ]) ?> <?= lang('Customers.discount_fixed') ?>
+                </label>
+            </div>
+        </div>
 
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.min'), 'min', ['class' => 'control-label col-xs-5']) ?>
-                        <div class="col-xs-4">
-                            <div class="input-group input-group-sm">
-                                <?php if (!is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                                <?php endif; ?>
-                                <?= form_input([
-                                    'name'     => 'min',
-                                    'id'       => 'min',
-                                    'class'    => 'form-control input-sm',
-                                    'value'    => to_currency_no_money($stats->min),
-                                    'disabled' => ''
-                                ]) ?>
-                                <?php if (is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Customers.discount'), 'discount', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="max-w-40">
+                <?= form_input([
+                    'name'    => 'discount',
+                    'id'      => 'discount',
+                    'class'   => 'ui-input',
+                    'onClick' => 'this.select();',
+                    'value'   => $person_info->discount_type === FIXED ? to_currency_no_money($person_info->discount) : to_decimals($person_info->discount)
+                ]) ?>
+            </div>
+        </div>
 
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.average'), 'average', ['class' => 'control-label col-xs-5']) ?>
-                        <div class="col-xs-4">
-                            <div class="input-group input-group-sm">
-                                <?php if (!is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                                <?php endif; ?>
-                                <?= form_input([
-                                    'name'     => 'average',
-                                    'id'       => 'average',
-                                    'class'    => 'form-control input-sm',
-                                    'value'    => to_currency_no_money($stats->average),
-                                    'disabled' => ''
-                                ]) ?>
-                                <?php if (is_right_side_currency_symbol()): ?>
-                                    <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Customers.company_name'), 'customer_company_name', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div>
+                <?= form_input([
+                    'name'  => 'company_name',
+                    'id'    => 'customer_company_name',
+                    'class' => 'ui-input',
+                    'value' => $person_info->company_name
+                ]) ?>
+            </div>
+        </div>
 
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.quantity'), 'quantity', ['class' => 'control-label col-xs-5']) ?>
-                        <div class="col-xs-4">
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-addon input-sm"><b><?= '>' ?></b></span>
-                                <?= form_input([
-                                    'name'     => 'quantity',
-                                    'id'       => 'quantity',
-                                    'class'    => 'form-control input-sm',
-                                    'value'    => to_quantity_decimals($stats->quantity),
-                                    'disabled' => ''
-                                ]) ?>
-                            </div>
-                        </div>
-                    </div>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Customers.account_number'), 'account_number', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="max-w-50">
+                <?= form_input([
+                    'name'  => 'account_number',
+                    'id'    => 'account_number',
+                    'class' => 'ui-input',
+                    'value' => $person_info->account_number
+                ]) ?>
+            </div>
+        </div>
 
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.avg_discount'), 'avg_discount', ['class' => 'control-label col-xs-5']) ?>
-                        <div class="col-xs-4">
-                            <div class="input-group input-group-sm">
-                                <?= form_input([
-                                    'name'     => 'avg_discount',
-                                    'id'       => 'avg_discount',
-                                    'class'    => 'form-control input-sm',
-                                    'value'    => to_decimals($stats->avg_discount),
-                                    'disabled' => ''
-                                ]) ?>
-                                <span class="input-group-addon input-sm"><b>%</b></span>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Customers.tax_id'), 'tax_id', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="max-w-50">
+                <?= form_input([
+                    'name'  => 'tax_id',
+                    'id'    => 'tax_id',
+                    'class' => 'ui-input',
+                    'value' => $person_info->tax_id
+                ]) ?>
+            </div>
+        </div>
+
+        <?php if ($config['customer_reward_enable']): ?>
+            <div class="form-group sm:flex sm:items-start sm:gap-4">
+                <?= form_label(lang('Customers.rewards_package'), 'rewards', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+                <div class="relative">
+                    <?= form_dropdown('package_id', $packages, $selected_package, ['class' => 'ui-select']) ?>
+                    <span class="ui-select-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group sm:flex sm:items-start sm:gap-4">
+                <?= form_label(lang('Customers.available_points'), 'available_points', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+                <div class="max-w-40">
+                    <?= form_input([
+                        'name'     => 'available_points',
+                        'id'       => 'available_points',
+                        'class'    => 'ui-input opacity-60 cursor-not-allowed',
+                        'value'    => $person_info->points,
+                        'disabled' => ''
+                    ]) ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Customers.taxable'), 'taxable', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-0']) ?>
+            <div class="flex items-center pt-0.5">
+                <?= form_checkbox('taxable', 1, $person_info->taxable == 1) ?>
+            </div>
+        </div>
+
+        <?php if ($use_destination_based_tax) { ?>
+            <div class="form-group sm:flex sm:items-start sm:gap-4">
+                <?= form_label(lang('Customers.tax_code'), 'sales_tax_code_name', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+                <div>
+                    <?= form_input([
+                        'name'  => 'sales_tax_code_name',
+                        'id'    => 'sales_tax_code_name',
+                        'class' => 'ui-input',
+                        'size'  => '50',
+                        'value' => $sales_tax_code_label
+                    ]) ?>
+                    <?= form_hidden('sales_tax_code_id', $person_info->sales_tax_code_id) ?>
+                </div>
             </div>
         <?php } ?>
 
-        <?php if (!empty($mailchimp_info) && !empty($mailchimp_activity)) { ?>
-            <div class="tab-pane" id="customer_mailchimp_info">
-                <fieldset>
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_status'), 'mailchimp_status', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_dropdown(
-                                'mailchimp_status',
-                                [
-                                    'subscribed'   => 'subscribed',
-                                    'unsubscribed' => 'unsubscribed',
-                                    'cleaned'      => 'cleaned',
-                                    'pending'      => 'pending'
-                                ],
-                                $mailchimp_info['status'],
-                                ['id' => 'mailchimp_status', 'class' => 'form-control input-sm']
-                            ) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_vip'), 'mailchimp_vip', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-1">
-                            <?= form_checkbox('mailchimp_vip', 1, $mailchimp_info['vip'] == 1) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_member_rating'), 'mailchimp_member_rating', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_member_rating',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_info['member_rating'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_activity_total'), 'mailchimp_activity_total', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_activity_total',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_activity['total'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_activity_lastopen'), 'mailchimp_activity_lastopen', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_activity_lastopen',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_activity['lastopen'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_activity_open'), 'mailchimp_activity_open', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_activity_open',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_activity['open'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_activity_click'), 'mailchimp_activity_click', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_activity_click',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_activity['click'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_activity_unopen'), 'mailchimp_activity_unopen', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_activity_unopen',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_activity['unopen'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-
-                    <div class="form-group form-group-sm">
-                        <?= form_label(lang('Customers.mailchimp_email_client'), 'mailchimp_email_client', ['class' => 'control-label col-xs-3']) ?>
-                        <div class="col-xs-4">
-                            <?= form_input([
-                                'name'     => 'mailchimp_email_client',
-                                'class'    => 'form-control input-sm',
-                                'value'    => $mailchimp_info['email_client'],
-                                'disabled' => ''
-                            ]) ?>
-                        </div>
-                    </div>
-                </fieldset>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Customers.date'), 'date', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative max-w-60">
+                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </span>
+                <?= form_input([
+                    'name'     => 'date',
+                    'id'       => 'datetime',
+                    'class'    => 'ui-input pl-10 opacity-60 cursor-not-allowed',
+                    'value'    => to_datetime(strtotime($person_info->date)),
+                    'readonly' => 'true'
+                ]) ?>
             </div>
-        <?php } ?>
+        </div>
+
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Customers.employee'), 'employee', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div>
+                <?= form_input([
+                    'name'     => 'employee',
+                    'id'       => 'employee',
+                    'class'    => 'ui-input opacity-60 cursor-not-allowed',
+                    'value'    => $employee,
+                    'readonly' => 'true'
+                ]) ?>
+            </div>
+        </div>
+
+        <?= form_hidden('employee_id', $person_info->employee_id) ?>
     </div>
+
+    <?php if ($has_stats): ?>
+    <!-- Tab: Stats -->
+    <div x-show="tab === 'stats'" class="space-y-4" style="display:none">
+        <?php
+        $stats_fields = [
+            ['label' => lang('Customers.total'),        'id' => 'total',       'value' => to_currency_no_money($stats->total),           'symbol' => true],
+            ['label' => lang('Customers.max'),          'id' => 'max',         'value' => to_currency_no_money($stats->max),             'symbol' => true],
+            ['label' => lang('Customers.min'),          'id' => 'min',         'value' => to_currency_no_money($stats->min),             'symbol' => true],
+            ['label' => lang('Customers.average'),      'id' => 'average',     'value' => to_currency_no_money($stats->average),         'symbol' => true],
+            ['label' => lang('Customers.quantity'),     'id' => 'quantity',    'value' => to_quantity_decimals($stats->quantity),        'prefix' => '≥',  'symbol' => false],
+            ['label' => lang('Customers.avg_discount'), 'id' => 'avg_discount','value' => to_decimals($stats->avg_discount),             'suffix' => '%',  'symbol' => false],
+        ];
+        foreach ($stats_fields as $field):
+        ?>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label($field['label'], $field['id'], ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative max-w-50">
+                <?php if (!empty($field['symbol']) && !is_right_side_currency_symbol()): ?>
+                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
+                <?php elseif (!empty($field['prefix'])): ?>
+                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-sm font-semibold text-text-muted"><?= $field['prefix'] ?></span>
+                <?php endif; ?>
+                <?= form_input([
+                    'name'     => $field['id'],
+                    'id'       => $field['id'],
+                    'class'    => 'ui-input opacity-60 cursor-not-allowed'
+                        . ((!empty($field['symbol']) && !is_right_side_currency_symbol()) || !empty($field['prefix']) ? ' pl-8' : '')
+                        . ((!empty($field['symbol']) && is_right_side_currency_symbol()) || !empty($field['suffix']) ? ' pr-8' : ''),
+                    'value'    => $field['value'],
+                    'disabled' => ''
+                ]) ?>
+                <?php if (!empty($field['symbol']) && is_right_side_currency_symbol()): ?>
+                    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
+                <?php elseif (!empty($field['suffix'])): ?>
+                    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted"><?= $field['suffix'] ?></span>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+
+    <?php if ($has_mailchimp): ?>
+    <!-- Tab: Mailchimp -->
+    <div x-show="tab === 'mailchimp'" class="space-y-4" style="display:none">
+
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Customers.mailchimp_status'), 'mailchimp_status', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative">
+                <?= form_dropdown('mailchimp_status', [
+                    'subscribed'   => 'subscribed',
+                    'unsubscribed' => 'unsubscribed',
+                    'cleaned'      => 'cleaned',
+                    'pending'      => 'pending'
+                ], $mailchimp_info['status'], ['id' => 'mailchimp_status', 'class' => 'ui-select']) ?>
+                <span class="ui-select-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Customers.mailchimp_vip'), 'mailchimp_vip', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-0']) ?>
+            <div class="flex items-center pt-0.5">
+                <?= form_checkbox('mailchimp_vip', 1, $mailchimp_info['vip'] == 1) ?>
+            </div>
+        </div>
+
+        <?php
+        $mc_fields = [
+            ['label' => lang('Customers.mailchimp_member_rating'),       'id' => '',                          'value' => $mailchimp_info['member_rating']],
+            ['label' => lang('Customers.mailchimp_activity_total'),      'id' => 'mailchimp_activity_total',  'value' => $mailchimp_activity['total']],
+            ['label' => lang('Customers.mailchimp_activity_lastopen'),   'id' => 'mailchimp_activity_lastopen','value' => $mailchimp_activity['lastopen']],
+            ['label' => lang('Customers.mailchimp_activity_open'),       'id' => 'mailchimp_activity_open',   'value' => $mailchimp_activity['open']],
+            ['label' => lang('Customers.mailchimp_activity_click'),      'id' => 'mailchimp_activity_click',  'value' => $mailchimp_activity['click']],
+            ['label' => lang('Customers.mailchimp_activity_unopen'),     'id' => 'mailchimp_activity_unopen', 'value' => $mailchimp_activity['unopen']],
+            ['label' => lang('Customers.mailchimp_email_client'),        'id' => 'mailchimp_email_client',    'value' => $mailchimp_info['email_client']],
+        ];
+        foreach ($mc_fields as $field):
+        ?>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label($field['label'], $field['id'], ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="max-w-50">
+                <?= form_input([
+                    'name'     => $field['id'],
+                    'class'    => 'ui-input opacity-60 cursor-not-allowed',
+                    'value'    => $field['value'],
+                    'disabled' => ''
+                ]) ?>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
+
+</div>
 
 <?= form_close() ?>
 
 <script type="text/javascript">
-    // Validation and submit handling
     $(document).ready(function() {
         $("input[name='sales_tax_code_name']").change(function() {
             if (!$("input[name='sales_tax_code_name']").val()) {
@@ -492,7 +358,6 @@
                         type: 'POST',
                         data: {
                             'person_id': "<?= $person_info->person_id ?>"
-                            // Email is posted by default
                         }
                     }
                 },
@@ -502,7 +367,6 @@
                         type: 'POST',
                         data: {
                             'person_id': "<?= $person_info->person_id ?>"
-                            // Account_number is posted by default
                         }
                     }
                 }
