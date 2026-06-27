@@ -105,6 +105,7 @@ $active_module = $request->getUri()->getSegment(1);
     <!-- Tailwind refactor visual - convive con Bootstrap durante la transicion -->
     <link rel="stylesheet" href="<?= base_url('css/tailwind-build.css') ?>">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 
     <?= view('partial/header_js') ?>
     <?= view('partial/lang_lines') ?>
@@ -115,6 +116,30 @@ $active_module = $request->getUri()->getSegment(1);
         }
     </style>
 </head>
+
+<?php
+$module_icons = [
+    'home'                => 'ph:house',
+    'sales'               => 'ph:shopping-cart',
+    'items'               => 'ph:tag',
+    'customers'           => 'ph:users',
+    'employees'           => 'ph:user-list',
+    'suppliers'           => 'ph:truck',
+    'receivings'          => 'ph:package',
+    'reports'             => 'ph:chart-bar',
+    'expenses'            => 'ph:money',
+    'expenses_categories' => 'ph:folder-simple',
+    'giftcards'           => 'ph:gift',
+    'item_kits'           => 'ph:stack',
+    'taxes'               => 'ph:receipt',
+    'attributes'          => 'ph:sliders-horizontal',
+    'cashups'             => 'ph:currency-dollar',
+    'messages'            => 'ph:envelope-simple',
+    'config'              => 'ph:gear',
+    'migrate'             => 'ph:arrows-clockwise',
+    'office'              => 'ph:buildings',
+];
+?>
 
 <body class="tw min-h-screen flex flex-col"
       x-data="{
@@ -192,12 +217,7 @@ $active_module = $request->getUri()->getSegment(1);
                     <a href="<?= base_url($module->module_id) ?>"
                        class="menu-icon flex items-center gap-3 rounded-lg px-2 py-2.5 text-sm font-medium transition-colors <?= $is_active ? 'bg-brand-primary-soft text-brand-primary' : 'text-text-muted hover:bg-brand-primary-soft hover:text-brand-primary' ?>"
                        :title="sidebarExpanded ? undefined : '<?= lang('Module.' . $module->module_id) ?>'">
-                        <?php
-                        $_icon = ROOTPATH . 'public/images/menubar/' . $module->module_id . '.svg';
-                        echo file_exists($_icon)
-                            ? preg_replace('/<svg/', '<svg class="h-5 w-5 shrink-0"', file_get_contents($_icon), 1)
-                            : '';
-                        ?>
+                        <iconify-icon icon="<?= $module_icons[$module->module_id] ?? 'ph:circle' ?>" width="20" height="20" class="shrink-0" aria-hidden="true"></iconify-icon>
                         <span class="whitespace-nowrap transition-[opacity] duration-200"
                               :class="sidebarExpanded ? 'opacity-100' : 'opacity-0 pointer-events-none'">
                             <?= lang('Module.' . $module->module_id) ?>
@@ -264,12 +284,7 @@ $active_module = $request->getUri()->getSegment(1);
                     <?php $is_active = $module->module_id == $active_module; ?>
                     <a href="<?= base_url($module->module_id) ?>"
                        class="menu-icon flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors <?= $is_active ? 'bg-brand-primary-soft text-brand-primary' : 'text-text-default hover:bg-brand-primary-soft hover:text-brand-primary' ?>">
-                        <?php
-                        $_icon = ROOTPATH . 'public/images/menubar/' . $module->module_id . '.svg';
-                        echo file_exists($_icon)
-                            ? preg_replace('/<svg/', '<svg class="h-5 w-5 shrink-0"', file_get_contents($_icon), 1)
-                            : '';
-                        ?>
+                        <iconify-icon icon="<?= $module_icons[$module->module_id] ?? 'ph:circle' ?>" width="20" height="20" class="shrink-0" aria-hidden="true"></iconify-icon>
                         <?= lang('Module.' . $module->module_id) ?>
                     </a>
                 <?php endforeach; ?>
