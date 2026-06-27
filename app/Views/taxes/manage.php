@@ -10,42 +10,51 @@
     dialog_support.init("a.modal-dlg");
 </script>
 
-<ul class="nav nav-tabs" data-tabs="tabs">
-    <li class="active" role="presentation">
-        <a data-toggle="tab" href="#tax_codes_tab" title="<?= lang(ucfirst($controller_name) . '.tax_codes_configuration') ?>">
-            <?= lang(ucfirst($controller_name) . '.tax_codes') ?>
-        </a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#tax_jurisdictions_tab" title="<?= lang(ucfirst($controller_name) . '.tax_jurisdictions_configuration') ?>">
-            <?= lang(ucfirst($controller_name) . '.tax_jurisdictions') ?>
-        </a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#tax_categories_tab" title="<?= lang(ucfirst($controller_name) . '.tax_categories_configuration') ?>">
-            <?= lang(ucfirst($controller_name) . '.tax_categories') ?>
-        </a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#tax_rates_tab" title="<?= lang(ucfirst($controller_name) . '.tax_rate_configuration') ?>">
-            <?= lang(ucfirst($controller_name) . '.tax_rates') ?>
-        </a>
-    </li>
-</ul>
+<div x-data="{ tab: 'tax_codes' }">
 
-<div class="tab-content">
-    <div class="tab-pane fade in active" id="tax_codes_tab">
+    <div class="flex gap-1 border-b border-brand-primary-border mb-6 overflow-x-auto">
+        <button type="button"
+                @click="tab = 'tax_codes'"
+                :class="tab === 'tax_codes' ? 'border-b-2 border-brand-primary text-brand-primary font-semibold' : 'text-text-muted hover:text-brand-primary'"
+                class="px-4 py-2.5 text-sm transition-colors whitespace-nowrap -mb-px">
+            <?= lang(ucfirst($controller_name) . '.tax_codes') ?>
+        </button>
+        <button type="button"
+                @click="tab = 'tax_jurisdictions'"
+                :class="tab === 'tax_jurisdictions' ? 'border-b-2 border-brand-primary text-brand-primary font-semibold' : 'text-text-muted hover:text-brand-primary'"
+                class="px-4 py-2.5 text-sm transition-colors whitespace-nowrap -mb-px">
+            <?= lang(ucfirst($controller_name) . '.tax_jurisdictions') ?>
+        </button>
+        <button type="button"
+                @click="tab = 'tax_categories'"
+                :class="tab === 'tax_categories' ? 'border-b-2 border-brand-primary text-brand-primary font-semibold' : 'text-text-muted hover:text-brand-primary'"
+                class="px-4 py-2.5 text-sm transition-colors whitespace-nowrap -mb-px">
+            <?= lang(ucfirst($controller_name) . '.tax_categories') ?>
+        </button>
+        <button type="button"
+                @click="tab = 'tax_rates'"
+                :class="tab === 'tax_rates' ? 'border-b-2 border-brand-primary text-brand-primary font-semibold' : 'text-text-muted hover:text-brand-primary'"
+                class="px-4 py-2.5 text-sm transition-colors whitespace-nowrap -mb-px">
+            <?= lang(ucfirst($controller_name) . '.tax_rates') ?>
+        </button>
+    </div>
+
+    <div x-show="tab === 'tax_codes'">
         <?= view('taxes/tax_codes') ?>
     </div>
-    <div class="tab-pane" id="tax_jurisdictions_tab">
+
+    <div x-show="tab === 'tax_jurisdictions'" style="display:none">
         <?= view('taxes/tax_jurisdictions') ?>
     </div>
-    <div class="tab-pane" id="tax_categories_tab">
+
+    <div x-show="tab === 'tax_categories'" style="display:none">
         <?= view('taxes/tax_categories') ?>
     </div>
-    <div class="tab-pane" id="tax_rates_tab">
+
+    <div x-show="tab === 'tax_rates'" style="display:none">
         <?= view('taxes/tax_rates') ?>
     </div>
+
 </div>
 
 <?= view('partial/footer') ?>

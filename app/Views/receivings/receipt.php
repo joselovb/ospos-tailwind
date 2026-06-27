@@ -20,17 +20,19 @@
 
 <?php
 if (isset($error_message)) {
-    echo '<div class="alert alert-dismissible alert-danger">' . esc($error_message) . '</div>';
+    echo '<div class="mb-4 rounded-xl bg-state-danger-soft px-4 py-3 text-sm text-state-danger">' . esc($error_message) . '</div>';
     exit;
 }
 
-echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'selected_printer' => 'receipt_printer']) ?>
+echo view('partial/print_receipt', ['print_after_sale', $print_after_sale, 'selected_printer' => 'receipt_printer'])
+?>
 
-<div class="print_hide" id="control_buttons" style="text-align: right;">
-    <a href="javascript:printdoc();">
-        <div class="btn btn-info btn-sm" id="show_print_button"><?= '<span class="glyphicon glyphicon-print">&nbsp;</span>' . lang('Common.print') ?></div>
+<div class="print_hide mb-4 flex items-center justify-end gap-2" id="control_buttons">
+    <a href="javascript:printdoc();" class="ui-btn-secondary">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <?= lang('Common.print') ?>
     </a>
-    <?= anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp;</span>' . lang('Receivings.register'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_sales_button']) ?>
+    <?= anchor("receivings", '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v14z"/></svg>' . lang('Receivings.register'), ['class' => 'ui-btn-primary', 'id' => 'show_sales_button']) ?>
 </div>
 
 <div id="receipt_wrapper">

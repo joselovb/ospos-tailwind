@@ -10,97 +10,92 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<div id="required_fields_message" class="mb-3 text-sm text-text-muted"><?= lang('Common.fields_required_message') ?></div>
+<ul id="error_message_box" class="mb-4 list-none empty:hidden rounded-xl bg-state-danger-soft px-4 py-3 text-sm text-state-danger space-y-1"></ul>
 
-<?= form_open("attributes/saveDefinition/$definition_id", ['id' => 'attribute_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="attribute_basic_info">
+<?= form_open("attributes/saveDefinition/$definition_id", ['id' => 'attribute_form']) ?>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Attributes.definition_name'), 'definition_name', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'  => 'definition_name',
-                    'id'    => 'definition_name',
-                    'class' => 'form-control input-sm',
-                    'value' => esc($definition_info->definition_name)
-                ]) ?>
-            </div>
+<fieldset id="attribute_basic_info" class="space-y-4">
+
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="definition_name" class="required ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Attributes.definition_name') ?></label>
+        <div class="flex-1">
+            <?= form_input([
+                'name'  => 'definition_name',
+                'id'    => 'definition_name',
+                'class' => 'ui-input',
+                'value' => esc($definition_info->definition_name)
+            ]) ?>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Attributes.definition_type'), 'definition_type', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control"') ?>
-            </div>
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="definition_type" class="required ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Attributes.definition_type') ?></label>
+        <div class="relative flex-1">
+            <?= form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="ui-select"') ?>
+            <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Attributes.definition_group'), 'definition_group', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown(
-                    'definition_group',
-                    $definition_group,
-                    $definition_info->definition_fk,
-                    'id="definition_group" class="form-control" ' . (empty($definition_group) ? 'disabled="disabled"' : '')
-                ) ?>
-            </div>
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="definition_group" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Attributes.definition_group') ?></label>
+        <div class="relative flex-1">
+            <?= form_dropdown(
+                'definition_group',
+                $definition_group,
+                $definition_info->definition_fk,
+                'id="definition_group" class="ui-select" ' . (empty($definition_group) ? 'disabled="disabled"' : '')
+            ) ?>
+            <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm hidden">
-            <?= form_label(lang('Attributes.definition_flags'), 'definition_flags', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <?= form_multiselect('definition_flags[]', $definition_flags, array_keys($selected_definition_flags), [
-                        'id'                        => 'definition_flags',
-                        'class'                     => 'selectpicker show-menu-arrow',
-                        'data-none-selected-text'   => lang('Common.none_selected_text'),
-                        'data-selected-text-format' => 'count > 1',
-                        'data-style'                => 'btn-default btn-sm',
-                        'data-width'                => 'fit'
-                    ]) ?>
-                </div>
-            </div>
+    <div class="sm:flex sm:items-start sm:gap-4 hidden">
+        <label for="definition_flags" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Attributes.definition_flags') ?></label>
+        <div class="flex-1">
+            <?= form_multiselect('definition_flags[]', $definition_flags, array_keys($selected_definition_flags), [
+                'id'                        => 'definition_flags',
+                'class'                     => 'selectpicker show-menu-arrow',
+                'data-none-selected-text'   => lang('Common.none_selected_text'),
+                'data-selected-text-format' => 'count > 1',
+                'data-style'                => 'btn-default btn-sm',
+                'data-width'                => 'fit'
+            ]) ?>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm hidden">
-            <?= form_label(lang('Attributes.definition_unit'), 'definition_units', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <?= form_input([
-                        'name'  => 'definition_unit',
-                        'value' => esc($definition_info->definition_unit),
-                        'class' => 'form-control input-sm',
-                        'id'    => 'definition_unit'
-                    ]) ?>
-                </div>
-            </div>
+    <div class="sm:flex sm:items-start sm:gap-4 hidden">
+        <label for="definition_unit" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Attributes.definition_unit') ?></label>
+        <div class="flex-1">
+            <?= form_input([
+                'name'  => 'definition_unit',
+                'value' => esc($definition_info->definition_unit),
+                'class' => 'ui-input',
+                'id'    => 'definition_unit'
+            ]) ?>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm hidden">
-            <?= form_label(lang('Attributes.definition_values'), 'definition_value', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <?= form_input(['name' => 'definition_value', 'class' => 'form-control input-sm', 'id' => 'definition_value']) ?>
-                    <span id="add_attribute_value" class="input-group-addon input-sm btn btn-default">
-                        <span class="glyphicon glyphicon-plus-sign"></span>
-                    </span>
-                </div>
-            </div>
+    <div class="sm:flex sm:items-start sm:gap-4 hidden">
+        <label for="definition_value" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Attributes.definition_values') ?></label>
+        <div class="flex flex-1 gap-2">
+            <?= form_input(['name' => 'definition_value', 'class' => 'ui-input flex-1', 'id' => 'definition_value']) ?>
+            <button type="button" id="add_attribute_value" class="ui-btn-secondary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm hidden">
-            <?= form_label('&nbsp;', 'definition_list_group', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <ul id="definition_list_group" class="list-group"></ul>
-            </div>
-        </div>
+    <div class="sm:flex sm:items-start sm:gap-4 hidden">
+        <label class="ui-label sm:w-44 sm:shrink-0">&nbsp;</label>
+        <ul id="definition_list_group" class="flex-1 divide-y divide-brand-primary-border rounded-xl border border-brand-primary-border overflow-hidden"></ul>
+    </div>
 
-    </fieldset>
+</fieldset>
+
 <?= form_close() ?>
 
 <script type="text/javascript">
-    // Validation and submit handling
     $(document).ready(function() {
         var values = [];
         var definition_id = <?= esc($definition_id, 'js') ?>;
@@ -125,8 +120,8 @@
             if (definition_id == -1) {
                 $('#definition_name').prop("disabled", true);
                 $('#definition_type').prop("disabled", true);
-                $('#definition_group').parents('.form-group').toggleClass("hidden", true);
-                $('#definition_flags').parents('.form-group').toggleClass('hidden', true);
+                $('#definition_group').parents('.sm\\:flex').toggleClass("hidden", true);
+                $('#definition_flags').parents('.sm\\:flex').toggleClass('hidden', true);
             }
         }
         disable_category_dropdown();
@@ -135,14 +130,12 @@
             var is_dropdown = $('#definition_type').val() !== '1';
             var is_decimal = $('#definition_type').val() !== '2';
             var is_no_group = $('#definition_type').val() !== '0';
-            var is_category_dropdown = definition_id == -1;
 
-            $('#definition_value, #definition_list_group').parents('.form-group').toggleClass('hidden', is_dropdown);
-            $('#definition_unit').parents('.form-group').toggleClass('hidden', is_decimal);
+            $('#definition_value, #definition_list_group').parents('.sm\\:flex').toggleClass('hidden', is_dropdown);
+            $('#definition_unit').parents('.sm\\:flex').toggleClass('hidden', is_decimal);
 
-            // Appropriately show definition flags if not category_dropdown
             if (definition_id != -1) {
-                $('#definition_flags').parents('.form-group').toggleClass('hidden', !is_no_group);
+                $('#definition_flags').parents('.sm\\:flex').toggleClass('hidden', !is_no_group);
             }
         };
 
@@ -192,7 +185,7 @@
                 }
             }
 
-            $('#definition_list_group').append('<li class="list-group-item">' + DOMPurify.sanitize(value) + '<a href="javascript:void(0);"><span class="glyphicon glyphicon-trash pull-right"></span></a></li>')
+            $('#definition_list_group').append('<li class="flex items-center justify-between px-3 py-2 text-sm text-text-default bg-surface">' + DOMPurify.sanitize(value) + '<a href="javascript:void(0);" class="text-state-danger hover:text-state-danger ml-2"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></a></li>')
                 .find(':last-child a').click(remove_attribute_value);
             $('#definition_value').val('');
         };

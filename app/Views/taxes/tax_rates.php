@@ -18,18 +18,21 @@
     });
 </script>
 
-<div id="title_bar" class="btn-toolbar">
-    <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= esc("$controller_name/view") ?>" title="<?= lang(ucfirst($controller_name) . ".new") ?>">
-        <span class="glyphicon glyphicon-usd">&nbsp;</span><?= lang(ucfirst($controller_name) . ".new") ?>
+<div id="title_bar" class="mb-4 flex items-center justify-end gap-2">
+    <button class="ui-btn-primary modal-dlg"
+            data-btn-submit="<?= lang('Common.submit') ?>"
+            data-href="<?= esc("$controller_name/view") ?>"
+            title="<?= lang(ucfirst($controller_name) . '.new') ?>">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <?= lang(ucfirst($controller_name) . '.new') ?>
     </button>
 </div>
 
-<div id="toolbar">
-    <div class="pull-left btn-toolbar">
-        <button id="delete" class="btn btn-default btn-sm">
-            <span class="glyphicon glyphicon-trash">&nbsp;</span><?= lang('Common.delete') ?>
-        </button>
-    </div>
+<div id="toolbar" class="mb-3">
+    <button id="delete" class="ui-btn-secondary !text-state-danger hover:!bg-state-danger-soft">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        <?= lang('Common.delete') ?>
+    </button>
 </div>
 
 <div id="table_holder">
