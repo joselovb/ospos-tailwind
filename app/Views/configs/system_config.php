@@ -1,17 +1,43 @@
-<br>
-<div class="container-fluid">
-    <ul class="nav nav-tabs" id="myTabs" data-toggle="tab">
-        <li class="active"><a href="#system_tabs" data-toggle="tab" title="<?= lang('Config.system_conf') ?>"><?= lang('Config.system_conf') ?></a></li>
-        <li><a href="#email_tabs" data-toggle="tab" title="<?= lang('Config.email_configuration') ?>"><?= lang('Config.email') ?></a></li>
-        <li><a href="#message_tabs" data-toggle="tab" title="<?= lang('Config.message_configuration') ?>"><?= lang('Config.message') ?></a></li>
-        <li><a href="#integrations_tabs" data-toggle="tab" title="<?= lang('Config.integrations_configuration') ?>"><?= lang('Config.integrations') ?></a></li>
-        <li><a href="#license_tabs" data-toggle="tab" title="<?= lang('Config.license_configuration') ?>"><?= lang('Config.license') ?></a></li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="system_tabs"><?= view('configs/system_info') ?></div>
-        <div class="tab-pane" id="email_tabs"><?= view('configs/email_config') ?></div>
-        <div class="tab-pane" id="message_tabs"><?= view('configs/message_config') ?></div>
-        <div class="tab-pane" id="integrations_tabs"><?= view('configs/integrations_config') ?></div>
-        <div class="tab-pane" id="license_tabs"><br><?= view('configs/license_config') ?></div>
+<div x-data="{ subtab: 'system' }">
+
+    <div class="-mb-px flex flex-wrap border-b border-brand-primary-border mb-4">
+        <?php
+        $subtabs = [
+            'system'       => lang('Config.system_conf'),
+            'email'        => lang('Config.email'),
+            'message'      => lang('Config.message'),
+            'integrations' => lang('Config.integrations'),
+            'license'      => lang('Config.license'),
+        ];
+        ?>
+        <?php foreach ($subtabs as $key => $label) : ?>
+            <button type="button"
+                    @click="subtab = '<?= $key ?>'"
+                    :class="subtab === '<?= $key ?>'
+                        ? 'border-b-2 border-brand-primary text-brand-primary-active font-semibold'
+                        : 'text-text-muted hover:text-text-default'"
+                    class="px-3 py-2 text-sm transition-colors -mb-px whitespace-nowrap">
+                <?= $label ?>
+            </button>
+        <?php endforeach; ?>
     </div>
+
+    <div>
+        <div x-show="subtab === 'system'">
+            <?= view('configs/system_info') ?>
+        </div>
+        <div x-show="subtab === 'email'" style="display:none">
+            <?= view('configs/email_config') ?>
+        </div>
+        <div x-show="subtab === 'message'" style="display:none">
+            <?= view('configs/message_config') ?>
+        </div>
+        <div x-show="subtab === 'integrations'" style="display:none">
+            <?= view('configs/integrations_config') ?>
+        </div>
+        <div x-show="subtab === 'license'" style="display:none">
+            <?= view('configs/license_config') ?>
+        </div>
+    </div>
+
 </div>

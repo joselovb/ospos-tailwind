@@ -4,29 +4,25 @@
  */
 ?>
 
-<?= form_open('', ['id' => 'license_config_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
-    <div id="config_wrapper">
-        <fieldset>
+<?= form_open('', ['id' => 'license_config_form', 'enctype' => 'multipart/form-data']) ?>
 
-            <?php
-            $counter = 0;
-            foreach ($licenses as $license) {
-            ?>
-                <div class="form-group form-group-sm">
-                    <?= form_label($license['title'], 'license', ['class' => 'control-label col-xs-3']) ?>
-                    <div class="col-xs-6">
-                        <?= form_textarea([
-                            'name'     => 'license',
-                            'id'       => 'license_' . $counter++,    // TODO: String Interpolation
-                            'class'    => 'form-control font-monospace',
-                            'rows'     => '14',
-                            'readonly' => '',
-                            'value'    => $license['text']
-                        ]) ?>
-                    </div>
-                </div>
-            <?php } ?>
+<div class="space-y-6">
+    <?php
+    $counter = 0;
+    foreach ($licenses as $license) {
+    ?>
+        <div>
+            <label class="ui-label mb-2 block"><?= $license['title'] ?></label>
+            <?= form_textarea([
+                'name'     => 'license',
+                'id'       => 'license_' . $counter++,
+                'class'    => 'ui-input min-h-[280px] font-mono text-xs resize-y',
+                'rows'     => '14',
+                'readonly' => '',
+                'value'    => $license['text']
+            ]) ?>
+        </div>
+    <?php } ?>
+</div>
 
-        </fieldset>
-    </div>
 <?= form_close() ?>
