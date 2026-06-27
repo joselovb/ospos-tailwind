@@ -67,16 +67,7 @@
     $(document).ready(function() {
         $("#logout").click(function(event) {
             event.preventDefault();
-            $.ajax({
-                url: "<?= site_url('home/logout'); ?>",
-                data: {
-                    "<?= esc(config('Security')->tokenName, 'js'); ?>": csrf_token()
-                },
-                success: function() {
-                    window.location.href = '<?= site_url(); ?>';
-                },
-                method: "POST"
-            });
+            window.location.href = "<?= site_url('home/logout'); ?>";
         });
     });
 
