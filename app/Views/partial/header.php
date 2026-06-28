@@ -255,6 +255,8 @@ $module_icons = [
         </div>
 
         <!-- DRAWER mobile ──────────────────────────────────────────── -->
+        <!-- x-show usa inline style para ocultar; no poner display utilities
+             (flex/block) en este div o Tailwind !important las sobreescribe -->
         <div x-show="mobileOpen"
              x-transition:enter="transition ease-out duration-300"
              x-transition:enter-start="-translate-x-full"
@@ -262,39 +264,45 @@ $module_icons = [
              x-transition:leave="transition ease-in duration-200"
              x-transition:leave-start="translate-x-0"
              x-transition:leave-end="-translate-x-full"
-             class="fixed inset-y-0 left-0 z-50 w-64 flex flex-col bg-surface border-r border-brand-primary-border md:hidden"
+             class="fixed inset-y-0 left-0 z-50 w-64 bg-surface border-r border-brand-primary-border md:hidden"
              style="display:none">
 
-            <!-- Drawer header -->
-            <div class="flex items-center justify-between h-16 px-4 border-b border-brand-primary-border shrink-0">
-                <span class="font-display text-base font-semibold text-brand-primary-active">
-                    <?= esc($config['company']) ?>
-                </span>
-                <button @click="mobileOpen = false"
-                        class="h-9 w-9 flex items-center justify-center rounded-lg text-text-muted hover:bg-brand-primary-soft hover:text-brand-primary transition-colors">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
+            <!-- wrapper interno con flex — separado del x-show para que
+                 Alpine pueda ocultar el padre sin que flex !important lo anule -->
+            <div class="flex flex-col h-full">
 
-            <!-- Drawer nav -->
-            <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
-                <?php foreach ($allowed_modules as $module): ?>
-                    <?php $is_active = $module->module_id == $active_module; ?>
-                    <a href="<?= base_url($module->module_id) ?>"
-                       class="menu-icon flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors <?= $is_active ? 'bg-brand-primary-soft text-brand-primary' : 'text-text-default hover:bg-brand-primary-soft hover:text-brand-primary' ?>">
-                        <iconify-icon icon="<?= $module_icons[$module->module_id] ?? 'ph:circle' ?>" width="20" height="20" class="shrink-0" aria-hidden="true"></iconify-icon>
-                        <?= lang('Module.' . $module->module_id) ?>
-                    </a>
-                <?php endforeach; ?>
-            </nav>
+                <!-- Drawer header -->
+                <div class="flex items-center justify-between h-16 px-4 border-b border-brand-primary-border shrink-0">
+                    <span class="font-display text-base font-semibold text-brand-primary-active">
+                        <?= esc($config['company']) ?>
+                    </span>
+                    <button @click="mobileOpen = false"
+                            class="h-9 w-9 flex items-center justify-center rounded-lg text-text-muted hover:bg-brand-primary-soft hover:text-brand-primary transition-colors">
+                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
 
-            <!-- Drawer user info -->
-            <div class="border-t border-brand-primary-border px-4 py-3 shrink-0 text-sm space-y-1">
-                <?= anchor("home/changePassword/$user_info->person_id", "$user_info->first_name $user_info->last_name", ['class' => 'modal-dlg block font-medium text-text-default hover:text-brand-primary transition-colors', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
-                <?= anchor('home/logout', lang('Login.logout'), ['class' => 'block text-text-muted hover:text-state-danger transition-colors']) ?>
-            </div>
+                <!-- Drawer nav -->
+                <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+                    <?php foreach ($allowed_modules as $module): ?>
+                        <?php $is_active = $module->module_id == $active_module; ?>
+                        <a href="<?= base_url($module->module_id) ?>"
+                           class="menu-icon flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors <?= $is_active ? 'bg-brand-primary-soft text-brand-primary' : 'text-text-default hover:bg-brand-primary-soft hover:text-brand-primary' ?>">
+                            <iconify-icon icon="<?= $module_icons[$module->module_id] ?? 'ph:circle' ?>" width="20" height="20" class="shrink-0" aria-hidden="true"></iconify-icon>
+                            <?= lang('Module.' . $module->module_id) ?>
+                        </a>
+                    <?php endforeach; ?>
+                </nav>
+
+                <!-- Drawer user info -->
+                <div class="border-t border-brand-primary-border px-4 py-3 shrink-0 text-sm space-y-1">
+                    <?= anchor("home/changePassword/$user_info->person_id", "$user_info->first_name $user_info->last_name", ['class' => 'modal-dlg block font-medium text-text-default hover:text-brand-primary transition-colors', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
+                    <?= anchor('home/logout', lang('Login.logout'), ['class' => 'block text-text-muted hover:text-state-danger transition-colors']) ?>
+                </div>
+
+            </div><!-- /flex wrapper -->
         </div>
 
         <!-- MAIN CONTENT ────────────────────────────────────────────── -->
