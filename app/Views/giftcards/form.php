@@ -20,13 +20,13 @@
     <div class="sm:flex sm:items-start sm:gap-4">
         <label for="person_name" class="ui-label sm:w-40 sm:shrink-0 sm:pt-2.5"><?= lang('Giftcards.person_id') ?></label>
         <div class="relative flex-1">
-            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+            <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </span>
             <?= form_input([
                 'name'  => 'person_name',
                 'id'    => 'person_name',
-                'class' => 'ui-input pl-10',
+                'class' => 'ui-input pr-10',
                 'value' => $selected_person_name
             ]) ?>
             <?= form_hidden('person_id', (string)$selected_person_id) ?>

@@ -15,10 +15,10 @@
     <div class="sm:flex sm:items-start sm:gap-4">
         <label for="company" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Config.company') ?> <span class="text-state-danger">*</span></label>
         <div class="relative flex-1">
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             </div>
-            <?= form_input(['name' => 'company', 'id' => 'company', 'class' => 'ui-input pl-10 required', 'value' => $config['company']]) ?>
+            <?= form_input(['name' => 'company', 'id' => 'company', 'class' => 'ui-input pr-10 required', 'value' => $config['company']]) ?>
         </div>
     </div>
 
@@ -52,40 +52,40 @@
     <div class="sm:flex sm:items-start sm:gap-4">
         <label for="website" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Config.website') ?></label>
         <div class="relative flex-1">
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             </div>
-            <?= form_input(['name' => 'website', 'id' => 'website', 'class' => 'ui-input pl-10', 'value' => $config['website']]) ?>
+            <?= form_input(['name' => 'website', 'id' => 'website', 'class' => 'ui-input pr-10', 'value' => $config['website']]) ?>
         </div>
     </div>
 
     <div class="sm:flex sm:items-start sm:gap-4">
         <label for="email" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Common.email') ?></label>
         <div class="relative flex-1">
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             </div>
-            <?= form_input(['name' => 'email', 'id' => 'email', 'type' => 'email', 'class' => 'ui-input pl-10', 'value' => $config['email']]) ?>
+            <?= form_input(['name' => 'email', 'id' => 'email', 'type' => 'email', 'class' => 'ui-input pr-10', 'value' => $config['email']]) ?>
         </div>
     </div>
 
     <div class="sm:flex sm:items-start sm:gap-4">
         <label for="phone" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Config.phone') ?> <span class="text-state-danger">*</span></label>
         <div class="relative flex-1">
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.89 11.7 19.79 19.79 0 0 1 1.15 3 2 2 0 0 1 3.14 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 5.94 5.94l1.32-1.32a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             </div>
-            <?= form_input(['type' => 'tel', 'name' => 'phone', 'id' => 'phone', 'class' => 'ui-input pl-10 required', 'value' => $config['phone']]) ?>
+            <?= form_input(['type' => 'tel', 'name' => 'phone', 'id' => 'phone', 'class' => 'ui-input pr-10 required', 'value' => $config['phone']]) ?>
         </div>
     </div>
 
     <div class="sm:flex sm:items-start sm:gap-4">
         <label for="fax" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Config.fax') ?></label>
         <div class="relative flex-1">
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.89 11.7 19.79 19.79 0 0 1 1.15 3 2 2 0 0 1 3.14 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 5.94 5.94l1.32-1.32a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
             </div>
-            <?= form_input(['type' => 'tel', 'name' => 'fax', 'id' => 'fax', 'class' => 'ui-input pl-10', 'value' => $config['fax']]) ?>
+            <?= form_input(['type' => 'tel', 'name' => 'fax', 'id' => 'fax', 'class' => 'ui-input pr-10', 'value' => $config['fax']]) ?>
         </div>
     </div>
 

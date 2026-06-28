@@ -142,11 +142,16 @@
         return selectors;;
     };
 
+    var theme_css_var = function(name, fallback) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+    };
+
     var highlight_row = function (id, color) {
+        var flashColor = color || theme_css_var('--color-state-success-soft', '#e3ede4');
         $(rows_selector(id)).each(function(index, element) {
             var original = $(element).css('backgroundColor');
-            $(element).find("td").animate({backgroundColor: color || '#e1ffdd'}, "slow", "linear")
-                .animate({backgroundColor: color || '#e1ffdd'}, 5000)
+            $(element).find("td").animate({backgroundColor: flashColor}, "slow", "linear")
+                .animate({backgroundColor: flashColor}, 5000)
                 .animate({backgroundColor: original}, "slow", "linear");
         });
     };
@@ -160,7 +165,7 @@
                         var selector = ids ? row_selector(ids) : selected_rows();
                         table().collapseAllRows();
                         $(selector).each(function (index, element) {
-                            $(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
+                            $(this).find("td").animate({backgroundColor: theme_css_var('--color-state-success-soft', '#e3ede4')}, 1200, "linear")
                                 .end().animate({opacity: 0}, 1200, "linear", function () {
                                 table().remove({
                                     field: options.uniqueId,

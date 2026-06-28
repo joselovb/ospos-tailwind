@@ -20,10 +20,10 @@
         <label for="mailchimp_api_key" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Config.mailchimp_api_key') ?></label>
         <div class="flex flex-1 items-center gap-2">
             <div class="relative flex-1">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
                 </div>
-                <?= form_input(['name' => 'mailchimp_api_key', 'id' => 'mailchimp_api_key', 'class' => 'ui-input pl-10', 'value' => $mailchimp['api_key']]) ?>
+                <?= form_input(['name' => 'mailchimp_api_key', 'id' => 'mailchimp_api_key', 'class' => 'ui-input pr-10', 'value' => $mailchimp['api_key']]) ?>
             </div>
             <a href="https://eepurl.com/b9a05b" target="_blank" class="inline-flex cursor-help text-text-muted hover:text-brand-primary">
                 <span data-toggle="tooltip" data-placement="right" title="<?= lang('Config.mailchimp_tooltip') ?>">
@@ -36,10 +36,10 @@
     <div class="sm:flex sm:items-start sm:gap-4">
         <label for="mailchimp_list_id" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Config.mailchimp_lists') ?></label>
         <div class="relative flex-1">
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </div>
-            <?= form_dropdown('mailchimp_list_id', $mailchimp['lists'], $mailchimp['list_id'], 'id="mailchimp_list_id" class="ui-select pl-10"') ?>
+            <?= form_dropdown('mailchimp_list_id', $mailchimp['lists'], $mailchimp['list_id'], 'id="mailchimp_list_id" class="ui-select pr-10"') ?>
             <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
         </div>
     </div>

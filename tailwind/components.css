@@ -442,15 +442,20 @@
    * El plugin agrega .selected al <tr> → rgba(0,0,0,.075) por bootstrap-table.css.
    * Bootswatch flatly + .success en <tr> → #18bc9c (teal/verde brillante).
    * Con !important ganamos al CSS unlayered y forzamos el color de marca.
+   * Selector doble: con y sin .table class por si bootstrap-table aún no la agregó.
    */
   #table_holder table.table tbody tr.selected td,
-  #table_holder table.table tbody tr.selected th {
+  #table_holder table.table tbody tr.selected th,
+  #table_holder tbody tr.selected td,
+  #table_holder tbody tr.selected th {
     background-color: var(--color-brand-primary-soft) !important;
   }
 
   /* Filas con clase .success de Bootstrap (delete/restore highlight) */
   #table_holder table.table tbody tr.success td,
-  #table_holder table.table tbody tr.success th {
+  #table_holder table.table tbody tr.success th,
+  #table_holder tbody tr.success td,
+  #table_holder tbody tr.success th {
     background-color: var(--color-state-success-soft) !important;
     color: var(--color-text-default) !important;
   }

@@ -18,13 +18,13 @@
     <div class="sm:flex sm:items-start sm:gap-4">
         <label for="item_kit_number" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Item_kits.item_kit_number') ?></label>
         <div class="relative flex-1">
-            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+            <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5v14M7 5v14M11 5v14M15 5v8M19 5v8M15 17h4M17 15v4"/></svg>
             </span>
             <?= form_input([
                 'name'  => 'item_kit_number',
                 'id'    => 'item_kit_number',
-                'class' => 'ui-input pl-10',
+                'class' => 'ui-input pr-10',
                 'value' => $item_kit_info->item_kit_number
             ]) ?>
         </div>

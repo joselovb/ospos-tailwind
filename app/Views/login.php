@@ -138,25 +138,25 @@ $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
                         <div class="mt-3">
                             <label for="username" class="ui-label"><?= lang('Login.username') ?></label>
                             <div class="relative">
-                                <span id="input-username" class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+                                <span id="input-username" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                                     <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                         <title><?= lang('Common.icon') . '&nbsp;' . lang('Login.username') ?></title>
                                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
                                     </svg>
                                 </span>
-                                <input class="ui-input pl-10" name="username" type="text" placeholder="<?= lang('Login.username'); ?>" aria-label="<?= lang('Login.username') ?>" aria-describedby="input-username" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
+                                <input class="ui-input pr-10" name="username" type="text" placeholder="<?= lang('Login.username'); ?>" aria-label="<?= lang('Login.username') ?>" aria-describedby="input-username" <?php if (ENVIRONMENT == "testing") echo 'value="admin"'; ?>>
                             </div>
                         </div>
                         <div class="mt-3">
                             <label for="password" class="ui-label"><?= lang('Login.password') ?></label>
                             <div class="relative">
-                                <span id="input-password" class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+                                <span id="input-password" class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                                     <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                         <title><?= lang('Common.icon') . '&nbsp;' . lang('Login.password') ?></title>
                                         <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
                                     </svg>
                                 </span>
-                                <input class="ui-input pl-10" name="password" type="password" placeholder="<?= lang('Login.password') ?>" aria-label="<?= lang('Login.password') ?>" aria-describedby="input-password" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
+                                <input class="ui-input pr-10" name="password" type="password" placeholder="<?= lang('Login.password') ?>" aria-label="<?= lang('Login.password') ?>" aria-describedby="input-password" <?php if (ENVIRONMENT == "testing") echo 'value="pointofsale"'; ?>>
                             </div>
                         </div>
                     <?php endif; ?>

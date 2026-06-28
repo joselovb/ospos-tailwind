@@ -56,13 +56,13 @@
 <div class="form-group sm:flex sm:items-start sm:gap-4">
     <?= form_label(lang('Common.email'), 'email', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
     <div class="relative">
-        <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         </span>
         <?= form_input([
             'name'  => 'email',
             'id'    => 'email',
-            'class' => 'ui-input pl-10',
+            'class' => 'ui-input pr-10',
             'value' => $person_info->email
         ]) ?>
     </div>
@@ -71,13 +71,13 @@
 <div class="form-group sm:flex sm:items-start sm:gap-4">
     <?= form_label(lang('Common.phone_number'), 'phone_number', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
     <div class="relative">
-        <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.19 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         </span>
         <?= form_input([
             'name'  => 'phone_number',
             'id'    => 'phone_number',
-            'class' => 'ui-input pl-10',
+            'class' => 'ui-input pr-10',
             'value' => $person_info->phone_number
         ]) ?>
     </div>

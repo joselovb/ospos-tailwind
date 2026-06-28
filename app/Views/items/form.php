@@ -34,13 +34,13 @@
         <div class="form-group sm:flex sm:items-start sm:gap-4">
             <?= form_label(lang('Items.item_number'), 'item_number', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
             <div class="relative">
-                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+                <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="5" x2="3" y2="19"/><line x1="7" y1="5" x2="7" y2="19"/><line x1="11" y1="5" x2="11" y2="19"/><line x1="16" y1="5" x2="16" y2="19"/><line x1="21" y1="5" x2="21" y2="19"/></svg>
                 </span>
                 <?= form_input([
                     'name'  => 'item_number',
                     'id'    => 'item_number',
-                    'class' => 'ui-input pl-10',
+                    'class' => 'ui-input pr-10',
                     'value' => $item_info->item_number
                 ]) ?>
             </div>
@@ -61,12 +61,12 @@
         <div class="form-group sm:flex sm:items-start sm:gap-4">
             <?= form_label(lang('Items.category'), 'category', ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
             <div class="relative">
-                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+                <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 11 4H4v7l9.59 9.59a2 2 0 0 0 2.82 0l4.18-4.18a2 2 0 0 0 0-2.82z"/><circle cx="7.5" cy="7.5" r="0.5" fill="currentColor"/></svg>
                 </span>
                 <?php
                 if ($config['category_dropdown']) {
-                    echo form_dropdown('category', $categories, $selected_category, ['class' => 'ui-select pl-10']);
+                    echo form_dropdown('category', $categories, $selected_category, ['class' => 'ui-select pr-10']);
                     ?>
                     <span class="ui-select-arrow">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
@@ -76,7 +76,7 @@
                     echo form_input([
                         'name'  => 'category',
                         'id'    => 'category',
-                        'class' => 'ui-input pl-10',
+                        'class' => 'ui-input pr-10',
                         'value' => $item_info->category
                     ]);
                 }
@@ -186,7 +186,7 @@
             <?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
             <div class="relative max-w-50">
                 <?php if (!is_right_side_currency_symbol()): ?>
-                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
+                    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
                 <?php endif; ?>
                 <?= form_input([
                     'name'    => 'cost_price',
@@ -205,7 +205,7 @@
             <?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
             <div class="relative max-w-50">
                 <?php if (!is_right_side_currency_symbol()): ?>
-                    <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
+                    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
                 <?php endif; ?>
                 <?= form_input([
                     'name'    => 'unit_price',

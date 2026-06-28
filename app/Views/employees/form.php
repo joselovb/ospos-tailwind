@@ -42,13 +42,13 @@
         <div class="sm:flex sm:items-start sm:gap-4">
             <label for="username" class="required ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Employees.username') ?></label>
             <div class="relative flex-1">
-                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+                <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </span>
                 <?= form_input([
                     'name'  => 'username',
                     'id'    => 'username',
-                    'class' => 'ui-input pl-10',
+                    'class' => 'ui-input pr-10',
                     'value' => $person_info->username
                 ]) ?>
             </div>
@@ -59,13 +59,13 @@
         <div class="sm:flex sm:items-start sm:gap-4">
             <label for="password" class="<?= $password_label_class ?>"><?= lang('Employees.password') ?></label>
             <div class="relative flex-1">
-                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+                <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 </span>
                 <?= form_password([
                     'name'  => 'password',
                     'id'    => 'password',
-                    'class' => 'ui-input pl-10'
+                    'class' => 'ui-input pr-10'
                 ]) ?>
             </div>
         </div>
@@ -73,13 +73,13 @@
         <div class="sm:flex sm:items-start sm:gap-4">
             <label for="repeat_password" class="<?= $password_label_class ?>"><?= lang('Employees.repeat_password') ?></label>
             <div class="relative flex-1">
-                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-text-muted">
+                <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 </span>
                 <?= form_password([
                     'name'  => 'repeat_password',
                     'id'    => 'repeat_password',
-                    'class' => 'ui-input pl-10'
+                    'class' => 'ui-input pr-10'
                 ]) ?>
             </div>
         </div>
