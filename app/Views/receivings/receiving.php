@@ -36,15 +36,24 @@
     <?= form_open("$controller_name/changeMode", ['id' => 'mode_form']) ?>
     <div class="flex flex-wrap items-center gap-3 rounded-xl border border-brand-primary-border bg-surface px-4 py-3">
         <span class="text-sm font-medium text-text-default shrink-0"><?= lang(ucfirst($controller_name) . '.mode') ?></span>
-        <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+        <div class="relative inline-flex items-center">
+            <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'ui-select !w-auto !py-1.5 !pl-3 !pr-8 !text-xs']) ?>
+            <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg></div>
+        </div>
 
         <?php if ($show_stock_locations): ?>
             <span class="text-sm font-medium text-text-default shrink-0"><?= lang(ucfirst($controller_name) . '.stock_source') ?></span>
-            <?= form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+            <div class="relative inline-flex items-center">
+                <?= form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange' => "$('#mode_form').submit();", 'class' => 'ui-select !w-auto !py-1.5 !pl-3 !pr-8 !text-xs']) ?>
+                <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg></div>
+            </div>
 
             <?php if ($mode == 'requisition'): ?>
                 <span class="text-sm font-medium text-text-default shrink-0"><?= lang(ucfirst($controller_name) . '.stock_destination') ?></span>
-                <?= form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                <div class="relative inline-flex items-center">
+                    <?= form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange' => "$('#mode_form').submit();", 'class' => 'ui-select !w-auto !py-1.5 !pl-3 !pr-8 !text-xs']) ?>
+                    <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg></div>
+                </div>
             <?php endif; ?>
         <?php endif; ?>
     </div>
@@ -330,7 +339,10 @@
                             <?php endif; ?>
                             <div class="flex items-center justify-between gap-4 py-1 border-b border-brand-primary-border">
                                 <span class="text-text-default"><?= lang('Sales.payment') ?></span>
-                                <?= form_dropdown('payment_type', $payment_options, [], ['id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'auto']) ?>
+                                <div class="relative inline-flex items-center">
+                                    <?= form_dropdown('payment_type', $payment_options, [], ['id' => 'payment_types', 'class' => 'ui-select !w-auto !py-1 !pl-3 !pr-8 !text-sm']) ?>
+                                    <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg></div>
+                                </div>
                             </div>
                             <div class="flex items-center justify-between gap-4 py-1">
                                 <span class="text-text-default"><?= lang('Sales.amount_tendered') ?></span>
