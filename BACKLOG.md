@@ -66,7 +66,10 @@
 
 ## Ideas multi-marca / futuro
 
-(ninguna por ahora)
+- **Theming multi-marca**: duplicar `tailwind/theme-default.css` con el nombre del nuevo
+  negocio (ej. `theme-herstudio.css`), cambiar el `@import` en `tailwind/tokens.css`, y
+  hacer rebuild. Cero cambios en las vistas. Probar con la paleta HerStudio (ya
+  documentada en memoria `brand_palette_her_appointments.md`) como primer caso real.
 
 ## Propuestas de cambio a CLAUDE.md (no aplicadas, requieren aprobación del usuario)
 
