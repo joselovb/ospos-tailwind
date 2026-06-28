@@ -11,6 +11,7 @@
  */
 
 use Config\Services;
+use Config\OSPOS;
 
 $request = Services::request();
 $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
@@ -198,10 +199,16 @@ $has_logo = isset($config['company_logo']) && !empty($config['company_logo']);
         </div>
     </main>
 
-    <footer class="flex shrink-0 justify-center pb-6 text-center">
-        <div class="flex items-center gap-1.5 text-xs text-text-muted">
-            <span><?= lang('Common.powered_by') ?></span>
-            <span class="font-semibold text-brand-primary"><?= lang('Common.software_short') ?></span>
+    <footer class="border-t border-brand-primary-border bg-surface">
+        <div class="py-4 text-center text-xs text-text-muted">
+            <strong>
+                <?= lang('Common.copyrights', [date('Y')]) ?> ·
+                <a href="https://opensourcepos.org" target="_blank" class="text-brand-primary hover:text-brand-primary-hover underline-offset-2 hover:underline"><?= lang('Common.website') ?></a> ·
+                <?= esc(config('App')->application_version) ?> -
+                <a target="_blank" href="https://github.com/opensourcepos/opensourcepos/commit/<?= esc(config(OSPOS::class)->commit_sha1) ?>" class="text-brand-primary hover:text-brand-primary-hover underline-offset-2 hover:underline">
+                    <?= esc(substr(config(OSPOS::class)->commit_sha1, 0, 6)); ?>
+                </a>
+            </strong>.
         </div>
     </footer>
 

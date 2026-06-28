@@ -43,12 +43,7 @@
 
 ## Decisiones pendientes / dudas para el usuario
 
-- El footer de `login.php` (logo + nombre del software) nunca mostró el bloque de
-  licencia completo (copyright/versión/commit) que sí tiene `partial/footer.php` en el
-  resto de la app - es comportamiento preexistente de upstream, no algo introducido en
-  este refactor, pero la regla dura #7 pide ese texto visible "en cada página". Confirmar
-  con el usuario si hay que agregarlo también al footer de login, o si login queda exento
-  a propósito (página pública/pre-login, distinta del resto del sistema).
+(ninguna por ahora)
 
 ## Mejoras de UX/flujo identificadas (fuera de alcance de la vista actual)
 
