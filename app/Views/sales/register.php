@@ -135,18 +135,27 @@ helper('url');
             <div class="ui-card flex flex-wrap items-center gap-x-5 gap-y-3 p-4">
                 <div class="flex items-center gap-2">
                     <label class="text-sm font-medium text-text-default"><?= lang(ucfirst($controller_name) . '.mode') ?></label>
-                    <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                    <div class="relative">
+                        <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'ui-select !w-auto !py-1.5 !pl-3 !pr-8 !text-xs']) ?>
+                        <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg></div>
+                    </div>
                 </div>
                 <?php if ($config['dinner_table_enable']) { ?>
                     <div class="flex items-center gap-2">
                         <label class="text-sm font-medium text-text-default"><?= lang(ucfirst($controller_name) . '.table') ?></label>
-                        <?= form_dropdown('dinner_table', $empty_tables, $selected_table, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                        <div class="relative">
+                            <?= form_dropdown('dinner_table', $empty_tables, $selected_table, ['onchange' => "$('#mode_form').submit();", 'class' => 'ui-select !w-auto !py-1.5 !pl-3 !pr-8 !text-xs']) ?>
+                            <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg></div>
+                        </div>
                     </div>
                 <?php } ?>
                 <?php if (count($stock_locations) > 1) { ?>
                     <div class="flex items-center gap-2">
                         <label class="text-sm font-medium text-text-default"><?= lang(ucfirst($controller_name) . '.stock_location') ?></label>
-                        <?= form_dropdown('stock_location', $stock_locations, $stock_location, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                        <div class="relative">
+                            <?= form_dropdown('stock_location', $stock_locations, $stock_location, ['onchange' => "$('#mode_form').submit();", 'class' => 'ui-select !w-auto !py-1.5 !pl-3 !pr-8 !text-xs']) ?>
+                            <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg></div>
+                        </div>
                     </div>
                 <?php } ?>
 
@@ -477,7 +486,10 @@ helper('url');
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
                                 <td>
-                                    <?= form_dropdown('payment_type', $payment_options, $selected_payment_type, ['id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit', 'disabled' => 'disabled']) ?>
+                                    <div class="relative">
+                                        <?= form_dropdown('payment_type', $payment_options, $selected_payment_type, ['id' => 'payment_types', 'class' => 'ui-select !py-1.5 !pl-3 !pr-8 !text-sm', 'disabled' => 'disabled']) ?>
+                                        <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg></div>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
@@ -519,7 +531,10 @@ helper('url');
                             <tr>
                                 <td><?= lang(ucfirst($controller_name) . '.payment') ?></td>
                                 <td>
-                                    <?= form_dropdown('payment_type', $payment_options,  $selected_payment_type, ['id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                                    <div class="relative">
+                                        <?= form_dropdown('payment_type', $payment_options, $selected_payment_type, ['id' => 'payment_types', 'class' => 'ui-select !py-1.5 !pl-3 !pr-8 !text-sm']) ?>
+                                        <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg></div>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
