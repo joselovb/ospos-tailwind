@@ -13,60 +13,65 @@
  */
 ?>
 
-<ul id="error_message_box" class="error_message_box"></ul>
+<ul id="error_message_box" class="mb-4 list-none empty:hidden rounded-xl bg-state-danger-soft px-4 py-3 text-sm text-state-danger space-y-1"></ul>
 
-<?= form_open("taxes/save/$tax_rate_id", ['id' => 'tax_code_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="tax_rate_info">
+<?= form_open("taxes/save/$tax_rate_id", ['id' => 'tax_code_form']) ?>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Taxes.tax_code'), 'rate_tax_code_id', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-5">
-                <?= form_dropdown('rate_tax_code_id', $tax_code_options, $rate_tax_code_id, ['class' => 'form-control input-sm']) ?>
-            </div>
+<fieldset id="tax_rate_info" class="space-y-4">
+
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="rate_tax_code_id" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Taxes.tax_code') ?></label>
+        <div class="relative flex-1">
+            <?= form_dropdown('rate_tax_code_id', $tax_code_options, $rate_tax_code_id, ['class' => 'ui-select', 'id' => 'rate_tax_code_id']) ?>
+            <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Taxes.tax_category'), 'rate_tax_category_id', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-5">
-                <?= form_dropdown('rate_tax_category_id', $tax_category_options, $rate_tax_category_id, ['class' => 'form-control input-sm']) ?>
-            </div>
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="rate_tax_category_id" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Taxes.tax_category') ?></label>
+        <div class="relative flex-1">
+            <?= form_dropdown('rate_tax_category_id', $tax_category_options, $rate_tax_category_id, ['class' => 'ui-select', 'id' => 'rate_tax_category_id']) ?>
+            <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Taxes.tax_jurisdiction'), 'rate_jurisdiction_id', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-5">
-                <?= form_dropdown('rate_jurisdiction_id', $tax_jurisdiction_options, $rate_jurisdiction_id, ['class' => 'form-control input-sm']) ?>
-            </div>
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="rate_jurisdiction_id" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Taxes.tax_jurisdiction') ?></label>
+        <div class="relative flex-1">
+            <?= form_dropdown('rate_jurisdiction_id', $tax_jurisdiction_options, $rate_jurisdiction_id, ['class' => 'ui-select', 'id' => 'rate_jurisdiction_id']) ?>
+            <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Taxes.tax_rate'), 'tax_rate', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-5 input-group" style="padding-left: 15px;">
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="tax_rate" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Taxes.tax_rate') ?></label>
+        <div class="flex items-center gap-1">
+            <div class="w-32">
                 <?= form_input([
                     'name'  => 'tax_rate',
                     'id'    => 'tax_rate',
-                    'class' => 'form-control input-sm text-uppercase',
+                    'class' => 'ui-input text-uppercase',
                     'value' => $tax_rate
                 ]) ?>
-                <span class="input-group-addon input-sm">%</span>
             </div>
-
+            <span class="font-semibold text-text-muted text-sm">%</span>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Taxes.tax_rounding'), 'tax_rounding_code', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-5">
-                <?= form_dropdown('tax_rounding_code', $rounding_options, $tax_rounding_code, ['class' => 'form-control input-sm']) ?>
-            </div>
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="tax_rounding_code" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Taxes.tax_rounding') ?></label>
+        <div class="relative flex-1">
+            <?= form_dropdown('tax_rounding_code', $rounding_options, $tax_rounding_code, ['class' => 'ui-select', 'id' => 'tax_rounding_code']) ?>
+            <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
         </div>
+    </div>
 
-    </fieldset>
+</fieldset>
+
 <?= form_close() ?>
 
 <script type="text/javascript">
-    // Validation and submit handling
     $(document).ready(function() {
-
         $('#tax_code_form').validate($.extend({
             submitHandler: function(form) {
                 $(form).ajaxSubmit({
@@ -80,8 +85,6 @@
             rules: {},
             messages: {}
         }, form_support.error));
-
-
     });
 
     function delete_tax_rate_row(link) {

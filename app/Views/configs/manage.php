@@ -4,82 +4,85 @@
     dialog_support.init("a.modal-dlg");
 </script>
 
-<ul class="nav nav-tabs" data-tabs="tabs">
-    <li class="active" role="presentation">
-        <a data-toggle="tab" href="#info_tab" title="<?= lang('Config.info_configuration') ?>"><?= lang('Config.info') ?></a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#general_tab" title="<?= lang('Config.general_configuration') ?>"><?= lang('Config.general') ?></a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#tax_tab" title="<?= lang('Config.tax_configuration') ?>"><?= lang('Config.tax') ?></a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#locale_tab" title="<?= lang('Config.locale_configuration') ?>"><?= lang('Config.locale') ?></a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#barcode_tab" title="<?= lang('Config.barcode_configuration') ?>"><?= lang('Config.barcode') ?></a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#stock_tab" title="<?= lang('Config.location_configuration') ?>"><?= lang('Config.location') ?></a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#receipt_tab" title="<?= lang('Config.receipt_configuration') ?>"><?= lang('Config.receipt') ?></a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#invoice_tab" title="<?= lang('Config.invoice_configuration') ?>"><?= lang('Config.invoice') ?></a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#shortcuts_tab" title="<?= lang('Config.shortcuts_configuration') ?>"><?= lang('Config.shortcuts') ?></a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#reward_tab" title="<?= lang('Config.reward_configuration') ?>"><?= lang('Config.reward') ?></a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#table_tab" title="<?= lang('Config.table_configuration') ?>"><?= lang('Config.table') ?></a>
-    </li>
-    <li role="presentation">
-        <a data-toggle="tab" href="#system_tab" title="<?= lang('Config.system_conf') ?>"><?= lang('Config.system_conf') ?></a>
-    </li>
-</ul>
+<div class="mb-6 flex items-center gap-3">
+    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-primary to-brand-accent">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-text-on-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/></svg>
+    </div>
+    <h1 class="font-display text-2xl font-semibold text-brand-primary-active"><?= lang('Config.configuration') ?></h1>
+</div>
 
-<div class="tab-content">
-    <div class="tab-pane fade in active" id="info_tab">
-        <?= view('configs/info_config') ?>
+<div x-data="{ tab: 'info' }">
+
+    <!-- Tab bar -->
+    <div class="-mb-px flex flex-wrap border-b border-brand-primary-border">
+        <?php
+        $tabs = [
+            'info'      => lang('Config.info'),
+            'general'   => lang('Config.general'),
+            'tax'       => lang('Config.tax'),
+            'locale'    => lang('Config.locale'),
+            'barcode'   => lang('Config.barcode'),
+            'stock'     => lang('Config.location'),
+            'receipt'   => lang('Config.receipt'),
+            'invoice'   => lang('Config.invoice'),
+            'shortcuts' => lang('Config.shortcuts'),
+            'reward'    => lang('Config.reward'),
+            'table'     => lang('Config.table'),
+            'system'    => lang('Config.system_conf'),
+        ];
+        ?>
+        <?php foreach ($tabs as $key => $label) : ?>
+            <button type="button"
+                    @click="tab = '<?= $key ?>'"
+                    :class="tab === '<?= $key ?>'
+                        ? 'border-b-2 border-brand-primary text-brand-primary-active font-semibold'
+                        : 'text-text-muted hover:text-text-default'"
+                    class="px-3 py-2 text-sm transition-colors -mb-px whitespace-nowrap">
+                <?= $label ?>
+            </button>
+        <?php endforeach; ?>
     </div>
-    <div class="tab-pane" id="general_tab">
-        <?= view('configs/general_config') ?>
+
+    <!-- Tab panes -->
+    <div class="mt-6">
+        <div x-show="tab === 'info'">
+            <?= view('configs/info_config') ?>
+        </div>
+        <div x-show="tab === 'general'" style="display:none">
+            <?= view('configs/general_config') ?>
+        </div>
+        <div x-show="tab === 'tax'" style="display:none">
+            <?= view('configs/tax_config') ?>
+        </div>
+        <div x-show="tab === 'locale'" style="display:none">
+            <?= view('configs/locale_config') ?>
+        </div>
+        <div x-show="tab === 'barcode'" style="display:none">
+            <?= view('configs/barcode_config') ?>
+        </div>
+        <div x-show="tab === 'stock'" style="display:none">
+            <?= view('configs/stock_config') ?>
+        </div>
+        <div x-show="tab === 'receipt'" style="display:none">
+            <?= view('configs/receipt_config') ?>
+        </div>
+        <div x-show="tab === 'invoice'" style="display:none">
+            <?= view('configs/invoice_config') ?>
+        </div>
+        <div x-show="tab === 'shortcuts'" style="display:none">
+            <?= view('configs/shortcuts_config') ?>
+        </div>
+        <div x-show="tab === 'reward'" style="display:none">
+            <?= view('configs/reward_config') ?>
+        </div>
+        <div x-show="tab === 'table'" style="display:none">
+            <?= view('configs/table_config') ?>
+        </div>
+        <div x-show="tab === 'system'" style="display:none">
+            <?= view('configs/system_config') ?>
+        </div>
     </div>
-    <div class="tab-pane" id="tax_tab">
-        <?= view('configs/tax_config') ?>
-    </div>
-    <div class="tab-pane" id="locale_tab">
-        <?= view('configs/locale_config') ?>
-    </div>
-    <div class="tab-pane" id="barcode_tab">
-        <?= view('configs/barcode_config') ?>
-    </div>
-    <div class="tab-pane" id="stock_tab">
-        <?= view('configs/stock_config') ?>
-    </div>
-    <div class="tab-pane" id="receipt_tab">
-        <?= view('configs/receipt_config') ?>
-    </div>
-    <div class="tab-pane" id="invoice_tab">
-        <?= view('configs/invoice_config') ?>
-    </div>
-    <div class="tab-pane" id="shortcuts_tab">
-        <?= view('configs/shortcuts_config') ?>
-    </div>
-    <div class="tab-pane" id="reward_tab">
-        <?= view('configs/reward_config') ?>
-    </div>
-    <div class="tab-pane" id="table_tab">
-        <?= view('configs/table_config') ?>
-    </div>
-    <div class="tab-pane" id="system_tab">
-        <?= view('configs/system_config') ?>
-    </div>
+
 </div>
 
 <?= view('partial/footer') ?>

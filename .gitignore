@@ -55,6 +55,9 @@ $RECYCLE.BIN/
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
 
+# Tailwind build output (generado por CLI, no por Gulp)
+public/css/tailwind-build.css
+
 # Other
 build/
 generate_languages.php

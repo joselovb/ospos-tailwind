@@ -8,161 +8,162 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Items.edit_fields_you_want_to_update') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<div id="required_fields_message" class="ui-help-text mb-3 italic"><?= lang('Items.edit_fields_you_want_to_update') ?></div>
+<ul id="error_message_box" class="error_message_box ui-alert-danger mb-3 block list-none empty:hidden"></ul>
 
 <?= form_open('items/bulkUpdate/', ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="bulk_item_basic_info">
+    <fieldset id="bulk_item_basic_info" class="space-y-4">
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.name'), 'name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.name'), 'name', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div>
                 <?= form_input([
                     'name'  => 'name',
                     'id'    => 'name',
-                    'class' => 'form-control input-sm'
+                    'class' => 'ui-input'
                 ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.category'), 'category', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
-                    <?= form_input([
-                        'name'  => 'category',
-                        'id'    => 'category',
-                        'class' => 'form-control input-sm'
-                    ]) ?>
-                </div>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.category'), 'category', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative">
+                <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 11 4H4v7l9.59 9.59a2 2 0 0 0 2.82 0l4.18-4.18a2 2 0 0 0 0-2.82z"/><circle cx="7.5" cy="7.5" r="0.5" fill="currentColor"/></svg>
+                </span>
+                <?= form_input([
+                    'name'  => 'category',
+                    'id'    => 'category',
+                    'class' => 'ui-input pr-10'
+                ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.supplier'), 'supplier', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown('supplier_id', $suppliers, '', ['class' => 'form-control']) ?>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.supplier'), 'supplier', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative">
+                <?= form_dropdown('supplier_id', $suppliers, '', ['class' => 'ui-select']) ?>
+                <span class="ui-select-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
-                    <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                    <?= form_input([
-                        'name'  => 'cost_price',
-                        'id'    => 'cost_price',
-                        'class' => 'form-control input-sm'
-                    ]) ?>
-                    <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                </div>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.cost_price'), 'cost_price', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative max-w-50">
+                <?php if (!is_right_side_currency_symbol()): ?>
+                    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
+                <?php endif; ?>
+                <?= form_input([
+                    'name'  => 'cost_price',
+                    'id'    => 'cost_price',
+                    'class' => 'ui-input' . (!is_right_side_currency_symbol() ? ' pl-8' : ' pr-8')
+                ]) ?>
+                <?php if (is_right_side_currency_symbol()): ?>
+                    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
+                <?php endif; ?>
             </div>
         </div>
 
-        <div class="form-group form-group">
-            <?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
-                    <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                    <?= form_input([
-                        'name'  => 'unit_price',
-                        'id'    => 'unit_price',
-                        'class' => 'form-control input-sm'
-                    ]) ?>
-                    <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></b></span>
-                    <?php endif; ?>
-                </div>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.unit_price'), 'unit_price', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative max-w-50">
+                <?php if (!is_right_side_currency_symbol()): ?>
+                    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
+                <?php endif; ?>
+                <?= form_input([
+                    'name'  => 'unit_price',
+                    'id'    => 'unit_price',
+                    'class' => 'ui-input' . (!is_right_side_currency_symbol() ? ' pl-8' : ' pr-8')
+                ]) ?>
+                <?php if (is_right_side_currency_symbol()): ?>
+                    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted"><?= esc($config['currency_symbol']) ?></span>
+                <?php endif; ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.tax_1'), 'tax_percent_1', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="flex flex-wrap gap-2">
                 <?= form_input([
                     'name'  => 'tax_names[]',
                     'id'    => 'tax_name_1',
-                    'class' => 'form-control input-sm',
+                    'class' => 'ui-input max-w-50',
                     'value' => $config['default_tax_1_name']
                 ]) ?>
-            </div>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
+                <div class="relative max-w-30">
                     <?= form_input([
                         'name'  => 'tax_percents[]',
                         'id'    => 'tax_percent_name_1',
-                        'class' => 'form-control input-sm',
+                        'class' => 'ui-input pr-8',
                         'value' => to_tax_decimals($config['default_tax_1_rate'])
                     ]) ?>
-                    <span class="input-group input-group-addon"><b>%</b></span>
+                    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted">%</span>
                 </div>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.tax_2'), 'tax_percent_2', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="flex flex-wrap gap-2">
                 <?= form_input([
                     'name'  => 'tax_names[]',
                     'id'    => 'tax_name_2',
-                    'class' => 'form-control input-sm',
+                    'class' => 'ui-input max-w-50',
                     'value' => $config['default_tax_2_name']
                 ]) ?>
-            </div>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
+                <div class="relative max-w-30">
                     <?= form_input([
                         'name'  => 'tax_percents[]',
                         'id'    => 'tax_percent_name_2',
-                        'class' => 'form-control input-sm',
+                        'class' => 'ui-input pr-8',
                         'value' => to_tax_decimals($config['default_tax_2_rate'])
                     ]) ?>
-                    <span class="input-group input-group-addon"><b>%</b></span>
+                    <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-sm font-semibold text-text-muted">%</span>
                 </div>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.reorder_level'), 'reorder_level', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="max-w-40">
                 <?= form_input([
                     'name'  => 'reorder_level',
                     'id'    => 'reorder_level',
-                    'class' => 'form-control input-sm'
+                    'class' => 'ui-input'
                 ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.description'), 'description', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div>
                 <?= form_textarea([
                     'name'  => 'description',
                     'id'    => 'description',
-                    'class' => 'form-control input-sm'
+                    'class' => 'ui-input'
                 ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown('allow_alt_description', $allow_alt_description_choices, '', ['class' => 'form-control']) ?>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.allow_alt_description'), 'allow_alt_description', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative">
+                <?= form_dropdown('allow_alt_description', $allow_alt_description_choices, '', ['class' => 'ui-select']) ?>
+                <span class="ui-select-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown('is_serialized', $serialization_choices, '', ['class' => 'form-control']) ?>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.is_serialized'), 'is_serialized', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative">
+                <?= form_dropdown('is_serialized', $serialization_choices, '', ['class' => 'ui-select']) ?>
+                <span class="ui-select-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
             </div>
         </div>
 

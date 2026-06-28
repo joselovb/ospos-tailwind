@@ -7,95 +7,98 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<div id="required_fields_message" class="ui-help-text mb-3 italic"><?= lang('Common.fields_required_message') ?></div>
+<ul id="error_message_box" class="error_message_box ui-alert-danger mb-3 block list-none empty:hidden"></ul>
 
 <?= form_open("items/saveInventory/$item_info->item_id", ['id' => 'item_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="inv_item_basic_info">
+    <fieldset id="inv_item_basic_info" class="space-y-4">
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.item_number'), 'name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
-                    <?= form_input([
-                        'name'     => 'item_number',
-                        'id'       => 'item_number',
-                        'class'    => 'form-control input-sm',
-                        'disabled' => '',
-                        'value'    => $item_info->item_number
-                    ]) ?>
-                </div>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.item_number'), 'name', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative">
+                <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="5" x2="3" y2="19"/><line x1="7" y1="5" x2="7" y2="19"/><line x1="11" y1="5" x2="11" y2="19"/><line x1="16" y1="5" x2="16" y2="19"/><line x1="21" y1="5" x2="21" y2="19"/></svg>
+                </span>
+                <?= form_input([
+                    'name'     => 'item_number',
+                    'id'       => 'item_number',
+                    'class'    => 'ui-input pr-10 opacity-60 cursor-not-allowed',
+                    'disabled' => '',
+                    'value'    => $item_info->item_number
+                ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.name'), 'name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.name'), 'name', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div>
                 <?= form_input([
                     'name'     => 'name',
                     'id'       => 'name',
-                    'class'    => 'form-control input-sm',
+                    'class'    => 'ui-input opacity-60 cursor-not-allowed',
                     'disabled' => '',
                     'value'    => $item_info->name
                 ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.category'), 'category', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
-                    <?= form_input([
-                        'name'     => 'category',
-                        'id'       => 'category',
-                        'class'    => 'form-control input-sm',
-                        'disabled' => '',
-                        'value'    => $item_info->category
-                    ]) ?>
-                </div>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.category'), 'category', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative">
+                <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 11 4H4v7l9.59 9.59a2 2 0 0 0 2.82 0l4.18-4.18a2 2 0 0 0 0-2.82z"/><circle cx="7.5" cy="7.5" r="0.5" fill="currentColor"/></svg>
+                </span>
+                <?= form_input([
+                    'name'     => 'category',
+                    'id'       => 'category',
+                    'class'    => 'ui-input pr-10 opacity-60 cursor-not-allowed',
+                    'disabled' => '',
+                    'value'    => $item_info->category
+                ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.stock_location'), 'stock_location', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_dropdown('stock_location', $stock_locations, current($stock_locations), ['onchange' => 'fill_quantity(this.value)', 'class' => 'form-control']) ?>
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.stock_location'), 'stock_location', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="relative">
+                <?= form_dropdown('stock_location', $stock_locations, current($stock_locations), ['onchange' => 'fill_quantity(this.value)', 'class' => 'ui-select']) ?>
+                <span class="ui-select-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </span>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.current_quantity'), 'quantity', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.current_quantity'), 'quantity', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="max-w-40">
                 <?= form_input([
                     'name'     => 'quantity',
                     'id'       => 'quantity',
-                    'class'    => 'form-control input-sm',
+                    'class'    => 'ui-input opacity-60 cursor-not-allowed',
                     'disabled' => '',
                     'value'    => to_quantity_decimals(current($item_quantities))
                 ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.add_minus'), 'quantity', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.add_minus'), 'quantity', ['class' => 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div class="max-w-40">
                 <?= form_input([
                     'name'  => 'newquantity',
                     'id'    => 'newquantity',
-                    'class' => 'form-control input-sm'
+                    'class' => 'ui-input'
                 ]) ?>
             </div>
         </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Items.inventory_comments'), 'description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+        <div class="form-group sm:flex sm:items-start sm:gap-4">
+            <?= form_label(lang('Items.inventory_comments'), 'description', ['class' => 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5']) ?>
+            <div>
                 <?= form_textarea([
                     'name'  => 'trans_comment',
                     'id'    => 'trans_comment',
-                    'class' => 'form-control input-sm'
+                    'class' => 'ui-input'
                 ]) ?>
             </div>
         </div>

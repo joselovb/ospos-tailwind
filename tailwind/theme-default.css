@@ -1,0 +1,45 @@
+/*
+ * Paleta cruda - "ingredientes" de la marca.
+ * Este es el ÚNICO archivo que cambia para reusar el theme en otro negocio:
+ * duplicar este archivo (ej. theme-otronegocio.css), cambiar los valores hex,
+ * y cambiar el import en tokens.css. Cero cambios en las vistas ni en
+ * components.css - todo lo que consume estos valores lo hace a traves de
+ * los tokens semanticos (capa 2), nunca directo.
+ *
+ * Paleta activa: "Her Appointments" (rosa/dorado/marfil).
+ */
+@theme {
+  --palette-primary-900: #7a2e45;
+  --palette-primary-700: #93304f;
+  --palette-primary-600: #b23a66;
+  --palette-primary-500: #c25a7d;
+  --palette-primary-400: #d88ba3;
+  --palette-primary-200: #f0c7d3;
+  --palette-primary-100: #fbe9ee;
+
+  --palette-accent-600: #ab8531;
+  --palette-accent-500: #c9a24b;
+  --palette-accent-200: #e6d4a3;
+  --palette-accent-100: #f3e8ce;
+
+  --palette-bg: #fdf8f4;
+
+  --palette-text-900: #2b1b20;
+  --palette-text-500: #7d6b70;
+
+  --palette-success-600: #557a5b;
+  --palette-success-500: #6b8f71;
+  --palette-success-100: #e3ede4;
+
+  --palette-danger-600: #9b2c2c;
+  --palette-danger-100: #f6e3e3;
+
+  /* No definido en la paleta original de Her Appointments - tono ambar
+   * coherente con el resto (calido, en la misma familia que el dorado)
+   * agregado para cubrir el estado "warning" que usan los componentes. */
+  --palette-warning-600: #a16207;
+  --palette-warning-100: #f5e6c8;
+
+  --font-display: "Playfair Display", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}

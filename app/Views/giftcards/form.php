@@ -10,69 +10,68 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<div id="required_fields_message" class="mb-3 text-sm text-text-muted"><?= lang('Common.fields_required_message') ?></div>
+<ul id="error_message_box" class="mb-4 list-none empty:hidden rounded-xl bg-state-danger-soft px-4 py-3 text-sm text-state-danger space-y-1"></ul>
 
-<?= form_open("giftcards/save/$giftcard_id", ['id' => 'giftcard_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="giftcard_basic_info">
+<?= form_open("giftcards/save/$giftcard_id", ['id' => 'giftcard_form']) ?>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Giftcards.person_id'), 'person_name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
+<fieldset id="giftcard_basic_info" class="space-y-4">
+
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="person_name" class="ui-label sm:w-40 sm:shrink-0 sm:pt-2.5"><?= lang('Giftcards.person_id') ?></label>
+        <div class="relative flex-1">
+            <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <?= form_input([
+                'name'  => 'person_name',
+                'id'    => 'person_name',
+                'class' => 'ui-input pr-10',
+                'value' => $selected_person_name
+            ]) ?>
+            <?= form_hidden('person_id', (string)$selected_person_id) ?>
+        </div>
+    </div>
+
+    <?php $number_class = $config['giftcard_number'] == 'series' ? 'required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5' : 'ui-label sm:w-40 sm:shrink-0 sm:pt-2.5'; ?>
+
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="giftcard_number" class="<?= $number_class ?>"><?= lang('Giftcards.giftcard_number') ?></label>
+        <div class="w-48">
+            <?= form_input([
+                'name'  => 'giftcard_number',
+                'id'    => 'giftcard_number',
+                'class' => 'ui-input',
+                'value' => $giftcard_number
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="giftcard_amount" class="required ui-label sm:w-40 sm:shrink-0 sm:pt-2.5"><?= lang('Giftcards.card_value') ?></label>
+        <div class="flex items-center gap-1">
+            <?php if (!is_right_side_currency_symbol()): ?>
+                <span class="font-semibold text-text-muted text-sm"><?= esc($config['currency_symbol']) ?></span>
+            <?php endif; ?>
+            <div class="w-36">
                 <?= form_input([
-                    'name'  => 'person_name',
-                    'id'    => 'person_name',
-                    'class' => 'form-control input-sm',
-                    'value' => $selected_person_name
-                ]) ?>
-                <?= form_hidden('person_id', (string)$selected_person_id) ?>
-            </div>
-        </div>
-
-        <?php
-        $class = '';
-        if ($config['giftcard_number'] == 'series') {
-            $class = ' required';
-        }
-        ?>
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Giftcards.giftcard_number'), 'giftcard_number', ['class' => "control-label col-xs-3$class"]) ?>
-            <div class="col-xs-4">
-                <?= form_input([
-                    'name'  => 'giftcard_number',
-                    'id'    => 'giftcard_number',
-                    'class' => 'form-control input-sm',
-                    'value' => $giftcard_number
+                    'name'  => 'giftcard_amount',
+                    'id'    => 'giftcard_amount',
+                    'class' => 'ui-input',
+                    'value' => to_currency_no_money($giftcard_value)
                 ]) ?>
             </div>
+            <?php if (is_right_side_currency_symbol()): ?>
+                <span class="font-semibold text-text-muted text-sm"><?= esc($config['currency_symbol']) ?></span>
+            <?php endif; ?>
         </div>
+    </div>
 
+</fieldset>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Giftcards.card_value'), 'giftcard_amount', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-4">
-                <div class="input-group input-group-sm">
-                    <?php if (!is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><?= esc($config['currency_symbol']) ?></span>
-                    <?php endif; ?>
-                    <?= form_input([
-                        'name'  => 'giftcard_amount',
-                        'id'    => 'giftcard_amount',
-                        'class' => 'form-control input-sm',
-                        'value' => to_currency_no_money($giftcard_value)
-                    ]) ?>
-                    <?php if (is_right_side_currency_symbol()): ?>
-                        <span class="input-group-addon input-sm"><b><?= esc($config['currency_symbol']) ?></span>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-
-    </fieldset>
 <?= form_close() ?>
 
 <script type="text/javascript">
-    // Validation and submit handling
     $(document).ready(function() {
         $("input[name='person_name']").change(function() {
             !$(this).val() && $(this).val('');

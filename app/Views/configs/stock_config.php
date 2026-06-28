@@ -4,30 +4,25 @@
  */
 ?>
 
-<?= form_open('config/saveLocations/', ['id' => 'location_config_form', 'class' => 'form-horizontal']) ?>
-    <div id="config_wrapper">
-        <fieldset id="config_info">
+<?= form_open('config/saveLocations/', ['id' => 'location_config_form']) ?>
 
-            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-            <ul id="stock_error_message_box" class="error_message_box"></ul>
+<ul id="stock_error_message_box" class="mb-4 list-none empty:hidden rounded-xl bg-state-danger-soft px-4 py-3 text-sm text-state-danger space-y-1"></ul>
 
-            <div id="stock_locations">
-                <?= view('partial/stock_locations', ['stock_locations' => $stock_locations]) ?>
-            </div>
+<div class="max-w-2xl space-y-4">
 
-            <?= form_submit([
-                'name'  => 'submit_stock',
-                'id'    => 'submit_stock',
-                'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
-            ]) ?>
-
-        </fieldset>
+    <div id="stock_locations" class="space-y-2">
+        <?= view('partial/stock_locations', ['stock_locations' => $stock_locations]) ?>
     </div>
+
+    <div class="flex justify-end border-t border-brand-primary-border pt-4">
+        <button type="submit" name="submit_stock" id="submit_stock" class="ui-btn-primary"><?= lang('Common.submit') ?></button>
+    </div>
+
+</div>
+
 <?= form_close() ?>
 
 <script type="text/javascript">
-    // Validation and submit handling
     $(document).ready(function() {
         var location_count = <?= sizeof($stock_locations) ?>;
 
@@ -43,8 +38,8 @@
             var block = $(this).parent().clone(true);
             var new_block = block.insertAfter($(this).parent());
             var new_block_id = 'stock_location[]';
-            $(new_block).find('label').html("<?= lang('Config.stock_location') ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
-            $(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
+            $(new_block).find('label').html("<?= lang('Config.stock_location') ?> " + ++location_count).attr('for', new_block_id).attr('class', 'ui-label text-sm w-36 shrink-0');
+            $(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'stock_location valid_chars ui-input').val('');
             hide_show_remove();
         };
 
@@ -61,7 +56,6 @@
         init_add_remove_locations();
 
         var duplicate_found = false;
-        // Run validator once for all fields
         $.validator.addMethod('stock_location', function(value, element) {
             var value_count = 0;
             $("input[name*='stock_location']").each(function() {
@@ -94,7 +88,6 @@
             rules: {
                 <?php
                 $i = 0;
-
                 foreach ($stock_locations as $location => $location_data) {
                 ?>
                     <?= 'stock_location_' . ++$i ?>: {
@@ -108,7 +101,6 @@
             messages: {
                 <?php
                 $i = 0;
-
                 foreach ($stock_locations as $location => $location_data) {
                 ?>
                     <?= 'stock_location_' . ++$i ?>: "<?= lang('Config.stock_location_required') ?>",

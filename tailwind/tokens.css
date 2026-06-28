@@ -1,0 +1,68 @@
+/*
+ * "important" es obligatorio aca: OSPOS carga Bootstrap 3/5 y varios
+ * CSS propios (ospos.css, register.css, etc.) como hojas de estilo
+ * NORMALES (sin @layer). Tailwind v4 envuelve TODAS sus utilidades en
+ * cascade layers (@layer theme, base, components, utilities). Por
+ * spec de CSS, una declaracion sin layer SIEMPRE le gana a una con
+ * layer en empate de "importance", sin importar la especificidad -
+ * por eso clases como "px-4" o "hidden md:flex" perdian contra reglas
+ * tan genericas como "* { padding: 0 }" de ospos.css. Forzar
+ * "important" en todas las utilidades de Tailwind es la unica forma
+ * de garantizar que el refactor visual le gane de forma consistente a
+ * todo el CSS legacy, sin tener que parchear clase por clase.
+ */
+@import "tailwindcss" important;
+@import "./theme-default.css"; /* única línea que cambiaría por negocio */
+
+/*
+ * Forzar el scan completo de clases en los .php de app/Views. Sin
+ * esto, la detección automática de Tailwind v4 sobre archivos .php
+ * usa una extracción restringida que IGNORA clases con "." (pt-2.5)
+ * o valores arbitrarios "[...]" (max-w-[200px], grid-cols-[160px_1fr])
+ * - probablemente para no confundirlos con sintaxis real de PHP
+ * (concatenacion con ".", acceso a array con "[]"). El resultado es
+ * que esas clases compilaban a NADA, en silencio, sin error - se
+ * detecto al verificar items/form.php con Playwright (el grid de
+ * labels no aparecia) y se confirmo que afecta a TODO el proyecto
+ * desde antes (ej. login.php tenia max-w-[240px] que nunca se aplico).
+ */
+@source "../app/Views/**/*.php";
+
+/*
+ * Capa 2 - Tokens semánticos. Las Views usan SIEMPRE estas clases
+ * (bg-brand-primary, text-state-danger, etc.), nunca colores literales.
+ * Este archivo NO cambia entre negocios - solo lo que importa arriba cambia.
+ */
+@theme {
+  --color-brand-primary: var(--palette-primary-600);
+  --color-brand-primary-hover: var(--palette-primary-700);
+  --color-brand-primary-active: var(--palette-primary-900);
+  --color-brand-primary-soft: var(--palette-primary-100);
+  --color-brand-primary-border: var(--palette-primary-200);
+  --color-brand-primary-ring: var(--palette-primary-400);
+
+  --color-brand-accent: var(--palette-accent-500);
+  --color-brand-accent-hover: var(--palette-accent-600);
+  --color-brand-accent-soft: var(--palette-accent-100);
+  --color-brand-accent-border: var(--palette-accent-200);
+
+  --color-surface: #ffffff;
+  --color-surface-muted: var(--palette-bg);
+
+  --color-text-default: var(--palette-text-900);
+  --color-text-muted: var(--palette-text-500);
+  --color-text-on-brand: #ffffff;
+
+  --color-state-success: var(--palette-success-600);
+  --color-state-success-soft: var(--palette-success-100);
+  --color-state-danger: var(--palette-danger-600);
+  --color-state-danger-soft: var(--palette-danger-100);
+  --color-state-warning: var(--palette-warning-600);
+  --color-state-warning-soft: var(--palette-warning-100);
+}
+
+body.tw {
+  font-family: var(--font-sans);
+  background-color: var(--color-surface-muted);
+  color: var(--color-text-default);
+}

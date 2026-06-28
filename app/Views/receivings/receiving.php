@@ -20,160 +20,123 @@
 
 <?= view('partial/header') ?>
 
-<?php
-if (isset($error)) {
-    echo '<div class="alert alert-dismissible alert-danger">' . esc($error) . '</div>';
-}
+<?php if (isset($error)): ?>
+    <div class="mb-4 rounded-xl bg-state-danger-soft px-4 py-3 text-sm text-state-danger"><?= esc($error) ?></div>
+<?php endif; ?>
+<?php if (!empty($warning)): ?>
+    <div class="mb-4 rounded-xl bg-[var(--color-state-warning-soft,#fef9c3)] px-4 py-3 text-sm text-[var(--color-state-warning,#854d0e)]"><?= esc($warning) ?></div>
+<?php endif; ?>
+<?php if (isset($success)): ?>
+    <div class="mb-4 rounded-xl bg-state-success-soft px-4 py-3 text-sm text-state-success"><?= esc($success) ?></div>
+<?php endif; ?>
 
-if (!empty($warning)) {
-    echo '<div class="alert alert-dismissible alert-warning">' . esc($warning) . '</div>';
-}
+<div id="register_wrapper" class="space-y-4">
 
-if (isset($success)) {
-    echo '<div class="alert alert-dismissible alert-success">' .esc($success) . '</div>';
-}
-?>
+    <!-- Mode / Stock Location form -->
+    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form']) ?>
+    <div class="flex flex-wrap items-center gap-3 rounded-xl border border-brand-primary-border bg-surface px-4 py-3">
+        <span class="text-sm font-medium text-text-default shrink-0"><?= lang(ucfirst($controller_name) . '.mode') ?></span>
+        <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 
-<div id="register_wrapper">
+        <?php if ($show_stock_locations): ?>
+            <span class="text-sm font-medium text-text-default shrink-0"><?= lang(ucfirst($controller_name) . '.stock_source') ?></span>
+            <?= form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
 
-    <!-- Top register controls -->
-
-    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
-
-    <div class="panel-body form-group">
-        <ul>
-            <li class="pull-left first_li">
-                <label class="control-label"><?= lang(ucfirst($controller_name) . '.mode') ?></label>
-            </li>
-            <li class="pull-left">
-                <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
-            </li>
-
-            <?php if ($show_stock_locations) { ?>
-                <li class="pull-left">
-                    <label class="control-label"><?= lang(ucfirst($controller_name) . '.stock_source') ?></label>
-                </li>
-                <li class="pull-left">
-                    <?= form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
-                </li>
-
-                <?php if ($mode == 'requisition') { ?>
-                    <li class="pull-left">
-                        <label class="control-label"><?= lang(ucfirst($controller_name) . '.stock_destination') ?></label>
-                    </li>
-                    <li class="pull-left">
-                        <?= form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
-                    </li>
-            <?php
-                }
-            }
-            ?>
-        </ul>
+            <?php if ($mode == 'requisition'): ?>
+                <span class="text-sm font-medium text-text-default shrink-0"><?= lang(ucfirst($controller_name) . '.stock_destination') ?></span>
+                <?= form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+            <?php endif; ?>
+        <?php endif; ?>
     </div>
-
     <?= form_close() ?>
 
-    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => 'form-horizontal panel panel-default']) ?>
-
-    <div class="panel-body form-group">
-        <ul>
-            <li class="pull-left first_li">
-                <label for="item" class="control-label">
-                    <?php if ($mode == 'receive' or $mode == 'requisition') { ?>
-                        <?= lang(ucfirst($controller_name) . '.find_or_scan_item') ?>
-                    <?php } else { ?>
-                        <?= lang(ucfirst($controller_name) . '.find_or_scan_item_or_receipt') ?>
-                    <?php } ?>
-                </label>
-            </li>
-
-            <li class="pull-left">
-                <?= form_input(['name' => 'item', 'id' => 'item', 'class' => 'form-control input-sm', 'size' => '50', 'tabindex' => '1']) ?>
-            </li>
-
-            <li class="pull-right">
-                <button id="new_item_button" class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-btn-new="<?= lang('Common.new') ?>" data-href="<?= "items/view" ?>" title="<?= lang('Sales.new_item') ?>">
-                    <span class="glyphicon glyphicon-tag">&nbsp;</span><?= lang('Sales.new_item') ?>
-                </button>
-            </li>
-        </ul>
+    <!-- Item search -->
+    <?= form_open("$controller_name/add", ['id' => 'add_item_form']) ?>
+    <div class="flex flex-wrap items-center gap-3 rounded-xl border border-brand-primary-border bg-surface px-4 py-3">
+        <label for="item" class="text-sm font-medium text-text-default shrink-0">
+            <?php if ($mode == 'receive' or $mode == 'requisition'): ?>
+                <?= lang(ucfirst($controller_name) . '.find_or_scan_item') ?>
+            <?php else: ?>
+                <?= lang(ucfirst($controller_name) . '.find_or_scan_item_or_receipt') ?>
+            <?php endif; ?>
+        </label>
+        <?= form_input(['name' => 'item', 'id' => 'item', 'class' => 'ui-input flex-1 min-w-[200px]', 'tabindex' => '1']) ?>
+        <button id="new_item_button" class="ui-btn-primary modal-dlg shrink-0"
+                data-btn-submit="<?= lang('Common.submit') ?>"
+                data-btn-new="<?= lang('Common.new') ?>"
+                data-href="<?= "items/view" ?>"
+                title="<?= lang('Sales.new_item') ?>">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <?= lang('Sales.new_item') ?>
+        </button>
     </div>
-
     <?= form_close() ?>
 
-    <!-- Receiving Items List -->
-
-    <table class="sales_table_100" id="register">
-        <thead>
-            <tr>
-                <th style="width: 5%;"><?= lang('Common.delete') ?></th>
-                <th style="width: 15%;"><?= lang('Sales.item_number') ?></th>
-                <th style="width: 23%;"><?= lang(ucfirst($controller_name) . '.item_name') ?></th>
-                <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.cost') ?></th>
-                <th style="width: 8%;"><?= lang(ucfirst($controller_name) . '.quantity') ?></th>
-                <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.ship_pack') ?></th>
-                <th style="width: 14%;"><?= lang(ucfirst($controller_name) . '.discount') ?></th>
-                <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.total') ?></th>
-                <th style="width: 5%;"><?= lang(ucfirst($controller_name) . '.update') ?></th>
-            </tr>
-        </thead>
-
-        <tbody id="cart_contents">
-            <?php if (count($cart) == 0) { ?>
+    <!-- Cart table -->
+    <div class="overflow-x-auto rounded-xl border border-brand-primary-border">
+        <table class="w-full text-sm" id="register">
+            <thead class="bg-surface-muted">
                 <tr>
-                    <td colspan="9">
-                        <div class="alert alert-dismissible alert-info"><?= lang('Sales.no_items_in_cart') ?></div>
-                    </td>
+                    <th class="px-3 py-2 text-left font-medium text-text-muted w-10"><?= lang('Common.delete') ?></th>
+                    <th class="px-3 py-2 text-left font-medium text-text-muted"><?= lang('Sales.item_number') ?></th>
+                    <th class="px-3 py-2 text-left font-medium text-text-muted"><?= lang(ucfirst($controller_name) . '.item_name') ?></th>
+                    <th class="px-3 py-2 text-left font-medium text-text-muted"><?= lang(ucfirst($controller_name) . '.cost') ?></th>
+                    <th class="px-3 py-2 text-left font-medium text-text-muted"><?= lang(ucfirst($controller_name) . '.quantity') ?></th>
+                    <th class="px-3 py-2 text-left font-medium text-text-muted"><?= lang(ucfirst($controller_name) . '.ship_pack') ?></th>
+                    <th class="px-3 py-2 text-left font-medium text-text-muted"><?= lang(ucfirst($controller_name) . '.discount') ?></th>
+                    <th class="px-3 py-2 text-right font-medium text-text-muted"><?= lang(ucfirst($controller_name) . '.total') ?></th>
+                    <th class="px-3 py-2 text-center font-medium text-text-muted"><?= lang(ucfirst($controller_name) . '.update') ?></th>
                 </tr>
-                <?php
-            } else {
-                foreach (array_reverse($cart, true) as $line => $item) {
-                ?>
+            </thead>
 
-                    <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
-
+            <tbody id="cart_contents" class="divide-y divide-brand-primary-border">
+                <?php if (count($cart) == 0): ?>
                     <tr>
-                        <td><?= anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>') ?></td>
-                        <td><?= esc($item['item_number']) ?></td>
-                        <td style="text-align: center;">
-                            <?= esc($item['name'] . ' ' . implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?><br>
-                            <?= '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']' ?>
-                            <?= form_hidden('location', (string)$item['item_location']) ?>
+                        <td colspan="9" class="px-4 py-6 text-center text-sm text-text-muted">
+                            <?= lang('Sales.no_items_in_cart') ?>
                         </td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach (array_reverse($cart, true) as $line => $item): ?>
 
-                        <?php if ($items_module_allowed && $mode != 'requisition') { ?>
-                            <td>
-                                <?= form_input([
-                                    'name'    => 'price',
-                                    'class'   => 'form-control input-sm',
-                                    'value'   => to_currency_no_money($item['price']),
-                                    'onClick' => 'this.select();'
-                                ]) ?>
+                        <?= form_open("$controller_name/editItem/$line", ['class' => 'hidden', 'id' => "cart_$line"]) ?>
+
+                        <tr class="bg-surface hover:bg-surface-muted transition-colors">
+                            <td class="px-3 py-2">
+                                <?= anchor("$controller_name/deleteItem/$line", '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>', ['class' => 'inline-flex text-state-danger hover:text-state-danger']) ?>
                             </td>
-                        <?php } else { ?>
-                            <td>
-                                <?= $item['price'] ?>
-                                <?= form_hidden('price', to_currency_no_money($item['price'])) ?>
+                            <td class="px-3 py-2 text-text-muted text-xs"><?= esc($item['item_number']) ?></td>
+                            <td class="px-3 py-2">
+                                <div class="text-sm text-text-default"><?= esc($item['name'] . ' ' . implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']])) ?></div>
+                                <div class="text-xs text-text-muted"><?= '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']' ?></div>
+                                <?= form_hidden('location', (string)$item['item_location']) ?>
                             </td>
-                        <?php } ?>
 
-                        <td>
-                            <?= form_input(['name' => 'quantity', 'class' => 'form-control input-sm', 'value' => to_quantity_decimals($item['quantity']), 'onClick' => 'this.select();']) ?>
-                        </td>
-                        <td>
-                            <?= form_dropdown(
-                                'receiving_quantity',
-                                $item['receiving_quantity_choices'],
-                                $item['receiving_quantity'],
-                                ['class' => 'form-control input-sm']
-                            ) ?>
-                        </td>
+                            <?php if ($items_module_allowed && $mode != 'requisition'): ?>
+                                <td class="px-3 py-2">
+                                    <?= form_input(['name' => 'price', 'class' => 'ui-input !py-1 !text-sm w-24', 'value' => to_currency_no_money($item['price']), 'onClick' => 'this.select();']) ?>
+                                </td>
+                            <?php else: ?>
+                                <td class="px-3 py-2 text-sm text-text-default">
+                                    <?= $item['price'] ?>
+                                    <?= form_hidden('price', to_currency_no_money($item['price'])) ?>
+                                </td>
+                            <?php endif; ?>
 
-                        <?php if ($items_module_allowed && $mode != 'requisition') { ?>
-                            <td>
-                                <div class="input-group">
-                                    <?= form_input(['name' => 'discount', 'class' => 'form-control input-sm', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'onClick' => 'this.select();']) ?>
-                                    <span class="input-group-btn">
+                            <td class="px-3 py-2">
+                                <?= form_input(['name' => 'quantity', 'class' => 'ui-input !py-1 !text-sm w-20', 'value' => to_quantity_decimals($item['quantity']), 'onClick' => 'this.select();']) ?>
+                            </td>
+                            <td class="px-3 py-2">
+                                <div class="relative">
+                                    <?= form_dropdown('receiving_quantity', $item['receiving_quantity_choices'], $item['receiving_quantity'], ['class' => 'ui-select !py-1 !text-sm !pr-7 !pl-2']) ?>
+                                    <div class="ui-select-arrow"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+                                </div>
+                            </td>
+
+                            <?php if ($items_module_allowed && $mode != 'requisition'): ?>
+                                <td class="px-3 py-2">
+                                    <div class="flex items-center gap-1">
+                                        <?= form_input(['name' => 'discount', 'class' => 'ui-input !py-1 !text-sm w-20', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'onClick' => 'this.select();']) ?>
                                         <?= form_checkbox([
                                             'id'           => 'discount_toggle',
                                             'name'         => 'discount_toggle',
@@ -186,247 +149,211 @@ if (isset($success)) {
                                             'data-line'    => $line,
                                             'checked'      => $item['discount_type'] == 1
                                         ]) ?>
-                                    </span>
-                                </div>
+                                    </div>
+                                </td>
+                            <?php else: ?>
+                                <td class="px-3 py-2 text-sm text-text-default">
+                                    <?= $item['discount'] ?>
+                                    <?= form_hidden('discount', (string)$item['discount']) ?>
+                                </td>
+                            <?php endif; ?>
+
+                            <td class="px-3 py-2 text-right text-sm font-medium text-text-default">
+                                <?= to_currency(($item['discount_type'] == PERCENT) ? $item['price'] * $item['quantity'] * $item['receiving_quantity'] - $item['price'] * $item['quantity'] * $item['receiving_quantity'] * $item['discount'] / 100 : $item['price'] * $item['quantity'] * $item['receiving_quantity'] - $item['discount']) ?>
                             </td>
-                        <?php } else { ?>
-                            <td><?= $item['discount'] ?></td>
-                            <?= form_hidden('discount', (string)$item['discount']) ?>
-                        <?php } ?>
-                        <td>
-                            <?= to_currency(($item['discount_type'] == PERCENT) ? $item['price'] * $item['quantity'] * $item['receiving_quantity'] - $item['price'] * $item['quantity'] * $item['receiving_quantity'] * $item['discount'] / 100 : $item['price'] * $item['quantity'] * $item['receiving_quantity'] - $item['discount']) ?>
-                        </td>
-                        <td>
-                            <a href="javascript:$('#<?= esc("cart_$line", 'js') ?>').submit();" title=<?= lang(ucfirst($controller_name) . '.update') ?>>
-                                <span class="glyphicon glyphicon-refresh"></span>
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <?php if ($item['allow_alt_description'] == 1) {    // TODO: ===?
-                        ?>
-                            <td style="color: #2F4F4F;"><?= lang('Sales.description_abbrv') . ':' ?></td>
-                        <?php } ?>
-                        <td colspan="2" style="text-align: left;">
-                            <?php
-                            if ($item['allow_alt_description'] == 1) {    // TODO: ===?
-                                echo form_input([
-                                    'name'  => 'description',
-                                    'class' => 'form-control input-sm',
-                                    'value' => $item['description']
-                                ]);
-                                } else {
-                                    if ($item['description'] != '') {    // TODO: !==?
-                                        echo esc($item['description']);
-                                        echo form_hidden('description', $item['description']);
-                                    } else {
-                                        echo '<i>' . lang('Sales.no_description') . '</i>';
-                                        echo form_hidden('description', '');
-                                    }
-                                }
-                            ?>
-                        </td>
-                        <td colspan="7"></td>
-                    </tr>
+                            <td class="px-3 py-2 text-center">
+                                <a href="javascript:$('#<?= esc("cart_$line", 'js') ?>').submit();" title="<?= lang(ucfirst($controller_name) . '.update') ?>" class="inline-flex text-brand-primary hover:text-brand-primary-hover">
+                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="bg-surface">
+                            <?php if ($item['allow_alt_description'] == 1): ?>
+                                <td class="px-3 py-1 text-xs text-text-muted"><?= lang('Sales.description_abbrv') . ':' ?></td>
+                            <?php endif; ?>
+                            <td colspan="<?= $item['allow_alt_description'] == 1 ? '2' : '9' ?>" class="px-3 py-1">
+                                <?php if ($item['allow_alt_description'] == 1): ?>
+                                    <?= form_input(['name' => 'description', 'class' => 'ui-input !py-1 !text-sm w-full', 'value' => $item['description']]) ?>
+                                <?php else: ?>
+                                    <?php if ($item['description'] != ''): ?>
+                                        <span class="text-xs text-text-muted"><?= esc($item['description']) ?></span>
+                                        <?= form_hidden('description', $item['description']) ?>
+                                    <?php else: ?>
+                                        <i class="text-xs text-text-muted"><?= lang('Sales.no_description') ?></i>
+                                        <?= form_hidden('description', '') ?>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </td>
+                            <?php if ($item['allow_alt_description'] != 1): ?>
+                            <?php else: ?>
+                                <td colspan="7"></td>
+                            <?php endif; ?>
+                        </tr>
 
-                    <?= form_close() ?>
+                        <?= form_close() ?>
 
-            <?php
-                }
-            }
-            ?>
-        </tbody>
-    </table>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
 <!-- Overall Receiving -->
+<div id="overall_sale" class="mt-4 rounded-xl border border-brand-primary-border bg-surface">
+    <div class="p-4 space-y-4">
 
-<div id="overall_sale" class="panel panel-default">
-    <div class="panel-body">
-        <?php if (isset($supplier)) { ?>
-
-            <table class="sales_table_100">
-                <tr>
-                    <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.supplier') ?></th>
-                    <th style="width: 45%; text-align: right;"><?= esc($supplier) ?></th>
-                </tr>
-                <?php if (!empty($supplier_email)) { ?>
-                    <tr>
-                        <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.supplier_email') ?></th>
-                        <th style="width: 45%; text-align: right;"><?= esc($supplier_email) ?></th>
+        <?php if (isset($supplier)): ?>
+            <div class="rounded-xl border border-brand-primary-border bg-surface-muted overflow-hidden">
+                <table class="w-full text-sm">
+                    <tr class="border-b border-brand-primary-border">
+                        <th class="px-4 py-2 text-left font-medium text-text-default"><?= lang(ucfirst($controller_name) . '.supplier') ?></th>
+                        <td class="px-4 py-2 text-right text-text-muted"><?= esc($supplier) ?></td>
                     </tr>
-                <?php } ?>
-                <?php if (!empty($supplier_address)) { ?>
-                    <tr>
-                        <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.supplier_address') ?></th>
-                        <th style="width: 45%; text-align: right;"><?= esc($supplier_address) ?></th>
-                    </tr>
-                <?php } ?>
-                <?php if (!empty($supplier_location)) { ?>
-                    <tr>
-                        <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.supplier_location') ?></th>
-                        <th style="width: 45%; text-align: right;"><?= esc($supplier_location) ?></th>
-                    </tr>
-                <?php } ?>
-            </table>
-
+                    <?php if (!empty($supplier_email)): ?>
+                        <tr class="border-b border-brand-primary-border">
+                            <th class="px-4 py-2 text-left font-medium text-text-default"><?= lang(ucfirst($controller_name) . '.supplier_email') ?></th>
+                            <td class="px-4 py-2 text-right text-text-muted"><?= esc($supplier_email) ?></td>
+                        </tr>
+                    <?php endif; ?>
+                    <?php if (!empty($supplier_address)): ?>
+                        <tr class="border-b border-brand-primary-border">
+                            <th class="px-4 py-2 text-left font-medium text-text-default"><?= lang(ucfirst($controller_name) . '.supplier_address') ?></th>
+                            <td class="px-4 py-2 text-right text-text-muted"><?= esc($supplier_address) ?></td>
+                        </tr>
+                    <?php endif; ?>
+                    <?php if (!empty($supplier_location)): ?>
+                        <tr>
+                            <th class="px-4 py-2 text-left font-medium text-text-default"><?= lang(ucfirst($controller_name) . '.supplier_location') ?></th>
+                            <td class="px-4 py-2 text-right text-text-muted"><?= esc($supplier_location) ?></td>
+                        </tr>
+                    <?php endif; ?>
+                </table>
+            </div>
             <?= anchor(
                 "$controller_name/removeSupplier",
-                '<span class="glyphicon glyphicon-remove">&nbsp;</span>' . lang('Common.remove') . ' ' . lang('Suppliers.supplier'),
+                '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' . lang('Common.remove') . ' ' . lang('Suppliers.supplier'),
                 [
-                    'class' => 'btn btn-danger btn-sm',
+                    'class' => 'ui-btn-secondary !text-state-danger hover:!bg-state-danger-soft',
                     'id'    => 'remove_supplier_button',
                     'title' => lang('Common.remove') . ' ' . lang('Suppliers.supplier')
                 ]
             ) ?>
 
-        <?php } else { ?>
+        <?php else: ?>
 
-            <?= form_open("$controller_name/selectSupplier", ['id' => 'select_supplier_form', 'class' => 'form-horizontal']) ?>
-
-            <div class="form-group" id="select_customer">
-                <label id="supplier_label" for="supplier" class="control-label" style="margin-bottom: 1em; margin-top: -1em;">
-                    <?= lang(ucfirst($controller_name) . '.select_supplier') ?>
-                </label>
-                <?= form_input([
-                    'name'  => 'supplier',
-                    'id'    => 'supplier',
-                    'class' => 'form-control input-sm',
-                    'value' => lang(ucfirst($controller_name) . '.start_typing_supplier_name')
-                ]) ?>
-
-                <button id="new_supplier_button" class="btn btn-info btn-sm modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "suppliers/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new_supplier') ?>">
-                    <span class="glyphicon glyphicon-user">&nbsp;</span><?= lang(ucfirst($controller_name) . '.new_supplier') ?>
-                </button>
-
+            <?= form_open("$controller_name/selectSupplier", ['id' => 'select_supplier_form']) ?>
+            <div id="select_customer" class="space-y-2">
+                <label id="supplier_label" for="supplier" class="ui-label"><?= lang(ucfirst($controller_name) . '.select_supplier') ?></label>
+                <div class="flex items-center gap-2">
+                    <?= form_input([
+                        'name'  => 'supplier',
+                        'id'    => 'supplier',
+                        'class' => 'ui-input flex-1',
+                        'value' => lang(ucfirst($controller_name) . '.start_typing_supplier_name')
+                    ]) ?>
+                    <button id="new_supplier_button" class="ui-btn-secondary modal-dlg shrink-0"
+                            data-btn-submit="<?= lang('Common.submit') ?>"
+                            data-href="<?= "suppliers/view" ?>"
+                            title="<?= lang(ucfirst($controller_name) . '.new_supplier') ?>">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <?= lang(ucfirst($controller_name) . '.new_supplier') ?>
+                    </button>
+                </div>
             </div>
-
             <?= form_close() ?>
 
-        <?php } ?>
+        <?php endif; ?>
 
-        <table class="sales_table_100" id="sale_totals">
+        <!-- Sale totals -->
+        <table id="sale_totals" class="w-full text-sm">
             <tr>
-                <?php if ($mode != 'requisition') { ?>
-                    <th style="width: 55%;"><?= lang('Sales.total') ?></th>
-                    <th style="width: 45%; text-align: right;"><?= to_currency($total) ?></th>
-                <?php } else { ?>
-                    <th style="width: 55%;"></th>
-                    <th style="width: 45%; text-align: right;"></th>
-                <?php } ?>
+                <?php if ($mode != 'requisition'): ?>
+                    <td class="py-2 font-semibold text-text-default"><?= lang('Sales.total') ?></td>
+                    <td class="py-2 text-right font-bold text-brand-primary-active text-lg"><?= to_currency($total) ?></td>
+                <?php else: ?>
+                    <td class="py-2"></td>
+                    <td class="py-2"></td>
+                <?php endif; ?>
             </tr>
         </table>
 
-        <?php if (count($cart) > 0) { ?>
+        <?php if (count($cart) > 0): ?>
             <div id="finish_sale">
-                <?php if ($mode == 'requisition') { ?>
 
-                    <?= form_open("$controller_name/requisitionComplete", ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
+                <?php if ($mode == 'requisition'): ?>
 
-                    <div class="form-group form-group-sm">
-                        <label id="comment_label" for="comment"><?= lang('Common.comments') ?></label>
-                        <?= form_textarea([
-                            'name'  => 'comment',
-                            'id'    => 'comment',
-                            'class' => 'form-control input-sm',
-                            'value' => $comment,
-                            'rows'  => '4'
-                        ]) ?>
-
-                        <div class="btn btn-sm btn-danger pull-left" id="cancel_receiving_button">
-                            <span class="glyphicon glyphicon-remove">&nbsp;</span><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
+                    <?= form_open("$controller_name/requisitionComplete", ['id' => 'finish_receiving_form']) ?>
+                    <div class="space-y-3">
+                        <div>
+                            <label id="comment_label" for="comment" class="ui-label mb-1"><?= lang('Common.comments') ?></label>
+                            <?= form_textarea(['name' => 'comment', 'id' => 'comment', 'class' => 'ui-input min-h-[80px] resize-y', 'value' => $comment]) ?>
                         </div>
-                        <div class="btn btn-sm btn-success pull-right" id="finish_receiving_button">
-                            <span class="glyphicon glyphicon-ok">&nbsp;</span><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
-                        </div>
-                    </div>
-
-                    <?= form_close() ?>
-
-                <?php } else { ?>
-
-                    <?= form_open("$controller_name/complete", ['id' => 'finish_receiving_form', 'class' => 'form-horizontal']) ?>
-
-                    <div class="form-group form-group-sm">
-                        <label id="comment_label" for="comment"><?= lang('Common.comments') ?></label>
-                        <?= form_textarea([
-                            'name'  => 'comment',
-                            'id'    => 'comment',
-                            'class' => 'form-control input-sm',
-                            'value' => $comment,
-                            'rows'  => '4'
-                        ]) ?>
-                        <div id="payment_details">
-                            <table class="sales_table_100">
-                                <tr>
-                                    <td><?= lang(ucfirst($controller_name) . '.print_after_sale') ?></td>
-                                    <td>
-                                        <?= form_checkbox([
-                                            'name'    => 'recv_print_after_sale',
-                                            'id'      => 'recv_print_after_sale',
-                                            'class'   => 'checkbox',
-                                            'value'   => 1,
-                                            'checked' => $print_after_sale == 1
-                                        ]) ?>
-                                    </td>
-                                </tr>
-                                <?php if ($mode == "receive") { ?>
-                                    <tr>
-                                        <td><?= lang(ucfirst($controller_name) . '.reference') ?></td>
-                                        <td>
-                                            <?= form_input([
-                                                'name'  => 'recv_reference',
-                                                'id'    => 'recv_reference',
-                                                'class' => 'form-control input-sm',
-                                                'value' => $reference,
-                                                'size'  => 5
-                                            ]) ?>
-                                        </td>
-                                    </tr>
-                                <?php } ?>
-                                <tr>
-                                    <td><?= lang('Sales.payment') ?></td>
-                                    <td>
-                                        <?= form_dropdown(
-                                            'payment_type',
-                                            $payment_options,
-                                            [],
-                                            [
-                                                'id'         => 'payment_types',
-                                                'class'      => 'selectpicker show-menu-arrow',
-                                                'data-style' => 'btn-default btn-sm',
-                                                'data-width' => 'auto'
-                                            ]
-                                        ) ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><?= lang('Sales.amount_tendered') ?></td>
-                                    <td>
-                                        <?= form_input([
-                                            'name'  => 'amount_tendered',
-                                            'value' => '',
-                                            'class' => 'form-control input-sm',
-                                            'size'  => '5'
-                                        ]) ?>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-
-                        <div class="btn btn-sm btn-danger pull-left" id="cancel_receiving_button">
-                            <span class="glyphicon glyphicon-remove">&nbsp;</span><?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
-                        </div>
-                        <div class="btn btn-sm btn-success pull-right" id="finish_receiving_button">
-                            <span class="glyphicon glyphicon-ok">&nbsp;</span><?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
+                        <div class="flex items-center justify-between gap-3">
+                            <button type="button" id="cancel_receiving_button" class="ui-btn-secondary !text-state-danger hover:!bg-state-danger-soft">
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                <?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
+                            </button>
+                            <button type="button" id="finish_receiving_button" class="ui-btn-primary">
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
+                            </button>
                         </div>
                     </div>
-
                     <?= form_close() ?>
 
-                <?php } ?>
+                <?php else: ?>
+
+                    <?= form_open("$controller_name/complete", ['id' => 'finish_receiving_form']) ?>
+                    <div class="space-y-3">
+                        <div>
+                            <label id="comment_label" for="comment" class="ui-label mb-1"><?= lang('Common.comments') ?></label>
+                            <?= form_textarea(['name' => 'comment', 'id' => 'comment', 'class' => 'ui-input min-h-[80px] resize-y', 'value' => $comment]) ?>
+                        </div>
+                        <div id="payment_details" class="space-y-2 text-sm">
+                            <div class="flex items-center justify-between gap-4 py-1 border-b border-brand-primary-border">
+                                <span class="text-text-default"><?= lang(ucfirst($controller_name) . '.print_after_sale') ?></span>
+                                <?= form_checkbox([
+                                    'name'    => 'recv_print_after_sale',
+                                    'id'      => 'recv_print_after_sale',
+                                    'value'   => 1,
+                                    'class'   => 'h-4 w-4 cursor-pointer rounded accent-brand-primary',
+                                    'checked' => $print_after_sale == 1
+                                ]) ?>
+                            </div>
+                            <?php if ($mode == "receive"): ?>
+                                <div class="flex items-center justify-between gap-4 py-1 border-b border-brand-primary-border">
+                                    <span class="text-text-default"><?= lang(ucfirst($controller_name) . '.reference') ?></span>
+                                    <?= form_input(['name' => 'recv_reference', 'id' => 'recv_reference', 'class' => 'ui-input !py-1 !text-sm w-32', 'value' => $reference]) ?>
+                                </div>
+                            <?php endif; ?>
+                            <div class="flex items-center justify-between gap-4 py-1 border-b border-brand-primary-border">
+                                <span class="text-text-default"><?= lang('Sales.payment') ?></span>
+                                <?= form_dropdown('payment_type', $payment_options, [], ['id' => 'payment_types', 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'auto']) ?>
+                            </div>
+                            <div class="flex items-center justify-between gap-4 py-1">
+                                <span class="text-text-default"><?= lang('Sales.amount_tendered') ?></span>
+                                <?= form_input(['name' => 'amount_tendered', 'value' => '', 'class' => 'ui-input !py-1 !text-sm w-28']) ?>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between gap-3">
+                            <button type="button" id="cancel_receiving_button" class="ui-btn-secondary !text-state-danger hover:!bg-state-danger-soft">
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                <?= lang(ucfirst($controller_name) . '.cancel_receiving') ?>
+                            </button>
+                            <button type="button" id="finish_receiving_button" class="ui-btn-primary">
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <?= lang(ucfirst($controller_name) . '.complete_receiving') ?>
+                            </button>
+                        </div>
+                    </div>
+                    <?= form_close() ?>
+
+                <?php endif; ?>
             </div>
-        <?php } ?>
+        <?php endif; ?>
+
     </div>
 </div>
 

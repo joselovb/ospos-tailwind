@@ -8,204 +8,228 @@
  */
 ?>
 
-<div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-<ul id="error_message_box" class="error_message_box"></ul>
+<div id="required_fields_message" class="mb-3 text-sm text-text-muted"><?= lang('Common.fields_required_message') ?></div>
+<ul id="error_message_box" class="mb-4 list-none empty:hidden rounded-xl bg-state-danger-soft px-4 py-3 text-sm text-state-danger space-y-1"></ul>
 
-<?= form_open("item_kits/save/$item_kit_info->item_kit_id", ['id' => 'item_kit_form', 'class' => 'form-horizontal']) ?>
-    <fieldset id="item_kit_basic_info">
+<?= form_open("item_kits/save/$item_kit_info->item_kit_id", ['id' => 'item_kit_form']) ?>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.item_kit_number'), 'item_kit_number', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group">
-                    <span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
-                    <?= form_input([
-                        'name'  => 'item_kit_number',
-                        'id'    => 'item_kit_number',
-                        'class' => 'form-control input-sm',
-                        'value' => $item_kit_info->item_kit_number
-                    ]) ?>
-                </div>
-            </div>
+<fieldset id="item_kit_basic_info" class="space-y-4">
+
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="item_kit_number" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Item_kits.item_kit_number') ?></label>
+        <div class="relative flex-1">
+            <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-text-muted">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5v14M7 5v14M11 5v14M15 5v8M19 5v8M15 17h4M17 15v4"/></svg>
+            </span>
+            <?= form_input([
+                'name'  => 'item_kit_number',
+                'id'    => 'item_kit_number',
+                'class' => 'ui-input pr-10',
+                'value' => $item_kit_info->item_kit_number
+            ]) ?>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.name'), 'name', ['class' => 'required control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'  => 'name',
-                    'id'    => 'name',
-                    'class' => 'form-control input-sm',
-                    'value' => $item_kit_info->name
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="name" class="required ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Item_kits.name') ?></label>
+        <div class="flex-1">
+            <?= form_input([
+                'name'  => 'name',
+                'id'    => 'name',
+                'class' => 'ui-input',
+                'value' => $item_kit_info->name
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="item_name" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Item_kits.find_kit_item') ?></label>
+        <div class="flex-1">
+            <?= form_input([
+                'name'  => 'item_name',
+                'id'    => 'item_name',
+                'class' => 'ui-input',
+                'value' => $selected_kit_item
+            ]) ?>
+            <?= form_hidden('kit_item_id', (string)$selected_kit_item_id) ?>
+        </div>
+    </div>
+
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Item_kits.discount_type') ?></label>
+        <div class="flex flex-wrap gap-4 pt-1">
+            <label class="flex items-center gap-2 cursor-pointer">
+                <?= form_radio([
+                    'name'    => 'kit_discount_type',
+                    'value'   => 0,
+                    'checked' => $item_kit_info->kit_discount_type == PERCENT,
+                    'class'   => 'h-4 w-4 cursor-pointer accent-brand-primary'
                 ]) ?>
-            </div>
-        </div>
-
-        <div class="form-group  form-group-sm">
-            <?= form_label(lang('Item_kits.find_kit_item'), 'item_name', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <div class="input-group input-group-sm">
-                    <?= form_input([
-                        'name'  => 'item_name',
-                        'id'    => 'item_name',
-                        'class' => 'form-control input-sm',
-                        'size'  => '50',
-                        'value' => $selected_kit_item
-                    ]) ?>
-                    <?= form_hidden('kit_item_id', (string)$selected_kit_item_id) ?>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.discount_type'), 'kit_discount_type', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <label class="radio-inline">
-                    <?= form_radio([
-                        'name'    => 'kit_discount_type',
-                        'type'    => 'radio',
-                        'value'   => 0,
-                        'checked' => $item_kit_info->kit_discount_type == PERCENT
-                    ]) ?> <?= lang('Item_kits.discount_percent') ?>
-                </label>
-                <label class="radio-inline">
-                    <?= form_radio([
-                        'name'    => 'kit_discount_type',
-                        'type'    => 'radio',
-                        'value'   => 1,
-                        'checked' => $item_kit_info->kit_discount_type == FIXED
-                    ]) ?> <?= lang('Item_kits.discount_fixed') ?>
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.discount'), 'kit_discount', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-3">
-                <div class="input-group input-group-sm">
-                    <?= form_input([
-                        'name'      => 'kit_discount',
-                        'size'      => '5',
-                        'maxlength' => '5',
-                        'id'        => 'kit_discount',
-                        'class'     => 'form-control input-sm',
-                        'value'     => $item_kit_info->kit_discount_type === FIXED ? to_currency_no_money($item_kit_info->kit_discount) : to_decimals($item_kit_info->kit_discount)
-                    ]) ?>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.price_option'), 'price_option', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <label class="radio-inline">
-                    <?= form_radio([
-                        'name'    => 'price_option',
-                        'type'    => 'radio',
-                        'value'   => 0,
-                        'checked' => $item_kit_info->price_option == PRICE_ALL
-                    ]) ?> <?= lang('Item_kits.kit_and_components') ?>
-                </label>
-                <label class="radio-inline">
-                    <?= form_radio([
-                        'name'    => 'price_option',
-                        'type'    => 'radio',
-                        'value'   => 1,
-                        'checked' => $item_kit_info->price_option == PRICE_KIT
-                    ]) ?> <?= lang('Item_kits.kit_only') ?>
-                </label>
-                <label class="radio-inline">
-                    <?= form_radio([
-                        'name'    => 'price_option',
-                        'type'    => 'radio',
-                        'value'   => 2,
-                        'checked' => $item_kit_info->price_option == PRICE_KIT_ITEMS    // TODO: === for all of these?
-                    ]) ?> <?= lang('Item_kits.kit_and_stock') ?>
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.print_option'), 'print_option', !empty($basic_version) ? ['class' => 'required control-label col-xs-3'] : ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <label class="radio-inline">
-                    <?= form_radio([
-                        'name'    => 'print_option',
-                        'type'    => 'radio',
-                        'value'   => 0,
-                        'checked' => $item_kit_info->print_option == PRINT_ALL
-                    ]) ?> <?= lang('Item_kits.all') ?>
-                </label>
-                <label class="radio-inline">
-                    <?= form_radio([
-                        'name'    => 'print_option',
-                        'type'    => 'radio',
-                        'value'   => 1,
-                        'checked' => $item_kit_info->print_option == PRINT_PRICED
-                    ]) ?> <?= lang('Item_kits.priced_only') ?>
-                </label>
-                <label class="radio-inline">
-                    <?= form_radio([
-                        'name'    => 'print_option',
-                        'type'    => 'radio',
-                        'value'   => 2,
-                        'checked' => $item_kit_info->print_option == PRINT_KIT
-                    ]) ?> <?= lang('Item_kits.kit_only') ?>
-                </label>
-            </div>
-        </div>
-
-
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.description'), 'description', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_textarea([
-                    'name'  => 'description',
-                    'id'    => 'description',
-                    'class' => 'form-control input-sm',
-                    'value' => $item_kit_info->description
+                <span class="text-sm text-text-default"><?= lang('Item_kits.discount_percent') ?></span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+                <?= form_radio([
+                    'name'    => 'kit_discount_type',
+                    'value'   => 1,
+                    'checked' => $item_kit_info->kit_discount_type == FIXED,
+                    'class'   => 'h-4 w-4 cursor-pointer accent-brand-primary'
                 ]) ?>
-            </div>
+                <span class="text-sm text-text-default"><?= lang('Item_kits.discount_fixed') ?></span>
+            </label>
         </div>
+    </div>
 
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Item_kits.add_item'), 'item', ['class' => 'control-label col-xs-3']) ?>
-            <div class="col-xs-8">
-                <?= form_input([
-                    'name'  => 'item',
-                    'id'    => 'item',
-                    'class' => 'form-control input-sm'
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="kit_discount" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Item_kits.discount') ?></label>
+        <div class="w-32">
+            <?= form_input([
+                'name'      => 'kit_discount',
+                'id'        => 'kit_discount',
+                'class'     => 'ui-input',
+                'maxlength' => '5',
+                'value'     => $item_kit_info->kit_discount_type === FIXED ? to_currency_no_money($item_kit_info->kit_discount) : to_decimals($item_kit_info->kit_discount)
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5<?= !empty($basic_version) ? ' required' : '' ?>"><?= lang('Item_kits.price_option') ?></label>
+        <div class="flex flex-wrap gap-4 pt-1">
+            <label class="flex items-center gap-2 cursor-pointer">
+                <?= form_radio([
+                    'name'    => 'price_option',
+                    'value'   => 0,
+                    'checked' => $item_kit_info->price_option == PRICE_ALL,
+                    'class'   => 'h-4 w-4 cursor-pointer accent-brand-primary'
                 ]) ?>
-            </div>
+                <span class="text-sm text-text-default"><?= lang('Item_kits.kit_and_components') ?></span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+                <?= form_radio([
+                    'name'    => 'price_option',
+                    'value'   => 1,
+                    'checked' => $item_kit_info->price_option == PRICE_KIT,
+                    'class'   => 'h-4 w-4 cursor-pointer accent-brand-primary'
+                ]) ?>
+                <span class="text-sm text-text-default"><?= lang('Item_kits.kit_only') ?></span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+                <?= form_radio([
+                    'name'    => 'price_option',
+                    'value'   => 2,
+                    'checked' => $item_kit_info->price_option == PRICE_KIT_ITEMS,
+                    'class'   => 'h-4 w-4 cursor-pointer accent-brand-primary'
+                ]) ?>
+                <span class="text-sm text-text-default"><?= lang('Item_kits.kit_and_stock') ?></span>
+            </label>
         </div>
+    </div>
 
-        <table id="item_kit_items" class="table table-striped table-hover">
-            <thead>
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5<?= !empty($basic_version) ? ' required' : '' ?>"><?= lang('Item_kits.print_option') ?></label>
+        <div class="flex flex-wrap gap-4 pt-1">
+            <label class="flex items-center gap-2 cursor-pointer">
+                <?= form_radio([
+                    'name'    => 'print_option',
+                    'value'   => 0,
+                    'checked' => $item_kit_info->print_option == PRINT_ALL,
+                    'class'   => 'h-4 w-4 cursor-pointer accent-brand-primary'
+                ]) ?>
+                <span class="text-sm text-text-default"><?= lang('Item_kits.all') ?></span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+                <?= form_radio([
+                    'name'    => 'print_option',
+                    'value'   => 1,
+                    'checked' => $item_kit_info->print_option == PRINT_PRICED,
+                    'class'   => 'h-4 w-4 cursor-pointer accent-brand-primary'
+                ]) ?>
+                <span class="text-sm text-text-default"><?= lang('Item_kits.priced_only') ?></span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+                <?= form_radio([
+                    'name'    => 'print_option',
+                    'value'   => 2,
+                    'checked' => $item_kit_info->print_option == PRINT_KIT,
+                    'class'   => 'h-4 w-4 cursor-pointer accent-brand-primary'
+                ]) ?>
+                <span class="text-sm text-text-default"><?= lang('Item_kits.kit_only') ?></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="description" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Item_kits.description') ?></label>
+        <div class="flex-1">
+            <?= form_textarea([
+                'name'  => 'description',
+                'id'    => 'description',
+                'class' => 'ui-input min-h-[80px] resize-y',
+                'value' => $item_kit_info->description
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label for="item" class="ui-label sm:w-44 sm:shrink-0 sm:pt-2.5"><?= lang('Item_kits.add_item') ?></label>
+        <div class="flex-1">
+            <?= form_input([
+                'name'  => 'item',
+                'id'    => 'item',
+                'class' => 'ui-input'
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto rounded-xl border border-brand-primary-border">
+        <table id="item_kit_items" class="w-full text-sm">
+            <thead class="bg-surface-muted">
                 <tr>
-                    <th style="width: 10%;"><?= lang('Common.delete') ?></th>
-                    <th style="width: 10%;"><?= lang('Item_kits.sequence') ?></th>
-                    <th style="width: 60%;"><?= lang('Item_kits.item') ?></th>
-                    <th style="width: 20%;"><?= lang('Item_kits.quantity') ?></th>
+                    <th class="px-3 py-2 text-left font-medium text-text-muted w-12"><?= lang('Common.delete') ?></th>
+                    <th class="px-3 py-2 text-left font-medium text-text-muted w-24"><?= lang('Item_kits.sequence') ?></th>
+                    <th class="px-3 py-2 text-left font-medium text-text-muted"><?= lang('Item_kits.item') ?></th>
+                    <th class="px-3 py-2 text-left font-medium text-text-muted w-28"><?= lang('Item_kits.quantity') ?></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y divide-brand-primary-border">
                 <?php foreach ($item_kit_items as $item_kit_item) { ?>
-                    <tr>
-                        <td><a href="#" onclick="return delete_item_kit_row(this);"><span class="glyphicon glyphicon-trash"></span></a></td>
-                        <td><input class="quantity form-control input-sm" id="item_seq_<?= $item_kit_item['item_id'] ?>" name="item_kit_seq[<?= $item_kit_item['item_id'] ?>]" value="<?= parse_decimals($item_kit_item['kit_sequence'], 0) ?>"></td>
-                        <td><?= esc($item_kit_item['name']) ?></td>
-                        <td><input class="quantity form-control input-sm" id="item_qty_<?= $item_kit_item['item_id'] ?>" name="item_kit_qty[<?= $item_kit_item['item_id'] ?>]" value="<?= to_quantity_decimals($item_kit_item['quantity']) ?>"></td>
+                    <tr class="bg-surface hover:bg-surface-muted transition-colors">
+                        <td class="px-3 py-2">
+                            <a href="#" onclick="return delete_item_kit_row(this);" class="text-state-danger hover:text-state-danger inline-flex">
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                            </a>
+                        </td>
+                        <td class="px-3 py-2">
+                            <input class="ui-input !py-1 !text-sm w-20"
+                                   id="item_seq_<?= $item_kit_item['item_id'] ?>"
+                                   name="item_kit_seq[<?= $item_kit_item['item_id'] ?>]"
+                                   value="<?= parse_decimals($item_kit_item['kit_sequence'], 0) ?>">
+                        </td>
+                        <td class="px-3 py-2 text-text-default"><?= esc($item_kit_item['name']) ?></td>
+                        <td class="px-3 py-2">
+                            <input class="ui-input !py-1 !text-sm w-20"
+                                   id="item_qty_<?= $item_kit_item['item_id'] ?>"
+                                   name="item_kit_qty[<?= $item_kit_item['item_id'] ?>]"
+                                   value="<?= to_quantity_decimals($item_kit_item['quantity']) ?>">
+                        </td>
                     </tr>
                 <?php } ?>
             </tbody>
         </table>
+    </div>
 
-    </fieldset>
+</fieldset>
+
 <?= form_close() ?>
 
 <script type="text/javascript">
-    // Validation and submit handling
+    var trash_svg = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>';
+
+    function delete_item_kit_row(link) {
+        $(link).parent().parent().remove();
+        return false;
+    }
+
     $(document).ready(function() {
         $('#item').autocomplete({
             source: '<?= "items/suggest" ?>',
@@ -217,11 +241,11 @@
                 if ($('#item_kit_item_' + ui.item.value).length == 1) {
                     $('#item_kit_item_' + ui.item.value).val(parseFloat($('#item_kit_item_' + ui.item.value).val()) + 1);
                 } else {
-                    $('#item_kit_items').append('<tr>' +
-                        '<td><a href="#" onclick="return delete_item_kit_row(this);"><span class="glyphicon glyphicon-trash"></span></a></td>' +
-                        '<td><input class="quantity form-control input-sm" id="item_seq_' + ui.item.value + '" name="item_kit_seq[' + ui.item.value + ']" value="0"></td>' +
-                        '<td>' + DOMPurify.sanitize(ui.item.label) + '</td>' +
-                        '<td><input class="quantity form-control input-sm" id="item_qty_' + ui.item.value + '" name="item_kit_qty[' + ui.item.value + ']" value="1"></td>' +
+                    $('#item_kit_items tbody').append('<tr class="bg-surface hover:bg-surface-muted transition-colors">' +
+                        '<td class="px-3 py-2"><a href="#" onclick="return delete_item_kit_row(this);" class="text-state-danger hover:text-state-danger inline-flex">' + trash_svg + '</a></td>' +
+                        '<td class="px-3 py-2"><input class="ui-input !py-1 !text-sm w-20" id="item_seq_' + ui.item.value + '" name="item_kit_seq[' + ui.item.value + ']" value="0"></td>' +
+                        '<td class="px-3 py-2 text-text-default">' + DOMPurify.sanitize(ui.item.label) + '</td>' +
+                        '<td class="px-3 py-2"><input class="ui-input !py-1 !text-sm w-20" id="item_qty_' + ui.item.value + '" name="item_kit_qty[' + ui.item.value + ']" value="1"></td>' +
                         '</tr>');
                 }
                 $('#item').val('');
@@ -240,7 +264,6 @@
             $("input[name='kit_item_id']").val(ui.item.value);
             $("input[name='item_name']").val(DOMPurify.sanitize(ui.item.label));
         };
-
 
         $('#item_name').autocomplete({
             source: "<?= 'items/suggestKits' ?>",
@@ -290,9 +313,4 @@
             }
         }, form_support.error));
     });
-
-    function delete_item_kit_row(link) {
-        $(link).parent().parent().remove();
-        return false;
-    }
 </script>

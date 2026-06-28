@@ -5,42 +5,32 @@
  */
 ?>
 
-<?= form_open('config/saveRewards/', ['id' => 'reward_config_form', 'class' => 'form-horizontal']) ?>
-    <div id="config_wrapper">
-        <fieldset id="config_info">
+<?= form_open('config/saveRewards/', ['id' => 'reward_config_form']) ?>
 
-            <div id="required_fields_message"><?= lang('Common.fields_required_message') ?></div>
-            <ul id="reward_error_message_box" class="error_message_box"></ul>
+<ul id="reward_error_message_box" class="mb-4 list-none empty:hidden rounded-xl bg-state-danger-soft px-4 py-3 text-sm text-state-danger space-y-1"></ul>
 
-            <div class="form-group form-group-sm">
-                <?= form_label(lang('Config.customer_reward_enable'), 'customer_reward_enable', ['class' => 'control-label col-xs-2']) ?>
-                <div class="col-xs-1">
-                    <?= form_checkbox([
-                        'name'    => 'customer_reward_enable',
-                        'value'   => 'customer_reward_enable',
-                        'id'      => 'customer_reward_enable',
-                        'checked' => $config['customer_reward_enable'] == 1
-                    ]) ?>
-                </div>
-            </div>
+<div class="max-w-2xl space-y-4">
 
-            <div id="customer_rewards">
-                <?= view('partial/customer_rewards', ['customer_rewards' => $customer_rewards]) ?>
-            </div>
-
-            <?= form_submit([
-                'name'  => 'submit_reward',
-                'id'    => 'submit_reward',
-                'value' => lang('Common.submit'),
-                'class' => 'btn btn-primary btn-sm pull-right'
-            ]) ?>
-
-        </fieldset>
+    <div class="sm:flex sm:items-start sm:gap-4">
+        <label class="ui-label sm:w-44 sm:shrink-0"><?= lang('Config.customer_reward_enable') ?></label>
+        <div class="flex items-center pt-2">
+            <?= form_checkbox(['name' => 'customer_reward_enable', 'value' => 'customer_reward_enable', 'id' => 'customer_reward_enable', 'checked' => $config['customer_reward_enable'] == 1, 'class' => 'h-4 w-4 cursor-pointer rounded']) ?>
+        </div>
     </div>
+
+    <div id="customer_rewards" class="space-y-2">
+        <?= view('partial/customer_rewards', ['customer_rewards' => $customer_rewards]) ?>
+    </div>
+
+    <div class="flex justify-end border-t border-brand-primary-border pt-4">
+        <button type="submit" name="submit_reward" id="submit_reward" class="ui-btn-primary"><?= lang('Common.submit') ?></button>
+    </div>
+
+</div>
+
 <?= form_close() ?>
 
 <script type="text/javascript">
-    // Validation and submit handling
     $(document).ready(function() {
 
         var enable_disable_customer_reward_enable = (function() {
@@ -76,9 +66,9 @@
             var new_block = block.insertAfter($(this).parent());
             var new_block_id = 'customer_reward_' + ++id;
             var new_block_id_next = 'reward_points_' + id;
-            $(new_block).find('label').html("<?= lang('Config.customer_reward') ?> " + ++table_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
-            $(new_block).find("input[id='" + previous_id + "']").attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
-            $(new_block).find("input[id='" + previous_id_next + "']").attr('id', new_block_id_next).removeAttr('disabled').attr('name', new_block_id_next).attr('class', 'form-control input-sm').val('');
+            $(new_block).find('label').html("<?= lang('Config.customer_reward') ?> " + ++table_count).attr('for', new_block_id).attr('class', 'ui-label text-sm w-36 shrink-0');
+            $(new_block).find("input[id='" + previous_id + "']").attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'customer_reward valid_chars ui-input').val('');
+            $(new_block).find("input[id='" + previous_id_next + "']").attr('id', new_block_id_next).removeAttr('disabled').attr('name', new_block_id_next).attr('class', 'customer_reward valid_chars ui-input').val('');
             hide_show_remove();
         };
 
@@ -91,13 +81,11 @@
             $('.add_customer_reward').click(add_customer_reward);
             $('.remove_customer_reward').click(remove_customer_reward);
             hide_show_remove();
-            // Set back disabled state
             enable_disable_customer_reward_enable();
         };
         init_add_remove_tables();
 
         var duplicate_found = false;
-        // Run validator once for all fields
         $.validator.addMethod('customer_reward', function(value, element) {
             var value_count = 0;
             $("input[name*='customer_reward']:not(input[name=customer_reward_enable])").each(function() {
@@ -134,7 +122,6 @@
             rules: {
                 <?php
                 $i = 0;
-
                 foreach ($customer_rewards as $customer_reward => $table) {
                 ?>
                     <?= 'customer_reward_' . ++$i ?>: {
@@ -148,7 +135,6 @@
             messages: {
                 <?php
                 $i = 0;
-
                 foreach ($customer_rewards as $customer_reward => $table) {
                 ?>
                     <?= 'customer_reward_' . ++$i ?>: "<?= lang('Config.customer_reward_required') ?>",

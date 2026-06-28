@@ -15,30 +15,33 @@
     dialog_support.init("a.modal-dlg");
 </script>
 
-<div id="page_title"><?= esc($title) ?></div>
+<div class="mb-4">
+    <h1 id="page_title" class="font-display text-2xl font-semibold text-brand-primary-active"><?= esc($title) ?></h1>
+    <p id="page_subtitle" class="mt-1 text-sm text-text-muted"><?= esc($subtitle) ?></p>
+</div>
 
-<div id="page_subtitle"><?= esc($subtitle) ?></div>
-
-<div id="toolbar">
-    <div class="pull-left form-inline" role="toolbar">
-        <button id="toggleCostProfitButton" class="btn btn-default btn-sm print_hide">
-            <?php echo lang('Reports.toggle_cost_and_profit'); ?>
+<div id="toolbar" class="mb-3">
+    <div class="flex flex-wrap items-center gap-2">
+        <button id="toggleCostProfitButton" class="ui-btn-secondary print_hide">
+            <?= lang('Reports.toggle_cost_and_profit') ?>
         </button>
     </div>
 </div>
 
-<div id="table_holder">
-    <table id="table"></table>
+<div class="ui-card p-4">
+    <div id="table_holder">
+        <table id="table"></table>
+    </div>
 </div>
 
-<div id="report_summary">
+<div id="report_summary" class="mt-6 rounded-xl border border-brand-primary-border bg-surface p-6">
     <?php
     foreach ($summary_data as $name => $value) {
         if ($name == "total_quantity") {
             ?>
-            <div class="summary_row"><?= lang("Reports.$name") . ": " . esc($value) ?></div>
+            <div class="summary_row py-1 text-sm font-medium text-text-default"><?= lang("Reports.$name") . ": " . esc($value) ?></div>
         <?php } else { ?>
-            <div class="summary_row"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
+            <div class="summary_row py-1 text-sm font-medium text-text-default"><?= lang("Reports.$name") . ': ' . to_currency($value) ?></div>
             <?php
         }
     }

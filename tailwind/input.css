@@ -1,0 +1,5 @@
+/* Entry point para el build de Tailwind CLI. No editar @theme aquí -
+ * los tokens viven en tokens.css (capa semántica) y theme-default.css
+ * (paleta cruda). Este archivo solo une las piezas para el compilador. */
+@import "./tokens.css";
+@import "./components.css";

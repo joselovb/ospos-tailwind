@@ -11,80 +11,92 @@
     dialog_support.init("a.modal-dlg");
 </script>
 
+<div class="mb-6">
+    <h1 id="page_title" class="font-display text-2xl font-semibold text-brand-primary-active"><?= lang('Reports.report_input') ?></h1>
+</div>
 
-<div id="page_title"><?= lang('Reports.report_input') ?></div>
+<?php if (isset($error)) { ?>
+    <div class="ui-alert-danger mb-4"><?= esc($error) ?></div>
+<?php } ?>
 
-<?php
-if (isset($error)) {
-    echo '<div class="alert alert-dismissible alert-danger">' . esc($error) . '</div>';
-}
-?>
+<div class="ui-card max-w-lg p-6">
 
-<?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data', 'class' => 'form-horizontal']) ?>
+    <?= form_open('#', ['id' => 'item_form', 'enctype' => 'multipart/form-data']) ?>
 
-    <div class="form-group form-group-sm">
-        <?= form_label(lang('Reports.date_range'), 'report_date_range_label', ['class' => 'control-label col-xs-2 required']) ?>
-        <div class="col-xs-3">
-            <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
-        </div>
-    </div>
+        <div class="space-y-4">
 
-    <?php if (!empty($mode)) { ?>
-        <div class="form-group form-group-sm">
-            <?php if ($mode == 'sale') { ?>
-                <?= form_label(lang('Reports.sale_type'), 'reports_sale_type_label', ['class' => 'required control-label col-xs-2']) ?>
-                <div id="report_sale_type" class="col-xs-3">
-                    <?= form_dropdown('sale_type', $sale_type_options, 'complete', ['id' => 'input_type', 'class' => 'form-control']) ?>
+            <div class="sm:flex sm:items-start sm:gap-4">
+                <label class="ui-label sm:w-36 sm:shrink-0 sm:pt-2.5"><?= lang('Reports.date_range') ?></label>
+                <div class="flex-1">
+                    <?= form_input(['name' => 'daterangepicker', 'class' => 'ui-input', 'id' => 'daterangepicker']) ?>
                 </div>
-            <?php } elseif ($mode == 'receiving') { ?>
-                <?= form_label(lang('Reports.receiving_type'), 'reports_receiving_type_label', ['class' => 'required control-label col-xs-2']) ?>
-                <div id="report_receiving_type" class="col-xs-3">
-                    <?= form_dropdown(
-                        'receiving_type',
-                        [
-                            'all'          => lang('Reports.all'),
-                            'receiving'    => lang('Reports.receivings'),
-                            'returns'      => lang('Reports.returns'),
-                            'requisitions' => lang('Reports.requisitions')
-                        ],
-                        'all',
-                        ['id' => 'input_type', 'class' => 'form-control']
-                    ) ?>
+            </div>
+
+            <?php if (!empty($mode)) { ?>
+                <div class="sm:flex sm:items-start sm:gap-4">
+                    <?php if ($mode == 'sale') { ?>
+                        <label class="ui-label sm:w-36 sm:shrink-0 sm:pt-2.5"><?= lang('Reports.sale_type') ?></label>
+                        <div id="report_sale_type" class="relative flex-1">
+                            <?= form_dropdown('sale_type', $sale_type_options, 'complete', ['id' => 'input_type', 'class' => 'ui-select']) ?>
+                            <div class="ui-select-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                        </div>
+                    <?php } elseif ($mode == 'receiving') { ?>
+                        <label class="ui-label sm:w-36 sm:shrink-0 sm:pt-2.5"><?= lang('Reports.receiving_type') ?></label>
+                        <div id="report_receiving_type" class="relative flex-1">
+                            <?= form_dropdown(
+                                'receiving_type',
+                                [
+                                    'all'          => lang('Reports.all'),
+                                    'receiving'    => lang('Reports.receivings'),
+                                    'returns'      => lang('Reports.returns'),
+                                    'requisitions' => lang('Reports.requisitions')
+                                ],
+                                'all',
+                                ['id' => 'input_type', 'class' => 'ui-select']
+                            ) ?>
+                            <div class="ui-select-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                        </div>
+                    <?php } ?>
                 </div>
             <?php } ?>
+
+            <?php if (isset($discount_type_options)) { ?>
+                <div class="sm:flex sm:items-start sm:gap-4">
+                    <label class="ui-label sm:w-36 sm:shrink-0 sm:pt-2.5"><?= lang('Reports.discount_type') ?></label>
+                    <div id="report_discount_type" class="relative flex-1">
+                        <?= form_dropdown('discount_type', $discount_type_options, $config['default_sales_discount_type'], ['id' => 'discount_type_id', 'class' => 'ui-select']) ?>
+                        <div class="ui-select-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+
+            <?php if (!empty($stock_locations) && count($stock_locations) > 2) { ?>
+                <div class="sm:flex sm:items-start sm:gap-4">
+                    <label class="ui-label sm:w-36 sm:shrink-0 sm:pt-2.5"><?= lang('Reports.stock_location') ?></label>
+                    <div id="report_stock_location" class="relative flex-1">
+                        <?= form_dropdown('stock_location', $stock_locations, 'all', ['id' => 'location_id', 'class' => 'ui-select']) ?>
+                        <div class="ui-select-arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+
         </div>
-    <?php } ?>
 
-    <?php if (isset($discount_type_options)) { ?>
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Reports.discount_type'), 'reports_discount_type_label', ['class' => 'required control-label col-xs-2']) ?>
-            <div id="report_discount_type" class="col-xs-3">
-                <?= form_dropdown('discount_type', $discount_type_options, $config['default_sales_discount_type'], ['id' => 'discount_type_id', 'class' => 'form-control']) ?>
-            </div>
+        <div class="mt-6">
+            <?= form_button(['name' => 'generate_report', 'id' => 'generate_report', 'content' => lang('Common.submit'), 'class' => 'ui-btn-primary']) ?>
         </div>
-    <?php } ?>
 
-    <?php if (!empty($stock_locations) && count($stock_locations) > 2) { ?>
-        <div class="form-group form-group-sm">
-            <?= form_label(lang('Reports.stock_location'), 'reports_stock_location_label', ['class' => 'required control-label col-xs-2']) ?>
-            <div id="report_stock_location" class="col-xs-3">
-                <?= form_dropdown('stock_location', $stock_locations, 'all', ['id' => 'location_id', 'class' => 'form-control']) ?>
-            </div>
-        </div>
-    <?php } ?>
+    <?= form_close() ?>
 
-    <?php
-    echo form_button(
-        [
-            'name'    => 'generate_report',
-            'id'      => 'generate_report',
-            'content' => lang('Common.submit'),
-            'class'   => 'btn btn-primary btn-sm'
-        ]
-    );
-    ?>
-
-<?= form_close() ?>
+</div>
 
 <?= view('partial/footer') ?>
 

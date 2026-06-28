@@ -1,0 +1,480 @@
+/*
+ * Capa de componentes reutilizables. Clases cortas para los patrones
+ * de "Patrones de componentes a replicar" en CLAUDE.md, armadas SOLO
+ * con tokens semanticos (nunca colores literales). Cuando se migra una
+ * vista, usar estas clases en vez de repetir las utilidades largas.
+ *
+ * PREFIJO OBLIGATORIO "ui-": Bootstrap 3/5 (cargados como CSS normal,
+ * sin @layer) ya define clases con nombres como .btn-primary,
+ * .alert-danger, .alert-success, .alert-warning, .modal-content, etc.
+ * Tailwind v4 envuelve TODO en cascade layers, y una regla SIN layer
+ * siempre le gana a una CON layer en un empate de importancia, sin
+ * importar la especificidad. Si nuestra clase tiene el mismo nombre
+ * que una de Bootstrap, Bootstrap gana SIEMPRE - eso fue el bug real
+ * detras de "el rojo de la alerta no es el correcto" y "los botones
+ * primary se ven azules". La unica forma robusta de evitarlo es que
+ * ninguna clase de componente nuestra coincida nunca con el
+ * vocabulario de Bootstrap - de ahi el prefijo "ui-" en todas.
+ */
+@layer components {
+  /* Botones - text-sm explicito: sin esto heredaban el font-size de
+   * body de Bootstrap (15px), grande y descuadrado contra el padding
+   * pensado para una caja chica. */
+  .ui-btn-primary {
+    @apply !inline-flex !items-center !justify-center !gap-2 !rounded-xl !bg-gradient-to-br !from-brand-primary !to-brand-primary-hover !px-4 !py-2.5 !text-sm !font-medium !text-text-on-brand !shadow-md !transition-all hover:!shadow-lg hover:!to-brand-primary-active active:!scale-[0.97] disabled:!opacity-50 disabled:!pointer-events-none;
+  }
+
+  .ui-btn-secondary {
+    @apply !inline-flex !items-center !justify-center !gap-2 !rounded-xl !border !border-brand-primary-border !bg-surface !px-4 !py-2.5 !text-sm !font-medium !text-text-default !shadow-sm !transition-all hover:!bg-brand-primary-soft hover:!border-brand-primary active:!scale-[0.97] disabled:!opacity-50 disabled:!pointer-events-none;
+  }
+
+  .ui-btn-danger {
+    @apply !inline-flex !items-center !justify-center !gap-2 !rounded-xl !bg-gradient-to-br !from-state-danger !to-state-danger !px-4 !py-2.5 !text-sm !font-medium !text-text-on-brand !shadow-md !transition-all hover:!shadow-lg active:!scale-[0.97] disabled:!opacity-50 disabled:!pointer-events-none;
+  }
+
+  .ui-btn-accent {
+    @apply !inline-flex !items-center !justify-center !gap-2 !rounded-xl !bg-gradient-to-br !from-brand-accent !to-brand-accent-hover !px-4 !py-2.5 !text-sm !font-medium !text-text-on-brand !shadow-md !transition-all hover:!shadow-lg active:!scale-[0.97] disabled:!opacity-50 disabled:!pointer-events-none;
+  }
+
+  /* Inputs - text-sm explicito + placeholder mas claro/liviano que el
+   * texto escrito (gris plomo claro, no el mismo peso que el texto). */
+  .ui-input {
+    @apply !w-full !rounded-xl !border !border-brand-primary-border !bg-surface !px-4 !py-2.5 !text-sm !text-text-default placeholder:!text-text-muted/70 !transition focus:!outline-none focus:!ring-2 focus:!ring-brand-primary-ring;
+  }
+
+  /* Sin flecha via background-image: un data-uri no puede leer
+   * variables CSS (var(--color-text-muted)) asi que el color quedaria
+   * hardcodeado y rompería el theming multi-negocio (regla dura del
+   * CLAUDE.md). La flecha se agrega en la View como SVG real absoluto
+   * (mismo patron que los iconos de ui-input), que SI hereda color de
+   * texto via currentColor normalmente. Ver .ui-select-arrow abajo. */
+  .ui-select {
+    @apply !w-full !appearance-none !rounded-xl !border !border-brand-primary-border !bg-surface !px-4 !py-2.5 !text-sm !pr-10 !text-text-default !transition focus:!outline-none focus:!ring-2 focus:!ring-brand-primary-ring;
+  }
+
+  .ui-select-arrow {
+    @apply !pointer-events-none !absolute !inset-y-0 !right-0 !flex !items-center !pr-3 !text-text-muted;
+  }
+
+  /* Variante compacta de ui-input para celdas densas (tablas, carrito) */
+  .ui-input-compact {
+    @apply !w-full !rounded-lg !border !border-brand-primary-border !bg-surface !px-2 !py-1.5 !text-sm !text-text-default placeholder:!text-text-muted/70 !transition focus:!outline-none focus:!ring-2 focus:!ring-brand-primary-ring;
+  }
+
+  .ui-label {
+    @apply !mb-1.5 !block !text-sm !font-medium !text-text-default;
+  }
+
+  .ui-help-text {
+    @apply !mt-1 !text-xs !text-text-muted;
+  }
+
+  /* Cards / paneles */
+  .ui-card {
+    @apply !rounded-2xl !border !border-brand-primary-border !bg-surface !shadow-lg;
+  }
+
+  .ui-card-elevated {
+    @apply !rounded-3xl !bg-surface !shadow-xl;
+  }
+
+  .ui-card-highlight {
+    @apply !rounded-2xl !bg-gradient-to-br !from-surface !to-brand-primary-soft !border !border-brand-primary-border !shadow-lg;
+  }
+
+  /* Alertas - mismo radio que ui-input/ui-btn-* (rounded-xl) para que no
+   * choquen visualmente cuando aparecen junto a un form (ej. login) */
+  .ui-alert-danger {
+    @apply !rounded-xl !bg-state-danger-soft !px-3 !py-2 !text-center !text-sm !text-state-danger;
+  }
+
+  .ui-alert-success {
+    @apply !rounded-xl !bg-state-success-soft !px-3 !py-2 !text-center !text-sm !text-state-success;
+  }
+
+  .ui-alert-warning {
+    @apply !rounded-xl !bg-state-warning-soft !px-3 !py-2 !text-center !text-sm !text-state-warning;
+  }
+
+  /* Badges de estado (para tablas: activo/inactivo, stock bajo, etc.) */
+  .ui-badge-success {
+    @apply !inline-flex !items-center !rounded-full !bg-state-success-soft !px-2.5 !py-0.5 !text-xs !font-medium !text-state-success;
+  }
+
+  .ui-badge-danger {
+    @apply !inline-flex !items-center !rounded-full !bg-state-danger-soft !px-2.5 !py-0.5 !text-xs !font-medium !text-state-danger;
+  }
+
+  .ui-badge-warning {
+    @apply !inline-flex !items-center !rounded-full !bg-state-warning-soft !px-2.5 !py-0.5 !text-xs !font-medium !text-state-warning;
+  }
+
+  .ui-badge-neutral {
+    @apply !inline-flex !items-center !rounded-full !bg-surface-muted !px-2.5 !py-0.5 !text-xs !font-medium !text-text-muted;
+  }
+
+  /* Modal base (para futuros modales propios via Alpine - los modales
+   * de bootstrap3-dialog/.modal-dlg existentes NO se tocan, esto es
+   * para cuando se construyan modales nuevos en la migracion) */
+  .ui-modal-overlay {
+    @apply !fixed !inset-0 !z-40 !bg-text-default/40;
+  }
+
+  .ui-modal-panel {
+    @apply !fixed !inset-0 !z-50 !flex !items-center !justify-center !p-4;
+  }
+
+  .ui-modal-content {
+    @apply !w-full !max-w-lg !rounded-3xl !bg-surface !shadow-xl !p-6;
+  }
+
+  /* Paginacion */
+  .ui-pagination-link {
+    @apply !inline-flex !h-9 !min-w-9 !items-center !justify-center !rounded-lg !px-3 !text-sm !font-medium !text-text-muted !transition-colors hover:!bg-brand-primary-soft hover:!text-brand-primary;
+  }
+
+  .ui-pagination-link-active {
+    @apply !inline-flex !h-9 !min-w-9 !items-center !justify-center !rounded-lg !bg-brand-primary-soft !px-3 !text-sm !font-medium !text-brand-primary;
+  }
+
+  .ui-pagination-link-disabled {
+    @apply !inline-flex !h-9 !min-w-9 !items-center !justify-center !rounded-lg !px-3 !text-sm !font-medium !text-text-muted !opacity-40 !pointer-events-none;
+  }
+
+  /* Empty states */
+  .ui-empty-state {
+    @apply !flex !flex-col !items-center !justify-center !gap-3 !rounded-2xl !border !border-dashed !border-brand-primary-border !bg-surface-muted !px-6 !py-12 !text-center;
+  }
+
+  .ui-empty-state-icon {
+    @apply !flex !h-12 !w-12 !items-center !justify-center !rounded-full !bg-brand-primary-soft !text-brand-primary;
+  }
+
+  .ui-empty-state-title {
+    @apply !text-base !font-semibold !text-text-default;
+  }
+
+  .ui-empty-state-description {
+    @apply !max-w-sm !text-sm !text-text-muted;
+  }
+
+  /*
+   * Overrides para DOM generado en runtime por plugins jQuery
+   * (bootstrap-table, bootstrap-select) en las vistas "manage" (listas
+   * con #table/#toolbar). Ese HTML no existe en los .php - lo inyecta
+   * el plugin - por lo que no podemos darle clases "ui-*" propias.
+   * Apuntamos a las clases que el plugin SI pone, con !important
+   * (mismo motivo de cascade layers que el resto de este archivo).
+   * No tocar la estructura/IDs que arman estos plugins, solo su piel.
+   */
+  #table_holder .fixed-table-toolbar {
+    @apply !mb-3 !flex !flex-wrap !items-center !gap-2;
+  }
+
+  #table_holder .search input,
+  #toolbar input.form-control {
+    @apply !rounded-xl !border !border-brand-primary-border !bg-surface !px-4 !py-2 !text-sm !text-text-default placeholder:!text-text-muted/70 !shadow-none focus:!outline-none focus:!ring-2 focus:!ring-brand-primary-ring;
+  }
+
+  #table_holder table.table {
+    @apply !text-sm;
+  }
+
+  #table_holder table.table thead th {
+    @apply !border-b !border-brand-primary-border !bg-surface-muted !text-xs !font-semibold !uppercase !tracking-wide !text-text-muted;
+  }
+
+  #table_holder table.table tbody tr {
+    @apply !border-b !border-brand-primary-border/60 !transition-colors;
+  }
+
+  #table_holder table.table.table-striped tbody tr:nth-of-type(odd) {
+    @apply !bg-surface-muted/50;
+  }
+
+  #table_holder table.table tbody tr:hover {
+    @apply !bg-brand-primary-soft/60;
+  }
+
+  #table_holder .pagination > li > a,
+  #table_holder .pagination > li > span {
+    @apply !rounded-lg !border-0 !text-text-muted hover:!bg-brand-primary-soft hover:!text-brand-primary;
+  }
+
+  #table_holder .pagination > .active > a,
+  #table_holder .pagination > .active > span {
+    @apply !bg-brand-primary-soft !text-brand-primary !font-medium;
+  }
+
+  #table_holder .dropdown-menu {
+    @apply !rounded-xl !border !border-brand-primary-border !shadow-lg;
+  }
+
+  /* bootstrap-select (filtros/ubicacion en el toolbar de manage.php) */
+  #toolbar .bootstrap-select > .btn,
+  #toolbar .dropdown-toggle.btn-default {
+    @apply !rounded-xl !border !border-brand-primary-border !bg-surface !text-sm !text-text-default !shadow-none hover:!bg-brand-primary-soft;
+  }
+
+  /* Botones "columns"/"export" que bootstrap-table agrega solo a la
+   * derecha del toolbar (no existen en el .php, los crea el plugin) */
+  #table_holder .columns .btn.btn-default,
+  #table_holder .export .btn.btn-default {
+    @apply !flex !h-10 !w-10 !items-center !justify-center !rounded-xl !border !border-brand-primary-border !bg-surface !p-0 !text-text-muted !shadow-none hover:!bg-brand-primary-soft hover:!text-brand-primary;
+  }
+
+  #table_holder .columns .dropdown-menu,
+  #table_holder .export .dropdown-menu {
+    @apply !p-1;
+  }
+
+  #table_holder .columns .dropdown-menu li,
+  #table_holder .export .dropdown-menu li {
+    @apply !rounded-lg;
+  }
+
+  #table_holder .columns .dropdown-menu li:hover,
+  #table_holder .export .dropdown-menu li:hover {
+    @apply !bg-brand-primary-soft;
+  }
+
+  #table_holder .columns .dropdown-menu label,
+  #table_holder .export .dropdown-menu a {
+    @apply !flex !items-center !gap-2 !px-3 !py-1.5 !text-sm !text-text-default;
+  }
+
+  /*
+   * jQuery Validate (form_support.error en manage_tables.js) agrega
+   * "has-error" al ".form-group" mas cercano del campo invalido en
+   * TODOS los formularios modales (.modal-dlg) de la app, no solo
+   * Items. No podemos quitarle la clase "form-group" a los wrappers
+   * (es el selector que usa el JS), asi que el estado de error se
+   * resuelve con CSS apuntando a ese combo.
+   */
+  .has-error .ui-input,
+  .has-error .ui-select,
+  .has-error .ui-input-compact {
+    @apply !border-state-danger focus:!ring-state-danger/40;
+  }
+
+  .has-error .ui-label {
+    @apply !text-state-danger;
+  }
+
+  label.error {
+    @apply !mt-1 !block !text-xs !text-state-danger;
+  }
+
+  /*
+   * BootstrapDialog modal overrides
+   * El plugin genera HTML con clases Bootstrap (modal-content, modal-header,
+   * modal-footer, btn-primary, btn-danger) sin que podamos tocarlas en el PHP.
+   * Default type = TYPE_PRIMARY → header azul Bootstrap (#337ab7).
+   * Aquí sobreescribimos toda la estética del modal para que use nuestros tokens.
+   * !important obligatorio: estas reglas estan en @layer components (layered)
+   * pero deben ganarle a bootstrap-dialog.css (unlayered) por el mismo motivo
+   * que el resto de este archivo.
+   */
+
+  /* Header — unificar todos los tipos al gradiente de marca */
+  .bootstrap-dialog.type-default .modal-header,
+  .bootstrap-dialog.type-info .modal-header,
+  .bootstrap-dialog.type-primary .modal-header,
+  .bootstrap-dialog.type-success .modal-header,
+  .bootstrap-dialog.type-warning .modal-header,
+  .bootstrap-dialog.type-danger .modal-header {
+    @apply !bg-gradient-to-br !from-brand-primary !to-brand-primary-hover !border-b-0;
+    border-radius: 0 !important;
+    padding: 0.875rem 1.25rem !important;
+  }
+
+  /* Título en el header */
+  .bootstrap-dialog .bootstrap-dialog-title {
+    color: #ffffff !important;
+    font-size: 0.9375rem !important;
+    font-weight: 600 !important;
+    font-family: var(--font-display, inherit) !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  /* Botón × de cierre — apuntar al <button class="close"> dentro del container,
+   * no al container mismo: Bootstrap pone color:#000 opacity:.2 directo en .close */
+  .bootstrap-dialog .bootstrap-dialog-close-button .close {
+    color: rgba(255,255,255,0.8) !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    font-size: 1.25rem !important;
+    font-weight: 400 !important;
+  }
+  .bootstrap-dialog .bootstrap-dialog-close-button .close:hover,
+  .bootstrap-dialog .bootstrap-dialog-close-button .close:focus {
+    color: #ffffff !important;
+    opacity: 1 !important;
+  }
+
+  /* Contenedor del modal */
+  .modal-content {
+    border: 1px solid var(--color-brand-primary-border) !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.14), 0 4px 20px rgba(0,0,0,0.08) !important;
+    overflow: hidden !important;
+    background-color: var(--color-surface) !important;
+  }
+
+  /* Cuerpo del modal */
+  .modal-body {
+    background-color: var(--color-surface) !important;
+    padding: 1.25rem !important;
+    color: var(--color-text-default) !important;
+  }
+
+  /* Pie del modal */
+  .modal-footer {
+    background-color: var(--color-surface) !important;
+    border-top: 1px solid var(--color-brand-primary-border) !important;
+    padding: 0.75rem 1.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Botón Submit (btn-primary) en pie de modal → gradiente marca */
+  .modal-footer .btn.btn-primary {
+    background: linear-gradient(to bottom right, var(--color-brand-primary), var(--color-brand-primary-hover)) !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 0.75rem !important;
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+    transition: opacity 0.15s, box-shadow 0.15s, transform 0.1s !important;
+    text-shadow: none !important;
+  }
+  .modal-footer .btn.btn-primary:hover {
+    opacity: 0.9 !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18) !important;
+    transform: translateY(-1px) !important;
+  }
+  .modal-footer .btn.btn-primary:active {
+    transform: scale(0.97) !important;
+  }
+
+  /* Botón New/secundario (btn-default) en pie de modal → outlined marca */
+  .modal-footer .btn.btn-default {
+    background: transparent !important;
+    border: 1px solid var(--color-brand-primary-border) !important;
+    color: var(--color-brand-primary) !important;
+    border-radius: 0.75rem !important;
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition: background 0.15s, border-color 0.15s !important;
+  }
+  .modal-footer .btn.btn-default:hover {
+    background-color: var(--color-brand-primary-soft) !important;
+    border-color: var(--color-brand-primary) !important;
+  }
+
+  /* Botón Delete (btn-danger) en pie de modal → outlined danger */
+  .modal-footer .btn.btn-danger {
+    background: transparent !important;
+    border: 1px solid var(--color-state-danger) !important;
+    color: var(--color-state-danger) !important;
+    border-radius: 0.75rem !important;
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition: background 0.15s !important;
+  }
+  .modal-footer .btn.btn-danger:hover {
+    background-color: var(--color-state-danger-soft) !important;
+  }
+
+  /*
+   * Overrides para bootstrap-notify (toasts de éxito/error/info)
+   * El plugin genera .alert.alert-{type} en runtime — HTML no existe en .php.
+   * Bootswatch flatly sobreescribe .alert-success → #18bc9c (teal/verde).
+   * Con !important dentro de @layer components ganamos al CSS unlayered de Bootstrap.
+   */
+  [data-notify="container"].alert-success,
+  .alert.alert-success {
+    background-color: var(--color-state-success-soft) !important;
+    border-color: var(--color-state-success) !important;
+    color: var(--color-state-success) !important;
+  }
+
+  [data-notify="container"].alert-danger,
+  .alert.alert-danger {
+    background-color: var(--color-state-danger-soft) !important;
+    border-color: var(--color-state-danger) !important;
+    color: var(--color-state-danger) !important;
+  }
+
+  [data-notify="container"].alert-warning,
+  .alert.alert-warning {
+    background-color: var(--color-state-warning-soft) !important;
+    border-color: var(--color-state-warning) !important;
+    color: var(--color-state-warning) !important;
+  }
+
+  [data-notify="container"].alert-info,
+  .alert.alert-info {
+    background-color: var(--color-brand-primary-soft) !important;
+    border-color: var(--color-brand-primary-border) !important;
+    color: var(--color-brand-primary) !important;
+  }
+
+  /* Botón × del toast — Bootswatch flatly lo pone blanco al 20% de opacidad en .alert-success */
+  [data-notify="container"] .close {
+    color: inherit !important;
+    text-shadow: none !important;
+    opacity: 0.5 !important;
+  }
+  [data-notify="container"] .close:hover,
+  [data-notify="container"] .close:focus {
+    opacity: 1 !important;
+  }
+
+  /* Barra de progreso dentro del toast */
+  .progress-bar.progress-bar-success {
+    background-color: var(--color-state-success) !important;
+  }
+  .progress-bar.progress-bar-danger {
+    background-color: var(--color-state-danger) !important;
+  }
+  .progress-bar.progress-bar-warning {
+    background-color: var(--color-state-warning) !important;
+  }
+  .progress-bar.progress-bar-info {
+    background-color: var(--color-brand-primary) !important;
+  }
+
+  /*
+   * Override fila seleccionada en bootstrap-table
+   * El plugin agrega .selected al <tr> → rgba(0,0,0,.075) por bootstrap-table.css.
+   * Bootswatch flatly + .success en <tr> → #18bc9c (teal/verde brillante).
+   * Con !important ganamos al CSS unlayered y forzamos el color de marca.
+   * Selector doble: con y sin .table class por si bootstrap-table aún no la agregó.
+   */
+  #table_holder table.table tbody tr.selected td,
+  #table_holder table.table tbody tr.selected th,
+  #table_holder tbody tr.selected td,
+  #table_holder tbody tr.selected th {
+    background-color: var(--color-brand-primary-soft) !important;
+  }
+
+  /* Filas con clase .success de Bootstrap (delete/restore highlight) */
+  #table_holder table.table tbody tr.success td,
+  #table_holder table.table tbody tr.success th,
+  #table_holder tbody tr.success td,
+  #table_holder tbody tr.success th {
+    background-color: var(--color-state-success-soft) !important;
+    color: var(--color-text-default) !important;
+  }
+}
