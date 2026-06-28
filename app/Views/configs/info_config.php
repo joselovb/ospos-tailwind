@@ -31,7 +31,7 @@
                     <img data-src="holder.js/100%x100%" alt="<?= esc(lang('Config.company_logo')) ?>" src="<?= $logo_src ?>" style="max-height: 100%; max-width: 100%;">
                 </div>
                 <div class="mt-2 flex flex-wrap items-center gap-2">
-                    <span class="btn btn-default btn-sm btn-file">
+                    <span class="ui-btn-secondary btn-file !text-sm">
                         <span class="fileinput-new"><?= lang('Config.company_select_image') ?></span>
                         <span class="fileinput-exists"><?= lang('Config.company_change_image') ?></span>
                         <input type="file" name="company_logo">
