@@ -17,25 +17,6 @@
  * vocabulario de Bootstrap - de ahi el prefijo "ui-" en todas.
  */
 @layer components {
-  /*
-   * Contenedor principal (Bootstrap .container) — reducir padding lateral
-   * en mobile para que las tablas y cards respiren sin scroll horizontal.
-   * Bootstrap pone 15px (px-[15px]) por lado; bajamos a 8px en mobile
-   * y 12px en sm, manteniendo el comportamiento normal en md+.
-   */
-  @media (max-width: 575px) {
-    .container {
-      padding-left: 0.5rem !important;
-      padding-right: 0.5rem !important;
-    }
-  }
-  @media (min-width: 576px) and (max-width: 767px) {
-    .container {
-      padding-left: 0.75rem !important;
-      padding-right: 0.75rem !important;
-    }
-  }
-
   /* Botones - text-sm explicito: sin esto heredaban el font-size de
    * body de Bootstrap (15px), grande y descuadrado contra el padding
    * pensado para una caja chica. */
