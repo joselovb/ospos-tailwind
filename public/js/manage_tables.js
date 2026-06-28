@@ -29,6 +29,7 @@
 
     var button_class = {
         'submit' : 'btn-primary',
+        'new'    : 'btn-default',
         'delete' : 'btn-danger'
     };
 

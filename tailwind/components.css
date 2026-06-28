@@ -361,6 +361,24 @@
     transform: scale(0.97) !important;
   }
 
+  /* Botón New/secundario (btn-default) en pie de modal → outlined marca */
+  .modal-footer .btn.btn-default {
+    background: transparent !important;
+    border: 1px solid var(--color-brand-primary-border) !important;
+    color: var(--color-brand-primary) !important;
+    border-radius: 0.75rem !important;
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition: background 0.15s, border-color 0.15s !important;
+  }
+  .modal-footer .btn.btn-default:hover {
+    background-color: var(--color-brand-primary-soft) !important;
+    border-color: var(--color-brand-primary) !important;
+  }
+
   /* Botón Delete (btn-danger) en pie de modal → outlined danger */
   .modal-footer .btn.btn-danger {
     background: transparent !important;
