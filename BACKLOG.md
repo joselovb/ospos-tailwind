@@ -52,23 +52,17 @@
 ## Deuda técnica visual / casos raros detectados
 
 - **Sales/POS - tabla del carrito en mobile**: queda como tabla real con scroll
-  horizontal (`overflow-x-auto`), no como cards apiladas, porque cada línea tiene un
-  `<form>` independiente con handlers JS atados a la posición exacta en el DOM
-  (`$(this).parents('tr').prevAll('form:first').submit()`). Revisar si conviene migrar a
-  cards en mobile más adelante, ahora que sí hay forma de probarlo con Playwright.
-- **Sales/POS - selects con bootstrap-select**: los dropdowns de modo/mesa/ubicación de
-  stock/tipo de pago usan el plugin `bootstrap-select` (clase `selectpicker`), con su
-  propio look de Bootstrap 3 por fuera del control de Tailwind. No se tocó para no
-  arriesgar romper su inicialización JS. Pendiente decidir si se reemplaza por un
-  `<select>` nativo + Tailwind (afecta varias vistas, no solo sales).
-- `public/css/login.css` quedó sin usar (login.php ya no lo enlaza, sus selectores
-  `.box-logo`/`.box-login`/`.container-login` no existen en el nuevo markup). No se
-  borró por las dudas, se puede limpiar más adelante.
-- `public/css/tailwind-build.css` se versiona en git (el pipeline Gulp no lo procesa) -
-  si se agrega un build step de CI/CD más adelante, considerar moverlo a `.gitignore`.
-- Cada `npm run build` (gulp) inyecta bloques de assets legacy en `header.php` y
-  `login.php` (comportamiento normal). Revisar el diff de esos dos archivos antes de
-  cada `git add` para no commitear ese ruido.
+  horizontal (`overflow-x-auto`), no como cards apiladas. Decisión: dejar así — la
+  dependencia de JS en posición DOM hace el cambio demasiado riesgoso. No revisar.
+- ~~**Sales/POS - selects con bootstrap-select**~~: resuelto — todos los dropdowns usan
+  `ui-select` nativo + flecha SVG. Sin rastro de `selectpicker`.
+- ~~`public/css/login.css` quedó sin usar~~: eliminado (2026-06-28).
+- ~~`public/css/tailwind-build.css` se versiona en git~~: movido a `.gitignore` y
+  removido del índice con `git rm --cached` (2026-06-28).
+- **Gulp inject noise en header.php / login.php**: `npm run build` reescribe los bloques
+  inject en esos dos archivos. Protocolo acordado: siempre `git add <archivo>` por nombre
+  (nunca `git add -A`), revisar con `git diff app/Views/partial/header.php` antes de
+  stagear, y usar `git add -p` si hay ruido mezclado con cambios reales.
 
 ## Ideas multi-marca / futuro
 
