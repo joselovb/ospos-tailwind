@@ -240,10 +240,11 @@ function get_payment_options(): array
 {
     $payments = [];
 
-    $payments[lang('Sales.cash')]   = lang('Sales.cash');
-    $payments[lang('Sales.yape')]   = lang('Sales.yape');
-    $payments[lang('Sales.izipay')] = lang('Sales.izipay');
-    $payments[lang('Sales.plin')]   = lang('Sales.plin');
+    $payments[lang('Sales.cash')]          = lang('Sales.cash');
+    $payments[lang('Sales.yape')]          = lang('Sales.yape');
+    $payments[lang('Sales.izipay')]        = lang('Sales.izipay');
+    $payments[lang('Sales.plin')]          = lang('Sales.plin');
+    $payments[lang('Sales.bank_transfer')] = lang('Sales.bank_transfer');
 
     return $payments;
 }
