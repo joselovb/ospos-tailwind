@@ -16,6 +16,14 @@
     $(document).ready(function() {
         <?= view('partial/daterangepicker') ?>
 
+        $("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
+            table_support.refresh();
+        });
+
+        $('#filters').on('hidden.bs.select', function(e) {
+            table_support.refresh();
+        });
+
         <?= view('partial/bootstrap_tables_locale') ?>
 
         <?php if (isset($start_date) && $start_date): ?>
