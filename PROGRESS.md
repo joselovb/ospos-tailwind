@@ -944,3 +944,20 @@
     decorativa (feedback de "fila actualizada").
   - cascade: @layer components !important > unlayered !important > unlayered normal (Bootstrap).
     Los fixes funcionan sin tocar nada del pipeline gulp/JS legacy.
+
+## 2026-11-03 18:30 - Fix: Gastos no recargaba al cambiar el rango de fechas
+- Archivos: app/Views/expenses/manage.php
+- Estado: completo
+- Commits: f6276588a
+- Notas:
+  - SÍNTOMA (reportado con el usuario alejandra en /expenses): al elegir 01/10/2026 - 31/10/2026
+    el selector mostraba el rango pero la tabla seguía en "No hay gastos a mostrar". Los 27 gastos
+    de octubre (S/ 6,493.90) sí estaban en la DB; no era pérdida de datos.
+  - CAUSA: el callback de partial/daterangepicker.php solo actualiza las variables JS start_date/
+    end_date. Quien refresca la tabla es un handler apply.daterangepicker -> table_support.refresh(),
+    que existe en sales/manage.php pero nunca estuvo en expenses/manage.php (tampoco antes del
+    rediseño). La pantalla abre con rango = hoy, así que salía vacía hasta recargar con las fechas
+    en la URL (table_filter_persistence las restaura server-side).
+  - FIX: mismo handler de 3 líneas que ya usa sales/manage.php. Solo vista; sin tocar Controllers,
+    Models ni DB.
+  - Pendiente: cashups/manage.php tiene el mismo hueco (ver BACKLOG.md).

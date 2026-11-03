@@ -74,3 +74,10 @@
 ## Propuestas de cambio a CLAUDE.md (no aplicadas, requieren aprobación del usuario)
 
 (ninguna por ahora)
+
+## Deuda técnica / bugs conocidos
+
+- [ ] cashups/manage.php: no engancha `apply.daterangepicker` a `table_support.refresh()` (mismo
+      bug ya corregido en expenses/manage.php, 2026-11-03). Al cambiar el rango de fechas la tabla
+      no recarga hasta refrescar la página. Fix: las 3 líneas de sales/manage.php. En
+      items/manage.php no se verificó si pasa lo mismo.
