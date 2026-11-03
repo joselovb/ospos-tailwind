@@ -77,7 +77,9 @@
 
 ## Deuda técnica / bugs conocidos
 
-- [ ] cashups/manage.php: no engancha `apply.daterangepicker` a `table_support.refresh()` (mismo
-      bug ya corregido en expenses/manage.php, 2026-11-03). Al cambiar el rango de fechas la tabla
-      no recarga hasta refrescar la página. Fix: las 3 líneas de sales/manage.php. En
-      items/manage.php no se verificó si pasa lo mismo.
+- [x] Tablas de cashups, expenses e items no recargaban al cambiar el rango de fechas / filtros /
+      sucursal (faltaban los handlers `apply.daterangepicker`, `hidden.bs.select` y `change` ->
+      `table_support.refresh()` que sí tiene sales/manage.php). Corregido 2026-11-03. Auditoría de
+      todas las vistas con `partial/daterangepicker`: las 3 de reports/*_input.php son formularios
+      que envían con botón (no tablas), no aplican. Si se agrega una vista de tabla nueva con
+      selector de fechas/filtros, copiar los handlers de sales/manage.php.

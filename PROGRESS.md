@@ -961,3 +961,17 @@
   - FIX: mismo handler de 3 líneas que ya usa sales/manage.php. Solo vista; sin tocar Controllers,
     Models ni DB.
   - Pendiente: cashups/manage.php tiene el mismo hueco (ver BACKLOG.md).
+
+## 2026-11-03 18:50 - Fix: cashups, gastos e items no recargaban al cambiar fechas/filtros
+- Archivos: app/Views/cashups/manage.php, app/Views/expenses/manage.php, app/Views/items/manage.php, BACKLOG.md
+- Estado: completo
+- Commits: d200d3469
+- Notas:
+  - AUDITORÍA: vistas que incluyen partial/daterangepicker: sales/manage (OK, tiene apply.daterangepicker
+    y hidden.bs.select), cashups, expenses, items (faltaban) y reports/date_input, specific_input,
+    specific_customer_input (formularios con botón "Enviar", no tablas: no aplican).
+  - FIX: cashups = fecha + filtros; expenses = filtros (la fecha se arregló en el commit anterior);
+    items = fecha + filtros + stock_location (change). Todos llaman table_support.refresh().
+  - Solo vistas; sin tocar Controllers, Models ni DB. Sintaxis PHP verificada con php -l.
+  - No se probó con sesión en navegador: pendiente validar en pos.herstudioperu.com (Gastos, Cierres
+    de caja, Items).
