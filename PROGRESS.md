@@ -975,3 +975,18 @@
   - Solo vistas; sin tocar Controllers, Models ni DB. Sintaxis PHP verificada con php -l.
   - No se probó con sesión en navegador: pendiente validar en pos.herstudioperu.com (Gastos, Cierres
     de caja, Items).
+
+## 2026-11-06 - Layout: contenido a todo el ancho en laptop/tablet
+- Archivos: app/Views/partial/header.php
+- Estado: completo
+- Notas:
+  - SÍNTOMA (reportado por el usuario en /expenses y /sales desde laptop): las tablas no entraban
+    completas y quedaban franjas vacías grandes a ambos lados del contenido.
+  - CAUSA: el `<main>` envolvía todo en `.container` de Bootstrap 3, que tiene ancho FIJO por
+    breakpoint del viewport (750/970/1170 px, 1320 en ospos.css) y se centra; no descuenta el
+    sidebar. Con el zoom del navegador la laptop caía en el escalón de 750 px.
+  - FIX: `.container` -> `container-fluid max-w-[1800px] md:px-6 lg:px-8`. Aplica a TODO el POS
+    (decisión del usuario). Margen efectivo ~9 px en tablet y ~17 px en laptop (el padding menos
+    los -15 px del `.row`). Celular sin cambios: bajo 768 px BS3 ya usaba ancho completo.
+  - Solo vista; sin tocar Controllers, Models ni DB. No validado con navegador desde el servidor
+    (no hay uno instalado); el usuario lo revisó en su laptop.

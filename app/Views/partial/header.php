@@ -307,5 +307,7 @@ $module_icons = [
 
         <!-- MAIN CONTENT ────────────────────────────────────────────── -->
         <main class="flex-1 min-w-0">
-            <div class="container">
+            <!-- container-fluid: el .container de BS3 tiene ancho fijo y deja
+                 franjas vacías al lado del sidebar en laptop/tablet -->
+            <div class="container-fluid max-w-[1800px] md:px-6 lg:px-8">
                 <div class="row">
